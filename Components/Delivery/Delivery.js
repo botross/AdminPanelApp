@@ -1,10 +1,9 @@
-import { View, Text, ScrollView, StyleSheet, Pressable } from 'react-native'
+import { View, Text, ScrollView, Pressable } from 'react-native'
 import React from 'react'
 import Header from '../../Reuseable/Header'
-import { DataTable } from 'react-native-paper';
 import { Octicons } from "react-native-vector-icons"
 import UserModal from '../Reservation/UserModal';
-
+import { Table, Row, Rows } from 'react-native-table-component';
 const Delivery = ({ navigation }) => {
     const [visible, setVisible] = React.useState(false);
 
@@ -13,13 +12,46 @@ const Delivery = ({ navigation }) => {
 
 
 
-    const optionsPerPage = [2, 3, 4];
-    const [page, setPage] = React.useState(0);
-    const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-    React.useEffect(() => {
-        setPage(0);
-    }, [itemsPerPage]);
     const [isActive, SetActive] = React.useState(0)
+
+    const tableHead = ['Nome cliente', 'Prezzo Totale', 'Orario', 'Azioni']
+    const tableData = [
+        [
+            ' Michelangelo Torpedine',
+            '€ 54,39',
+            '15:44',
+            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+                <Text style={{ color: "white" }}>Vedi</Text>
+            </Pressable>
+        ]
+        ,
+        [
+            ' Michelangelo Torpedine',
+            '€ 54,39',
+            '15:44',
+            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+                <Text style={{ color: "white" }}>Vedi</Text>
+            </Pressable>
+        ],
+        [
+            ' Michelangelo Torpedine',
+            '€ 54,39',
+            '15:44',
+            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+                <Text style={{ color: "white" }}>Vedi</Text>
+            </Pressable>
+        ],
+        [
+            ' Michelangelo Torpedine',
+            '€ 54,39',
+            '15:44',
+            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+                <Text style={{ color: "white" }}>Vedi</Text>
+            </Pressable>
+        ]
+    ]
+
+
     return (
         <Header navigation={navigation} title="Delivery" icon={require("../../assets/DeliveryIcon.png")} >
 
@@ -27,7 +59,7 @@ const Delivery = ({ navigation }) => {
 
             <ScrollView style={{ width: "95%", alignSelf: "center" }}>
 
-                <ScrollView horizontal style={{ marginVertical: 30 }}>
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginVertical: 30 }}>
                     <Pressable style={{ paddingHorizontal: 22, height: 50, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
                         <Octicons name="diff-added" color="#00B27A" size={25} />
                         <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Seleziona categorie</Text>
@@ -58,64 +90,16 @@ const Delivery = ({ navigation }) => {
                 </View>
 
 
+                <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ width: "100%" }}>
+                    <View style={{ flex: 1, padding: 5, paddingTop: 30, backgroundColor: '#fff', width: "95%", alignSelf: "center" }}>
+                        <Table borderStyle={{ borderWidth: 1, borderColor: '#D9D9D9' }}>
+                            <Row data={tableHead} widthArr={[130, 90, 60, 100]} style={{ height: 60, backgroundColor: '#00B27A' }} textStyle={{ margin: 6, color: "#fff" }} />
+                            <Rows onPress={() => showModal()} data={tableData} widthArr={[130, 90, 60, 100]} textStyle={{ padding: 6 }} />
 
+                        </Table>
+                    </View>
+                </ScrollView>
 
-                <DataTable style={[styles.shadow, { width: "95%", backgroundColor: "white", marginVertical: 10, borderRadius: 15, alignSelf: "center" }]}>
-                    <DataTable.Header style={{ backgroundColor: "#00B27A" }}>
-                        <DataTable.Title style={{ minWidth: 30 }} textStyle={[styles.textStyle, { fontSize: 10 }]} >Nome cliente</DataTable.Title>
-                        <DataTable.Title textStyle={[styles.textStyle, { fontSize: 10 }]}  >Prezzo Totale</DataTable.Title>
-                        <DataTable.Title textStyle={[styles.textStyle, { fontSize: 10 }]}  >Orario</DataTable.Title>
-                        <DataTable.Title style={{ minWidth: 1 }} textStyle={[styles.textStyle, { fontSize: 10 }]}  >Azioni</DataTable.Title>
-                    </DataTable.Header>
-
-                    <DataTable.Row onPress={() => showModal()}  style={{ height: 80, whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-                        <DataTable.Cell style={{ minWidth: 40 }}  >
-                            <View style={{ alignItems: "center" }}>
-                                <Text>
-
-                                    Michelangelo Torpedine
-                                </Text>
-                            </View>
-                        </DataTable.Cell>
-                        <DataTable.Cell >€ 54,39</DataTable.Cell>
-                        <DataTable.Cell >15:44</DataTable.Cell>
-                        <DataTable.Cell >
-                            <Pressable style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10 }}>
-                                <Text style={{ color: "white" }}>Vedi</Text>
-                            </Pressable>
-                        </DataTable.Cell>
-                    </DataTable.Row>
-
-                    <DataTable.Row onPress={() => showModal()}  style={{ height: 80, whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-                        <DataTable.Cell style={{ minWidth: 40 }}>
-                            <View style={{ alignItems: "center" }}>
-                                <Text>
-
-                                    Michelangelo Torpedine
-                                </Text>
-                            </View>
-                        </DataTable.Cell>
-                        <DataTable.Cell >€ 54,39</DataTable.Cell>
-                        <DataTable.Cell >15:44</DataTable.Cell>
-                        <DataTable.Cell >
-                            <Pressable style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10 }}>
-                                <Text style={{ color: "white" }}>Vedi</Text>
-                            </Pressable>
-                        </DataTable.Cell>
-                    </DataTable.Row>
-
-                    <DataTable.Pagination
-                        page={page}
-                        numberOfPages={3}
-                        onPageChange={(page) => setPage(page)}
-                        label="1-2 of 6"
-                        optionsPerPage={optionsPerPage}
-                        itemsPerPage={itemsPerPage}
-                        setItemsPerPage={setItemsPerPage}
-                        showFastPagination
-                        optionsLabel={'Rows per page'}
-                    />
-                </DataTable>
             </ScrollView>
             <UserModal visible={visible} hideModal={hideModal} />
 
@@ -126,19 +110,3 @@ const Delivery = ({ navigation }) => {
 export default Delivery
 
 
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: "#000000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.21,
-        shadowRadius: 7.68,
-        elevation: 10,
-    },
-    textStyle: {
-        color: "white"
-    },
-
-})

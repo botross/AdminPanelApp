@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text, Pressable } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,7 +22,7 @@ import Support from "../Components/Support/Support"
 import SingleTicket from "../Components/Support/SingleTicket"
 import MarketingCamps from '../Components/Marketing/MarketingCamps';
 import PersonalizeCamp from '../Components/Marketing/PersonalizeCamp';
-
+import { Ionicons,Entypo,MaterialIcons ,FontAwesome ,Feather,AntDesign} from "react-native-vector-icons"
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -62,16 +61,107 @@ function MyDrawer() {
     return (
         <Drawer.Navigator >
 
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Home" component={Home} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Ristorante" component={Ristorante} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Prodotti" component={ProdottiStackk} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Delivery" component={Delivery} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Reservation" component={Reservation} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Social media" component={SocialMedia} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Marketing" component={MarketingStack} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Support" component={SupportStack} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="FidelityCard" component={FidelityCard} />
-            <Drawer.Screen options={{ headerShown: false, drawerActiveTintColor: "#00B27A" }} name="Notifications" component={Notifications} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <Ionicons
+                        name="md-home"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Home" component={Home} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A", drawerInactiveTintColor: "#ccc"
+                , drawerIcon: ({ focused, size }) => (
+                    <Ionicons
+                        name="restaurant"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Ristorante" component={Ristorante} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <Entypo
+                        name="archive"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Prodotti" component={ProdottiStackk} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <MaterialIcons
+                        name="delivery-dining"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Delivery" component={Delivery} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <FontAwesome
+                        name="book"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Reservation" component={Reservation} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <Ionicons
+                        name="share-social"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+
+            }} name="Social media" component={SocialMedia} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <Feather
+                        name="trending-up"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Marketing" component={MarketingStack} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <MaterialIcons
+                        name="support-agent"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Support" component={SupportStack} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <AntDesign
+                        name="creditcard"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="FidelityCard" component={FidelityCard} />
+            <Drawer.Screen options={{
+                headerShown: false, drawerActiveTintColor: "#00B27A"
+                , drawerIcon: ({ focused, size }) => (
+                    <Ionicons
+                        name="notifications"
+                        size={size}
+                        color={focused ? '#00B27A' : '#ccc'}
+                    />
+                ),
+            }} name="Notifications" component={Notifications} />
         </Drawer.Navigator>
     );
 }

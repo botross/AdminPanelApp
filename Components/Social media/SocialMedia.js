@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Dimensions } from 'react-native'
+import { Text, ScrollView } from 'react-native'
 import React from 'react'
 import Header from '../../Reuseable/Header'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -26,7 +26,7 @@ const SocialMedia = ({ navigation }) => {
 
     return (
         <Header navigation={navigation} title="SocialMedia" icon={require("../../assets/PrenotazioniIcon.png")}>
-            <ScrollView horizontal style={{ marginBottom: 10, maxHeight: 80, minHeight: 80 }} >
+            <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginBottom: 10, maxHeight: 80, minHeight: 80 }} >
                 {Buttons.map((btn, index) => {
                     return (
                         <TouchableOpacity onPress={() => SetActive(btn.id)} key={index} style={{ padding: 20, borderBottomWidth: 2, borderBottomColor: isActive === btn.id ? "#00B27A" : "#AEAEAE", width: 220, alignItems: 'center', marginBottom: 10 }}>
