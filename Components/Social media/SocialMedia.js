@@ -25,7 +25,7 @@ const SocialMedia = ({ navigation }) => {
         ]
 
     return (
-        <Header navigation={navigation} title="SocialMedia" icon={require("../../assets/PrenotazioniIcon.png")}>
+        <Header navigation={navigation} title="SocialMedia" icon={require("../../assets/SocialMediaIcon.png")}>
             <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginBottom: 10, maxHeight: 80, minHeight: 80 }} >
                 {Buttons.map((btn, index) => {
                     return (

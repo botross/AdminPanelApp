@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from 'react-native'
 import React from 'react'
 import { Entypo } from "react-native-vector-icons"
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating } from 'react-native-ratings';
 const Comments = () => {
-    const star = require("../../assets/star.png")
+   
     return (
         <View style={{ width: "90%", alignSelf: 'center', backgroundColor: "#FBFBFB", paddingHorizontal: 15, borderRadius: 10, paddingVertical: 20 }}>
             <Text style={{ fontWeight: "700", fontSize: 26, color: "#00B27A" }}>Recensioni</Text>
