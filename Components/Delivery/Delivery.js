@@ -20,7 +20,7 @@ const Delivery = ({ navigation }) => {
             ' Michelangelo Torpedine',
             '€ 54,39',
             '15:44',
-            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+            <Pressable onPress={() => showModal()} style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
                 <Text style={{ color: "white" }}>Vedi</Text>
             </Pressable>
         ]
@@ -29,7 +29,7 @@ const Delivery = ({ navigation }) => {
             ' Michelangelo Torpedine',
             '€ 54,39',
             '15:44',
-            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+            <Pressable onPress={() => showModal()} style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
                 <Text style={{ color: "white" }}>Vedi</Text>
             </Pressable>
         ],
@@ -37,7 +37,7 @@ const Delivery = ({ navigation }) => {
             ' Michelangelo Torpedine',
             '€ 54,39',
             '15:44',
-            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+            <Pressable onPress={() => showModal()} style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
                 <Text style={{ color: "white" }}>Vedi</Text>
             </Pressable>
         ],
@@ -45,7 +45,7 @@ const Delivery = ({ navigation }) => {
             ' Michelangelo Torpedine',
             '€ 54,39',
             '15:44',
-            <Pressable onPress={() => showModal()}  style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
+            <Pressable onPress={() => showModal()} style={{ width: 70, height: 30, backgroundColor: "#00B27A", justifyContent: "center", alignItems: "center", borderRadius: 10, alignSelf: "center" }}>
                 <Text style={{ color: "white" }}>Vedi</Text>
             </Pressable>
         ]
@@ -59,20 +59,11 @@ const Delivery = ({ navigation }) => {
 
             <ScrollView style={{ width: "95%", alignSelf: "center" }}>
 
-                <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginVertical: 30 }}>
-                    <Pressable style={{ paddingHorizontal: 22, height: 50, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
-                        <Octicons name="diff-added" color="#00B27A" size={25} />
-                        <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Seleziona categorie</Text>
-                    </Pressable>
-                    <Pressable style={{ paddingHorizontal: 22, height: 50, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
-                        <Octicons name="diff-added" color="#00B27A" size={25} />
-                        <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Nuovo sconto</Text>
-                    </Pressable>
-                    <Pressable style={{ paddingHorizontal: 22, height: 50, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
-                        <Octicons name="diff-added" color="#00B27A" size={25} />
-                        <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Nuovo sconto</Text>
-                    </Pressable>
-                </ScrollView>
+                <Pressable onPress={() => navigation.navigate("AdvancedSettings")} style={{ paddingHorizontal: 22, height: 50, marginBottom: 30, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
+                    <Octicons name="diff-added" color="#00B27A" size={25} />
+                    <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Seleziona categorie</Text>
+                </Pressable>
+
 
                 <View style={{ alignSelf: "center", marginBottom: 30 }} >
                     <View style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: 'row', backgroundColor: "#F7F7F7", alignSelf: "flex-start", borderRadius: 15 }}>

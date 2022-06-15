@@ -9,8 +9,6 @@ import Fatturazione from './Fatturazione/Fatturazione';
 import SocialMain from './Social/SocialMain';
 import Payments from './Payments/Payments';
 import Personale from './Personale/PersonaleMain';
-// import DropDownPicker from 'react-native-dropdown-picker';
-// import { Button, Menu, Divider, Provider } from 'react-native-paper';
 
 const Ristorante = ({ navigation }) => {
     const [isActive, SetActive] = React.useState(0)

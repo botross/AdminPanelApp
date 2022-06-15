@@ -2,6 +2,8 @@ import { View, Text, ImageBackground, Pressable, ScrollView } from 'react-native
 import React from 'react'
 import Header from '../../Reuseable/Header'
 import { AntDesign, MaterialIcons, Octicons, Ionicons } from "react-native-vector-icons"
+
+import CreateSubCategoryBottomSheet from './CreateSubCategoryBottomSheet'
 const SubCategories = ({ navigation }) => {
     return (
 
@@ -11,10 +13,7 @@ const SubCategories = ({ navigation }) => {
                 <Pressable onPress={() => navigation.goBack()} style={{ marginHorizontal: 10 }}>
                     <Ionicons name="arrow-back-circle" color="#00B27A" size={50} />
                 </Pressable>
-                <Pressable onPress={() => navigation.navigate("CreateSubCategorie")} style={{ width: "70%", height: 50, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginVertical: 10 }}>
-                    <Octicons name="diff-added" color="#00B27A" size={25} />
-                    <Text style={{ fontWeight: "500", fontSize: 12, color: "#00B27A", marginLeft: 10 }}>Aggiungi un Nuovo Sotto Menu</Text>
-                </Pressable>
+                <CreateSubCategoryBottomSheet />
             </View>
 
             <ScrollView style={{ widht: "100%" }}>

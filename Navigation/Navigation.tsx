@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Home from "../Components/Home/Home"
 import Delivery from "../Components/Delivery/Delivery"
+import AdvancedSettings from "../Components/Delivery/AdvancedSettings"
 import Marketing from "../Components/Marketing/Marketing"
 import FidelityCard from "../Components/FidelityCard/FidelityCard"
 import Notifications from "../Components/Notifications/Notifications"
@@ -22,7 +23,7 @@ import Support from "../Components/Support/Support"
 import SingleTicket from "../Components/Support/SingleTicket"
 import MarketingCamps from '../Components/Marketing/MarketingCamps';
 import PersonalizeCamp from '../Components/Marketing/PersonalizeCamp';
-import { Ionicons,Entypo,MaterialIcons ,FontAwesome ,Feather,AntDesign} from "react-native-vector-icons"
+import { Ionicons, Entypo, MaterialIcons, FontAwesome, Feather, AntDesign } from "react-native-vector-icons"
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -54,6 +55,15 @@ function MarketingStack() {
             <Stack.Screen name="MarketingMain" component={Marketing} />
             <Stack.Screen name="MarketingCamps" component={MarketingCamps} />
             <Stack.Screen name="PersonalizeCamp" component={PersonalizeCamp} />
+        </Stack.Navigator>
+    )
+}
+function DeliveryStack() {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="DeliveryMain" component={Delivery} />
+            <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
+
         </Stack.Navigator>
     )
 }
@@ -100,7 +110,7 @@ function MyDrawer() {
                         color={focused ? '#00B27A' : '#ccc'}
                     />
                 ),
-            }} name="Delivery" component={Delivery} />
+            }} name="Delivery" component={DeliveryStack} />
             <Drawer.Screen options={{
                 headerShown: false, drawerActiveTintColor: "#00B27A"
                 , drawerIcon: ({ focused, size }) => (
