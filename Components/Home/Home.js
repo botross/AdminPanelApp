@@ -6,10 +6,8 @@ import TotalOrdiniChart from './TotalOrdiniChart';
 import CircleChart from './CircleChart';
 import TotalVisitorsChart from './TotalVisitorsChart';
 import PrenotazioniChart from './PrenotazioniChart';
+
 const Home = ({ navigation }) => {
-
-
-
 
     return (
 
@@ -33,7 +31,7 @@ const Home = ({ navigation }) => {
                         width:
                             "47%", alignItems: 'center', height: 180, justifyContent: 'center', alignSelf: 'center', backgroundColor: "#F8F8F8", borderRadius: 14, display: 'flex', flexDirection: "column",
                     }}>
-                        <Image source={require("../../assets/HomeIcon2.png")} style={{ width: 70, height: 70, marginBottom: 8 }}  />
+                        <Image source={require("../../assets/HomeIcon2.png")} style={{ width: 70, height: 70, marginBottom: 8 }} />
                         <Text style={{ fontSize: 16, fontWeight: "700", color: "#00B27A" }}>Nuovi ordini</Text>
 
                     </View>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -24,9 +24,16 @@ import SingleTicket from "../Components/Support/SingleTicket"
 import MarketingCamps from '../Components/Marketing/MarketingCamps';
 import PersonalizeCamp from '../Components/Marketing/PersonalizeCamp';
 import { Ionicons, Entypo, MaterialIcons, FontAwesome, Feather, AntDesign } from "react-native-vector-icons"
+import Login from '../Components/Login/Login';
+import Register from '../Components/Register/Register';
+import { MyContext } from '../AppContext';
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+
+
+
 function ProdottiStackk() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -175,13 +182,20 @@ function MyDrawer() {
         </Drawer.Navigator>
     );
 }
+function SignUpStack() {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+        </Stack.Navigator>
+    );
+}
 
-
-export default function Navigation({ navigation }) {
-
+export default function Navigation() {
+    const { Token } = useContext(MyContext)
     return (
         <NavigationContainer>
-            <MyDrawer />
+            {Token ? <MyDrawer /> : <SignUpStack />}
         </NavigationContainer >
     );
 }
