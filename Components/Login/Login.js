@@ -1,7 +1,7 @@
 import { View, Text, Pressable, TextInput, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useState, useContext } from 'react'
 import Header from '../../Reuseable/Header2'
-import Fontisto from "react-native-vector-icons/Fontisto"
+import { Fontisto } from "react-native-vector-icons"
 import axios from "axios"
 import { MyContext } from '../../AppContext'
 const Login = ({ navigation }) => {
@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
     }
     const getUser = s => s.includes('=') && s.substr(s.lastIndexOf('=') + 1).split(' ')[0]
     async function handleLogin() {
-        if (password.length > 4 && email.includes("@") && email.includes(".")) {
+        if (password.length >= 3 && email.includes("@") && email.includes(".")) {
             setLoading(true)
             SetError(true)
             SetEmail("")
@@ -92,7 +92,7 @@ const Login = ({ navigation }) => {
                         secureTextEntry style={{ height: 50, width: "85%", backgroundColor: "#F9F9F9", borderRadius: 25, alignSelf: "center", padding: 20, marginVertical: 10 }} />
                     {isTouched.password
                         &&
-                        password.length < 4
+                        password.length < 3
                         &&
                         < Text style={{ fontSize: 14, fontWeight: '400', color: "red", textAlign: "center", marginVertical: 10 }}>Password should be at least 4 chars</Text>
                     }

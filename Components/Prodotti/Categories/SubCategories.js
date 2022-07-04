@@ -1,46 +1,45 @@
 import { View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
-import React, { useContext } from 'react'
-import { MyContext } from '../../AppContext'
-import Header from '../../Reuseable/Header'
-import { AntDesign, MaterialIcons } from "react-native-vector-icons"
-import CreateCatalogBottomSheet from './CreateCatalogBottomSheet'
+import React from 'react'
+import Header from '../../../Reuseable/Header'
+import { AntDesign, MaterialIcons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
-import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
-const Prodotti = ({ navigation }) => {
-    const { Token } = useContext(MyContext)
-    const [Catalogs, SetCatalogs] = React.useState([])
-    const [Reload, SetReload] = React.useState("asd")
+import CreateSubCategoryBottomSheet from './CreateSubCategoryBottomSheet'
+import ReNameSubCategoryBottomSheet from './ReNameSubCategoryBottomSheet'
+const SubCategories = ({ route, navigation }) => {
+    const { catalogId } = route.params;
+    const [Categories, SetCategories] = React.useState({ categories: [{ catalog: 123 }] })
+    const [reload, SetReload] = React.useState("Mo")
     const [Loading, SetLoading] = React.useState(false)
-    const getCatalogs = async () => {
+    const getCategories = async catalogId => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
-            const result = await axios.get(url, { headers: { "Authorization": `Bearer ${Token}` } });
-            SetCatalogs(result.data)
+            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories/catalog/${catalogId}`;
+            const result = await axios.get(url);
+            SetCategories(result.data)
         } catch (error) {
-            console.log(error.response?.data)
+            console.log(error)
         }
         SetLoading(false)
     };
 
-
-
-    const deleteCataloge = async (id) => {
+    const deleteCategorie = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
+            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
             SetReload("HMAOD")
-            return console.log(result.data)
+
         } catch (error) {
             console.log(error.response)
         }
         SetLoading(false)
     };
 
+    React.useEffect(() => { getCategories(catalogId) }, [])
+    React.useEffect(() => { getCategories(catalogId) }, [reload])
 
 
     const DeleteAlert = (id) =>
@@ -54,22 +53,29 @@ const Prodotti = ({ navigation }) => {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => deleteCataloge(id) }
+                { text: "OK", onPress: () => deleteCategorie(id) }
             ]
         );
 
-    React.useEffect(() => { getCatalogs() }, [])
-    React.useEffect(() => { getCatalogs() }, [Reload])
     return (
-        <Header navigation={navigation} title="Prodotti" icon={require("../../assets/ProdottiIcon.png")} >
+
+        <Header navigation={navigation} title="Sub Menu" icon={require("../../../assets/ProdottiIcon.png")} >
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+
+                <Pressable onPress={() => navigation.goBack()} style={{ marginHorizontal: 10 }}>
+                    <Ionicons name="arrow-back-circle" color="#00B27A" size={50} />
+                </Pressable>
+                <CreateSubCategoryBottomSheet catalogId={catalogId} SetReload={SetReload} />
+            </View>
+
             <ScrollView style={{ widht: "100%", marginBottom: 100 }}>
-                <CreateCatalogBottomSheet SetReload={SetReload} />
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
-                {!Loading && Catalogs?.catalogs?.map((item, index) => {
+                {!Loading && Categories?.categories?.length === 0 && <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, alignSelf: "center", marginVertical: 15 }}>this Catalog has no categories yet</Text>}
+                {!Loading && Categories?.categories?.length > 0 && Categories?.categories?.map((item, index) => {
 
                     return (
                         <>
-                            <ImageBackground key={index} source={require("../../assets/FolderBG.png")} style={{
+                            <ImageBackground key={index} source={require("../../../assets/FolderBG.png")} style={{
                                 width: 250, height: 250, shadowColor: "#000000",
                                 shadowOffset: {
                                     width: 0,
@@ -83,17 +89,15 @@ const Prodotti = ({ navigation }) => {
                                 marginVertical: 10
                             }} resizeMode="contain" >
                                 <Text style={{ fontSize: 30, fontWeight: "700", color: "#00B27A", marginTop: 20 }}>{item.name}</Text>
-                                <Text style={{ fontSize: 16, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.categories?.length} unità disponibili</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.products?.length} unità disponibili</Text>
                                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
-                                    <Pressable onPress={() => navigation.navigate("SubCategories", { catalogId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
+                                    <Pressable onPress={() => navigation.navigate("AllProducts", { categoryId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                         <AntDesign name="arrowright" color="white" size={25} />
                                     </Pressable>
 
 
-                                    <ReNameCatalogBottomSheet SetReload={SetReload} id={item._id} name={item.name} />
-
-
+                                    <ReNameSubCategoryBottomSheet name={item.name} id={item._id} catalogId={item.catalog} SetReload={SetReload} />
                                     <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                         <MaterialIcons name="delete" color="white" size={25} />
                                     </Pressable>
@@ -103,12 +107,9 @@ const Prodotti = ({ navigation }) => {
                     )
                 })}
 
-
-
             </ScrollView>
-
         </Header>
     )
 }
 
-export default Prodotti
+export default SubCategories

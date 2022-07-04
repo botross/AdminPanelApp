@@ -2,6 +2,7 @@ import { View, Text, TextInput, Pressable, ScrollView, ActivityIndicator } from 
 import React, { useState } from 'react'
 import Header from '../../Reuseable/Header2'
 import axios from "axios"
+import { Fontisto } from "react-native-vector-icons"
 const Register = ({ navigation }) => {
     const [name, SetName] = useState("")
     const [surname, SetSurname] = useState("")
@@ -49,7 +50,12 @@ const Register = ({ navigation }) => {
             <Header title="Register" />
             <ScrollView>
 
+                <View style={{ display: "flex", flexDirection: "row", paddingLeft: 10 }} >
 
+                    <Pressable style={{ borderWidth: 1, borderColor: "#00B27A", borderRadius: 100, margin: 10, width: 50, height: 50, justifyContent: "center", alignItems: "center" }}>
+                        <Fontisto name="google" color="#00B27A" size={30} />
+                    </Pressable>
+                </View>
                 <View style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "space-evenly", paddingHorizontal: 10, marginBottom: 50 }}>
 
                     <Text style={{ fontSize: 16, fontWeight: '600', color: "#000000", paddingLeft: 15, marginVertical: 5 }}>Name</Text>

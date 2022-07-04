@@ -10,12 +10,12 @@ import Marketing from "../Components/Marketing/Marketing"
 import FidelityCard from "../Components/FidelityCard/FidelityCard"
 import Notifications from "../Components/Notifications/Notifications"
 import Prodotti from "../Components/Prodotti/Prodotti"
-import CreateMainCategorie from "../Components/Prodotti/CreateMainCategorie"
-import SubCategories from "../Components/Prodotti/SubCategories"
-import CreateSubCategorie from "../Components/Prodotti/CreateSubCategorie"
-import AllProducts from "../Components/Prodotti/AllProducts"
-import EditProduct from "../Components/Prodotti/EditProduct"
-import CreateProduct from "../Components/Prodotti/CreateProduct"
+import CreateMainCategorie from "../Components/Prodotti/CreateCatalogBottomSheet"
+import SubCategories from "../Components/Prodotti/Categories/SubCategories"
+
+import AllProducts from "../Components/Prodotti/Products/AllProducts"
+import EditProduct from "../Components/Prodotti/Products/EditProduct"
+import CreateProduct from "../Components/Prodotti/Products/CreateProduct"
 import Reservation from "../Components/Reservation/Reservation"
 import Ristorante from "../Components/Ristorante/Ristorante"
 import SocialMedia from "../Components/Social media/SocialMedia"
@@ -40,7 +40,7 @@ function ProdottiStackk() {
             <Stack.Screen name="MainCategories" component={Prodotti} />
             <Stack.Screen name="CreateMainCategorie" component={CreateMainCategorie} />
             <Stack.Screen name="SubCategories" component={SubCategories} />
-            <Stack.Screen name="CreateSubCategorie" component={CreateSubCategorie} />
+
             <Stack.Screen name="AllProducts" component={AllProducts} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="CreateProduct" component={CreateProduct} />

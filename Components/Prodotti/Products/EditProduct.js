@@ -1,12 +1,19 @@
 import { View, Text, ScrollView, TextInput, Pressable, Image } from 'react-native'
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
 import React from 'react'
-import Header from '../../Reuseable/Header'
+import Header from '../../../Reuseable/Header'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import axios from 'axios'
+const EditProduct = ({ route, navigation }) => {
+    const { productData } = route.params
+    const [NewData, SetNewData] = React.useState(productData)
 
-const EditProduct = ({ navigation }) => {
+    function handleChange(name, text) {
+        SetNewData({ ...NewData, [name]: text })
+    }
+
     return (
-        <Header navigation={navigation} title="Edit Product" icon={require("../../assets/ProdottiIcon.png")} >
+        <Header navigation={navigation} title="Edit Product" icon={require("../../../assets/ProdottiIcon.png")} >
 
             <ScrollView style={{ marginBottom: 90 }}>
                 <Pressable onPress={() => navigation.goBack()} style={{ marginHorizontal: 10 }}>
@@ -15,7 +22,7 @@ const EditProduct = ({ navigation }) => {
                 <View style={{ width: "100%", alignSelf: 'center', paddingVertical: 10, paddingHorizontal: 15 }}>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", alignSelf: "center" }}>
 
-                        <Image source={require("../../assets/pizza.png")} style={{ width: 160, height: 140 }} />
+                        <Image source={require("../../../assets/pizza.png")} style={{ width: 160, height: 140 }} />
 
 
                         <Text style={{ color: "#00B27A", fontWeight: "700", fontSize: 26, width: "50%", alignSelf: "center", textAlign: "center" }}>Modifica prodotto</Text>
@@ -24,11 +31,13 @@ const EditProduct = ({ navigation }) => {
 
                     <View style={{ marginTop: 20 }}>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Nome prodotto</Text>
-                        <TextInput value='Lorem ipsum dolor' style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <TextInput onChangeText={(e) => handleChange("title", e)} value={NewData.title} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Price</Text>
+                        <TextInput onChangeText={(e) => handleChange("price", e)} value={NewData.price.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric'/>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
-                        <TextInput value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lobortis quis ridiculus at ultricies nunc. " multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli ingredienti..." />
+                        <TextInput onChangeText={(e) => handleChange("ingredients", e)} value={NewData.ingredients[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli ingredienti..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Allergeni</Text>
-                        <TextInput value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lobortis quis ridiculus at ultricies nunc. " multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli allergeni..." />
+                        <TextInput  onChangeText={(e) => handleChange("allergens", e)} value={NewData.allergens[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli allergeni..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Informazioni Aggiuntive:</Text>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
                             <BouncyCheckbox size={25} fillColor="#00B27A" unfillColor="#FFFFFF" iconStyle={{ borderColor: "#00B27A", borderRadius: 5 }} onPress={(isChecked) => { }} />

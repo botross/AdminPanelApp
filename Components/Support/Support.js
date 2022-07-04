@@ -36,7 +36,7 @@ const Support = ({ navigation }) => {
     React.useEffect(() => {
         setPage(0);
     }, [itemsPerPage]);
-    // React.useEffect(() => { getAllTickets() }, [])
+    React.useEffect(() => { getAllTickets() }, [])
     return (
         <>
             <Header navigation={navigation} title="Support" icon={require("../../assets/SupportIcon.png")} >
