@@ -1,16 +1,17 @@
 import { View, Text, Pressable, TextInput } from "react-native";
-import React from 'react'
+import React, { useContext } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialIcons } from "react-native-vector-icons"
 import axios from "axios"
+import { MyContext } from "../../AppContext";
 const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState(name)
-
+    const { userData } = useContext(MyContext)
     const renameCatalog = async (id, name) => {
         try {
             const body = { name };
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
             const result = await axios.patch(url, body);
             refRBSheet.current.close()
             SetName("")

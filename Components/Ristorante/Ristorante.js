@@ -54,8 +54,8 @@ const Ristorante = ({ navigation }) => {
                 })}
             </ScrollView>
 
-            {isActive === 0 && <RestaurantInfo />}
-            {isActive === 1 && <Aggiuntive />}
+            {isActive === 0 && <RestaurantInfo SetActive={SetActive} />}
+            {isActive === 1 && <Aggiuntive SetActive={SetActive} />}
             {isActive === 2 && <Fatturazione />}
             {isActive === 3 && <SocialMain />}
             {isActive === 4 && <Payments />}

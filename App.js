@@ -6,25 +6,25 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MyContext } from './AppContext';
 import axios from "axios"
 export default function App() {
-  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTY5MjU0MTksImV4cCI6MTY1Njk2ODYxOX0.fC200LP2eIPHUYGeUqzJFEynuRIFjxh3Lh6Kp1rcImY")
+  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTcwMDc5MTgsImV4cCI6MTY1NzA1MTExOH0.fr1FlHXKvkANFd0vm4FM15POZFItvufk6-0kbxvId-w")
   const [userData, SetUserData] = useState()
-  console.log(Token)
+
 
   async function getUser() {
     try {
       const res = await axios.get(`https://auth.develop.unifarco.aigotsrl-dev.com/api/user`, { headers: { "Authorization": `Bearer ${Token}` } })
       SetUserData(res.data)
     } catch (error) {
-      console.log(error)
+      console.log(error.response?.data)
     }
   }
-
+  console.log(userData)
   const MainData =
   {
-    Token, SetToken
+    Token, SetToken,userData
   }
 
-  React.useEffect(() => { getUser() }, [Token])
+  React.useEffect(() => { getUser() },[])
   return (
     <SafeAreaProvider>
       <MyContext.Provider value={{ ...MainData }}>

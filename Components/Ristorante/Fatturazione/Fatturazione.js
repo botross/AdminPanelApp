@@ -1,25 +1,33 @@
 import { View, Text, ScrollView, TextInput } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { MyContext } from '../../../AppContext'
 const Fatturazione = () => {
+    const { userData } = useContext(MyContext)
+    const [NewData, SetNewData] = React.useState(userData.billingInformation)
+
+    function handleChange(name, text) {
+        SetNewData({ ...NewData, [name]: text })
+    }
+
     return (
         <ScrollView >
             <View style={{ padding: 10, backgroundColor: "#F8F8F8", borderRadius: 10, width: "93%", alignSelf: 'center', marginBottom: 20 }}>
                 <View style={{ padding: 10, backgroundColor: "white", borderRadius: 10, width: "100%", alignSelf: 'center' }}>
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Indirizzo di Fatturazione</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi l’indirizzo di fatturazione..." />
+                    <TextInput onChangeText={(text) => handleChange("billingAddress", text)} value={NewData.billingAddress} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi l’indirizzo di fatturazione..." />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Codice Fiscale</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo codice fiscale..." />
+                    <TextInput onChangeText={(text) => handleChange("fiscalCode", text)} value={NewData.fiscalCode} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo codice fiscale..." />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Invoicing Endpoint</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="aigot@pec.it" />
+                    <TextInput onChangeText={(text) => handleChange("invoicingEndpoint", text)} value={NewData.invoicingEndpoint} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="aigot@pec.it" />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Nome</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo nome..." />
+                    <TextInput onChangeText={(text) => handleChange("name", text)} value={NewData.name} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo nome..." />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Cognome</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo cognome..." />
+                    <TextInput onChangeText={(text) => handleChange("lastname", text)} value={NewData.lastname} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Scrivi il tuo cognome..." />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>VAT</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="VAT..." />
+                    <TextInput onChangeText={(text) => handleChange("vatNumber", text)} value={NewData.vatNumber} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="VAT..." />
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Ragione Sociale</Text>
-                    <TextInput style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Ragione Sociale" />
+                    <TextInput onChangeText={(text) => handleChange("socialReason", text)} value={NewData.socialReason} style={{ width: "100%", height: 40, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10 }} placeholder="Ragione Sociale" />
 
                 </View>
             </View>

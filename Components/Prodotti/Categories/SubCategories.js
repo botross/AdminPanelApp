@@ -1,11 +1,13 @@
 import { View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
 import { AntDesign, MaterialIcons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
 import CreateSubCategoryBottomSheet from './CreateSubCategoryBottomSheet'
 import ReNameSubCategoryBottomSheet from './ReNameSubCategoryBottomSheet'
+import { MyContext } from '../../../AppContext'
 const SubCategories = ({ route, navigation }) => {
+    const { userData } = useContext(MyContext)
     const { catalogId } = route.params;
     const [Categories, SetCategories] = React.useState({ categories: [{ catalog: 123 }] })
     const [reload, SetReload] = React.useState("Mo")
@@ -13,7 +15,7 @@ const SubCategories = ({ route, navigation }) => {
     const getCategories = async catalogId => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories/catalog/${catalogId}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories/catalog/${catalogId}`;
             const result = await axios.get(url);
             SetCategories(result.data)
         } catch (error) {
@@ -25,7 +27,7 @@ const SubCategories = ({ route, navigation }) => {
     const deleteCategorie = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)

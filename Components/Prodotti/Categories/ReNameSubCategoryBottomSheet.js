@@ -1,16 +1,17 @@
 import { View, Text, Pressable, TextInput } from "react-native";
-import React from 'react'
+import React, { useContext } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialIcons } from "react-native-vector-icons"
 import axios from "axios"
-const ReNameSubCategoryBottomSheet = ({ name, id, catalogId ,SetReload}) => {
+import { MyContext } from "../../../AppContext";
+const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState(name)
-
+    const { userData } = useContext(MyContext)
     const renameCatalog = async (id, name, catalogId) => {
         try {
             const body = { name, catalog: catalogId };
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
             const result = await axios.patch(url, body);
             refRBSheet.current.close()
             SetName("")
@@ -53,7 +54,7 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId ,SetReload}) => {
                             <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi </Text>
                         </Pressable>
 
-                        
+
                         <Pressable onPress={() => {
                             refRBSheet.current.close()
                             SetName("")

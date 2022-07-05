@@ -1,20 +1,21 @@
 import { View, Text, Pressable, ScrollView, Image, ActivityIndicator } from 'react-native'
 import { Ionicons, Octicons, MaterialCommunityIcons } from "react-native-vector-icons"
-import React from 'react'
+import React, { useContext } from 'react'
 import axios from "axios"
 import Header from '../../../Reuseable/Header'
-
+import { MyContext } from '../../../AppContext'
 const AllProducts = ({ route, navigation }) => {
     const { categoryId } = route.params;
+    const { userData } = useContext(MyContext)
     const [Products, SetProducts] = React.useState([])
     const [Loading, SetLoading] = React.useState(false)
     const [CatalogCategorieID, Setids] = React.useState({})
-    const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api`;
+    const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api`;
 
     const getProducts = async categoryId => {
         try {
             SetLoading(true)
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/products/category/${categoryId}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/products/category/${categoryId}`;
             const result = await axios.get(url);
             SetProducts(result.data)
             Setids({ catalogId: result.data?.products[0]?.catalog, CategorieId: result.data?.products[0]?.category_Id })

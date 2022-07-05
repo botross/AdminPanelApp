@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, TextInput, Pressable } from 'react-native'
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios"
+import { MyContext } from '../../../AppContext';
 const CreateProduct = ({ route, navigation }) => {
-
+    const { userData } = useContext(MyContext)
     const { CatalogCategorieID } = route.params
     const [ProductData, SetProductData] = React.useState()
 
@@ -23,7 +24,7 @@ const CreateProduct = ({ route, navigation }) => {
             formData.append("catalog", catalogId);
             formData.append("category", categoryId);
             Object.keys(data).forEach(key => formData.append(key, data[key]));
-            const result = await axios.post("https://themes.develop.unifarco.aigotsrl-dev.com/api/products", formData, {
+            const result = await axios.post(`https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/products`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
@@ -36,7 +37,7 @@ const CreateProduct = ({ route, navigation }) => {
             console.log(error.response)
         }
     };
-console.log(ProductData)
+    console.log(ProductData)
     return (
         <Header navigation={navigation} title="Create Product" icon={require("../../../assets/ProdottiIcon.png")} >
             <ScrollView style={{ marginBottom: 90 }}>

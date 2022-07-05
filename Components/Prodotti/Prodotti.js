@@ -7,14 +7,14 @@ import CreateCatalogBottomSheet from './CreateCatalogBottomSheet'
 import axios from "axios"
 import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
 const Prodotti = ({ navigation }) => {
-    const { Token } = useContext(MyContext)
+    const { Token, userData } = useContext(MyContext)
     const [Catalogs, SetCatalogs] = React.useState([])
     const [Reload, SetReload] = React.useState("asd")
     const [Loading, SetLoading] = React.useState(false)
     const getCatalogs = async () => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
             const result = await axios.get(url, { headers: { "Authorization": `Bearer ${Token}` } });
             SetCatalogs(result.data)
         } catch (error) {
@@ -28,7 +28,7 @@ const Prodotti = ({ navigation }) => {
     const deleteCataloge = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { MyContext } from "../../AppContext";
 import { View, Text, Pressable, TextInput } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Ionicons, Octicons } from "react-native-vector-icons"
@@ -8,7 +9,7 @@ const CreateCategoryBottomSheet = ({ SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
     const [image, SetImage] = React.useState()
-
+    const { userData } = useContext(MyContext)
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -29,7 +30,7 @@ const CreateCategoryBottomSheet = ({ SetReload }) => {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("image", str);
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
             const result = await axios.post(url, formData);
 
             if (!result.data || result.data?.Error || result.data?.error)

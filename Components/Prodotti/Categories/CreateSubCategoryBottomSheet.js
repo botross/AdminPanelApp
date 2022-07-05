@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Pressable, TextInput } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Octicons } from "react-native-vector-icons"
 import axios from "axios"
+import { MyContext } from "../../../AppContext";
 const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
-
-
+    const { userData } = useContext(MyContext)
     const createCategory = async (name, catalogId) => {
         try {
             const body = { name, catalog: catalogId };
-            const url = `https://62a3117a11c1cb7d854a0367.themes.develop.unifarco.aigotsrl-dev.com/api/categories`;
+            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories`;
             const result = await axios.post(url, body);
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
