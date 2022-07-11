@@ -2,9 +2,9 @@ import { Text, ScrollView } from 'react-native'
 import React from 'react'
 import Header from '../../Reuseable/Header'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import QA from './Q&A'
+import QA from './Q&A/Q&A'
 import MainCalendar from './MainCalendar'
-import Comments from './Comments'
+import Reviews from './Comments&Reviews/Reviews'
 const SocialMedia = ({ navigation }) => {
     const [isActive, SetActive] = React.useState(0)
 
@@ -36,7 +36,7 @@ const SocialMedia = ({ navigation }) => {
                 })}
             </ScrollView>
             {isActive === 0 && <MainCalendar />}
-            {isActive === 1 && <Comments />}
+            {isActive === 1 && <Reviews />}
             {isActive === 2 && <QA />}
 
 

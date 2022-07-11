@@ -2,9 +2,9 @@ import { View, Text, Pressable, TextInput, ScrollView, Image } from 'react-nativ
 import React from 'react'
 import { Modal, Portal, Provider } from 'react-native-paper';
 import { Feather } from "react-native-vector-icons"
-const PostModal = ({ visible, hideModal, SinglePost }) => {
+const PostModal = ({ visible, hideModal, SinglePost ,DeleteSchedule}) => {
     const containerStyle = { backgroundColor: 'white', padding: 20, width: "90%", alignSelf: "center", borderRadius: 15, zIndex: 100, marginBottom: 150 };
-    const { postContent, post_Image } = SinglePost
+    const { postContent, post_Image , id} = SinglePost
     const [ImageLoaded, SetLoaded] = React.useState(false)
     return (
         <Provider>
@@ -26,7 +26,7 @@ const PostModal = ({ visible, hideModal, SinglePost }) => {
                                     Cancella
                                 </Text>
                             </Pressable>
-                            <Pressable onPress={() => hideModal()} style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "#00b27A", borderRadius: 15 }}>
+                            <Pressable onPress={() => DeleteSchedule(id)} style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "#00b27A", borderRadius: 15 }}>
                                 <Text style={{ color: "white", fontWeight: "600" }}>
                                     Chiudi
                                 </Text>

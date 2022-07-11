@@ -5,9 +5,11 @@ import { AntDesign, MaterialIcons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
 import CreateSubCategoryBottomSheet from './CreateSubCategoryBottomSheet'
 import ReNameSubCategoryBottomSheet from './ReNameSubCategoryBottomSheet'
+import { REACT_APP_THEMES_PREFIX,REACT_APP_THEMES_API_PATH,  REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 import { MyContext } from '../../../AppContext'
 const SubCategories = ({ route, navigation }) => {
-    const { userData } = useContext(MyContext)
+    const { userData ,SuccessToast} = useContext(MyContext)
     const { catalogId } = route.params;
     const [Categories, SetCategories] = React.useState({ categories: [{ catalog: 123 }] })
     const [reload, SetReload] = React.useState("Mo")
@@ -15,7 +17,7 @@ const SubCategories = ({ route, navigation }) => {
     const getCategories = async catalogId => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories/catalog/${catalogId}`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/categories/catalog/${catalogId}`;
             const result = await axios.get(url);
             SetCategories(result.data)
         } catch (error) {
@@ -27,13 +29,13 @@ const SubCategories = ({ route, navigation }) => {
     const deleteCategorie = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/categories/${id}`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/categories/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
             SetReload("HMAOD")
-
+            SuccessToast()
         } catch (error) {
             console.log(error.response)
         }

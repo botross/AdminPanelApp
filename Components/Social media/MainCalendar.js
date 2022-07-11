@@ -5,6 +5,8 @@ import axios from "axios"
 import { Calendar } from 'react-native-big-calendar'
 import { MyContext } from '../../AppContext';
 import PostModal from './PostModal';
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 const MainCalendar = () => {
     const [CurrentDate, SetCurrentDate] = React.useState(new Date())
     const [Loading, SetLoading] = React.useState(false)
@@ -20,12 +22,13 @@ const MainCalendar = () => {
     async function getSchedules() {
         SetLoading(true)
         try {
-            const res = await axios.get("https://admin.develop.unifarco.aigotsrl-dev.com/api/socials/facebook/schedules", config)
+            const res = await axios.get(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules`, config)
 
             if (res.data) {
                 res.data.map((post) => {
                     SetAllPosts(old => old.concat(
                         {
+                            id: item._id,
                             title: "Facebook post",
                             start: new Date(post.scheduledFor),
                             end: new Date(post.scheduledFor).setHours(new Date(post.scheduledFor).getHours() + 2),
@@ -40,7 +43,9 @@ const MainCalendar = () => {
         }
         SetLoading(false)
     }
-    React.useEffect(() => { getSchedules() }, [])
+    React.useEffect(() => {
+        getSchedules()
+    }, [])
 
     const darkTheme = {
         palette: {
@@ -50,6 +55,21 @@ const MainCalendar = () => {
             },
 
         },
+    }
+
+    async function DeleteSchedule(id) {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        try {
+            const res = await axios.delete(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules/${id}`, config)
+            if (res.status === 200) {
+                SetAllPosts([])
+                getSchedules()
+                hideModal()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
     }
     return (
         <>
@@ -110,6 +130,7 @@ const MainCalendar = () => {
                     visible={visible}
                     hideModal={hideModal}
                     SinglePost={SinglePost}
+                    DeleteSchedule={DeleteSchedule}
                 />
             }
         </>

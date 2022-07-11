@@ -41,6 +41,8 @@ const Login = ({ navigation }) => {
                 }
                 if (params.token)
                     SetToken(params.token)
+
+                    console.log(res)
             } catch (error) {
                 console.log(error.response.data)
                 SetError(JSON.stringify(error.response.data.Error))

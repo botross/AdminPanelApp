@@ -4,6 +4,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MyContext } from '../../../AppContext';
 import axios from "axios"
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 const Aggiuntive = ({ SetActive }) => {
   const { userData, Token } = useContext(MyContext)
   const [attributeValues, setAttributeValues] = useState([]);
@@ -11,7 +13,7 @@ const Aggiuntive = ({ SetActive }) => {
   const [loading, Setloading] = React.useState(true)
   const [dataName, setDataName] = useState("");
 
-  const url = "https://admin.develop.unifarco.aigotsrl-dev.com/api/gmb/labels"
+  const url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/labels`
 
   function getLables() {
 

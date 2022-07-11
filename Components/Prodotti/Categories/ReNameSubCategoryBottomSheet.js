@@ -7,7 +7,7 @@ import { MyContext } from "../../../AppContext";
 const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState(name)
-    const { userData } = useContext(MyContext)
+    const { userData ,SuccessToast} = useContext(MyContext)
     const renameCatalog = async (id, name, catalogId) => {
         try {
             const body = { name, catalog: catalogId };
@@ -18,7 +18,7 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload }) => {
 
 
             SetReload("WEWE")
-
+            SuccessToast()
         } catch (error) {
             console.log(error.response)
         }

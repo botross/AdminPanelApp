@@ -6,6 +6,8 @@ import { AntDesign, MaterialIcons } from "react-native-vector-icons"
 import CreateCatalogBottomSheet from './CreateCatalogBottomSheet'
 import axios from "axios"
 import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
+import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
+
 const Prodotti = ({ navigation }) => {
     const { Token, userData } = useContext(MyContext)
     const [Catalogs, SetCatalogs] = React.useState([])
@@ -14,11 +16,12 @@ const Prodotti = ({ navigation }) => {
     const getCatalogs = async () => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs`;
             const result = await axios.get(url, { headers: { "Authorization": `Bearer ${Token}` } });
+            console.log(result)
             SetCatalogs(result.data)
         } catch (error) {
-            console.log(error.response?.data)
+            console.log(error.message)
         }
         SetLoading(false)
     };
@@ -28,12 +31,13 @@ const Prodotti = ({ navigation }) => {
     const deleteCataloge = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
             SetReload("HMAOD")
+            SuccessToast()
             return console.log(result.data)
         } catch (error) {
             console.log(error.response)

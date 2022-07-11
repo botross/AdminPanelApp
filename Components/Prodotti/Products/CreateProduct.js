@@ -2,6 +2,8 @@ import { View, Text, ScrollView, TextInput, Pressable } from 'react-native'
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
 import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
+import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH} from "@env"
+
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios"
 import { MyContext } from '../../../AppContext';
@@ -24,7 +26,7 @@ const CreateProduct = ({ route, navigation }) => {
             formData.append("catalog", catalogId);
             formData.append("category", categoryId);
             Object.keys(data).forEach(key => formData.append(key, data[key]));
-            const result = await axios.post(`https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/products`, formData, {
+            const result = await axios.post(`https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/products`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }

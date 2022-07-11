@@ -5,7 +5,9 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Ionicons, Octicons } from "react-native-vector-icons"
 import * as ImagePicker from 'expo-image-picker';
 import axios from "axios"
-const CreateCategoryBottomSheet = ({ SetReload }) => {
+import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
+
+const CreateCategoryBottomSheet = ({ SetReload ,SuccessToast }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
     const [image, SetImage] = React.useState()
@@ -30,7 +32,7 @@ const CreateCategoryBottomSheet = ({ SetReload }) => {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("image", str);
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs`;
             const result = await axios.post(url, formData);
 
             if (!result.data || result.data?.Error || result.data?.error)
@@ -41,9 +43,9 @@ const CreateCategoryBottomSheet = ({ SetReload }) => {
 
 
             SetReload("WEWE")
-
+            SuccessToast("Created successfully")
         } catch (error) {
-            console.log(error.response)
+            console.log(error.message)
         }
     };
     return (

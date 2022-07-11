@@ -3,22 +3,24 @@ import React, { useContext } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialIcons } from "react-native-vector-icons"
 import axios from "axios"
+import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 import { MyContext } from "../../AppContext";
 const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState(name)
-    const { userData } = useContext(MyContext)
+    const { userData , SuccessToast } = useContext(MyContext)
     const renameCatalog = async (id, name) => {
         try {
             const body = { name };
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/catalogs/${id}`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs/${id}`;
             const result = await axios.patch(url, body);
             refRBSheet.current.close()
             SetName("")
 
 
             SetReload("WEWE")
-
+            SuccessToast()
         } catch (error) {
             console.log(error.response)
         }

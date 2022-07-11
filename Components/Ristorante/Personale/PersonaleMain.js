@@ -4,6 +4,7 @@ import { Octicons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
 import { MyContext } from '../../../AppContext'
 import AddNewPersonale from './AddNewPersonale'
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
 
 const PersonaleMain = () => {
     const { Token } = useContext(MyContext)
@@ -24,7 +25,7 @@ const PersonaleMain = () => {
     async function getPersonale() {
         SetLoading(true)
         try {
-            const res = await axios.get("https://admin.develop.unifarco.aigotsrl-dev.com/api/aliases", config)
+            const res = await axios.get(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/aliases`, config)
             console.log(res)
             Setcontainer(res.data)
         } catch (error) {
@@ -96,12 +97,12 @@ const PersonaleMain = () => {
                     </View>
                 </View>
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
-                {!Loading && (firstLoad ? Container : Personale)?.map((item) => {
+                {!Loading && (firstLoad ? Container : Personale)?.map((item , index) => {
                     const { isActive, name, lastname } = item
                     return (
                         <>
 
-                            <View style={{ width: "48%", height: 200, backgroundColor: isActive ? "#2B65BB" : "#C25039", position: "relative", borderRadius: 10, marginBottom: 70, marginTop: 10 }}>
+                            <View key={index} style={{ width: "48%", height: 200, backgroundColor: isActive ? "#2B65BB" : "#C25039", position: "relative", borderRadius: 10, marginBottom: 70, marginTop: 10 }}>
                                 <View style={{ backgroundColor: "white", borderWidth: 2, borderColor: "#C25039", borderRadius: 120, width: 120, height: 120, backgroundColor: "white", position: "relative", marginTop: "-25%", alignSelf: "center", alignItems: "center", justifyContent: "center" }}>
                                     <Text style={{ fontSize: 28, fontWeight: "700", color: "#C25039" }}>GT</Text>
                                 </View>

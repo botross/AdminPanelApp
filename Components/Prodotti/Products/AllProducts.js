@@ -4,23 +4,25 @@ import React, { useContext } from 'react'
 import axios from "axios"
 import Header from '../../../Reuseable/Header'
 import { MyContext } from '../../../AppContext'
+import { REACT_APP_THEMES_PREFIX, REACT_APP_THEMES_API_PATH, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 const AllProducts = ({ route, navigation }) => {
     const { categoryId } = route.params;
     const { userData } = useContext(MyContext)
     const [Products, SetProducts] = React.useState([])
     const [Loading, SetLoading] = React.useState(false)
     const [CatalogCategorieID, Setids] = React.useState({})
-    const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api`;
+    const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}`;
 
     const getProducts = async categoryId => {
         try {
             SetLoading(true)
-            const url = `https://${userData._id}.themes.develop.unifarco.aigotsrl-dev.com/api/products/category/${categoryId}`;
+            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/products/category/${categoryId}`;
             const result = await axios.get(url);
             SetProducts(result.data)
             Setids({ catalogId: result.data?.products[0]?.catalog, CategorieId: result.data?.products[0]?.category_Id })
         } catch (error) {
-            console.log(error.response?.data)
+            console.log(error.message)
         }
         SetLoading(false)
     };
@@ -48,7 +50,7 @@ const AllProducts = ({ route, navigation }) => {
                     return (
                         <>
                             <View key={index} style={{ backgroundColor: "#F8F8F8", borderRadius: 15, width: "90%", alignSelf: "center", paddingVertical: 30, paddingHorizontal: 25, position: "relative" }}>
-                                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", alignSelf: "center", marginBottom: 15 }}>
+                                <View key={index} style={{ display: "flex", flexDirection: "row", alignItems: "center", alignSelf: "center", marginBottom: 15 }}>
                                     <Image source={item.image ? { uri: `${url}/${item.image}` } : require("../../../assets/defaultImageProduc.png")} style={{ width: 120, height: 120, marginRight: 20 }} resizeMode="contain" />
                                     <View>
                                         <Text style={{ color: "#1E1C0F", fontWeight: "400", fontSize: 12, marginBottom: 6 }}>{item.title}</Text>
@@ -60,19 +62,19 @@ const AllProducts = ({ route, navigation }) => {
                                 </View>
                                 {item.ingredients?.length > 0 ?
 
-                                    <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>Ingredienti: {item.ingredients?.map((allrgn) => { return (<Text style={{ color: "#1E1C0F", fontWeight: "400", fontSize: 14 }}> {allrgn}</Text>) })} </Text>
+                                    <Text key={index} style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>Ingredienti: {item.ingredients?.map((allrgn) => { return (<Text style={{ color: "#1E1C0F", fontWeight: "400", fontSize: 14 }}> {allrgn}</Text>) })} </Text>
                                     :
 
-                                    <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>the ingredients of the product is not available  </Text>
+                                    <Text key={index} style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>the ingredients of the product is not available  </Text>
 
                                 }
 
                                 {item.allergens?.length > 0 ?
 
-                                    <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>Allergeni: {item.allergens?.map((allrgn) => { return (<Text> {allrgn}</Text>) })} </Text>
+                                    <Text key={index} style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>Allergeni: {item.allergens?.map((allrgn) => { return (<Text> {allrgn}</Text>) })} </Text>
                                     :
 
-                                    <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>This product has no Allergeni </Text>
+                                    <Text key={index} style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>This product has no Allergeni </Text>
 
                                 }
 

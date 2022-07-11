@@ -1,13 +1,16 @@
-import { View, ScrollView, TextInput, Text, ActivityIndicator } from 'react-native'
+import { View, ScrollView, TextInput, Text, ActivityIndicator, Pressable } from 'react-native'
 
 import React, { useContext } from 'react'
 import DropDownCheckBox from './DropDownCheckBox';
 import { MyContext } from '../../../AppContext';
 import axios from "axios"
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 const RestaurantInfo = ({ SetActive }) => {
-    const { userData, Token } = useContext(MyContext)
-    const url = "https://admin.develop.unifarco.aigotsrl-dev.com/api/gmb/LocationInformation"
+    const { userData, Token, SuccessToast, FailedToast } = useContext(MyContext)
+    const url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/LocationInformation`
+    const patchUrl = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/LocationInformation`;
     const [patchData, setPatchData] = React.useState();
     const [localWorkingHoursData, setLocalWorkingHoursData] = React.useState();
     const [loading, Setloading] = React.useState(false)
@@ -110,6 +113,7 @@ const RestaurantInfo = ({ SetActive }) => {
             await axios
                 .get(url, { headers: { Authorization: `Bearer ${Token}` } })
                 .then((res) => {
+
                     setLocalWorkingHoursData(
                         mapToLocalWorkingHours(res.data.data.regularHours).map((e) =>
                             !e.opening.length
@@ -153,6 +157,54 @@ const RestaurantInfo = ({ SetActive }) => {
     }
     React.useEffect(() => { getRestaurantInfo() }, [])
 
+
+    async function handleSubmit() {
+        Setloading(true)
+        try {
+
+            const periods = localWorkingHoursData.reduce((allHours, current) => {
+                const sessions = Day.toGMBSessions(current);
+                if (sessions) allHours.push(...sessions);
+                return allHours;
+            }, []);
+            await axios
+                .patch(
+                    patchUrl,
+                    {
+                        title: patchData.title,
+                        phoneNumber: patchData.phoneNumber,
+                        address: patchData.address,
+                        periods: periods,
+                        description: patchData.description,
+                        primaryCategory: patchData.primaryCategory.primaryCategory.replace(
+                            "categories/",
+                            ""
+                        ),
+                        secondaryCategory: patchData.secondaryCategory.map((secondaryCat) =>
+                            secondaryCat.secondaryCategory.replace("categories/", "")
+                        ),
+                    },
+                    {
+                        headers: { Authorization: `Bearer ${Token}` },
+                    }
+                )
+                .then(() => {
+                    console.log("HEH")
+                    SuccessToast("Sucessfully edited");
+                });
+        } catch (error) {
+            console.error(error);
+            FailedToast("Something went wrong")
+        }
+        Setloading(false)
+    };
+
+    function handleChange(name, text) {
+        setPatchData({ ...patchData, [name]: text })
+    }
+    function handleChangeArrays(name, text) {
+        setPatchData({ ...patchData, [name]: [].concat(text) })
+    }
     return (
 
 
@@ -162,13 +214,14 @@ const RestaurantInfo = ({ SetActive }) => {
             {!loading &&
                 <>
                     <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", paddingHorizontal: 15, justifyContent: "space-between", marginBottom: 10 }}>
-                        <TextInput value={patchData?.title} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Nome Ristorante" />
-                        <TextInput value={patchData?.primaryCategory?.primaryCategoryDisplayName} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie primarie" />
-                        <TextInput value={patchData?.description} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie secondarie" />
-                        <TextInput value={patchData?.address[0]} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Indirizzo" />
-                        <TextInput value={patchData?.serviceArea} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Area di servizio" />
-                        <TextInput value={patchData?.phoneNumber} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Numero di telefono" />
-                        <TextInput value={patchData?.description} style={{ width: "100%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, padding: 10 }} multiline placeholder="Descrivi il tuo Ristorante" />
+
+                        <TextInput onChangeText={(text) => handleChange("title", text)} value={patchData?.title} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Nome Ristorante" />
+                        <TextInput onChangeText={(text) => handleChange("primaryCategory", text)} value={patchData?.primaryCategory?.primaryCategoryDisplayName} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie primarie" />
+                        <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie secondarie" />
+                        <TextInput onChangeText={(text) => handleChangeArrays("address", text)} value={patchData?.address[0]} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Indirizzo" />
+                        <TextInput onChangeText={(text) => handleChange("serviceArea", text)} value={patchData?.serviceArea} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Area di servizio" />
+                        <TextInput onChangeText={(text) => handleChange("phoneNumber", text)} value={patchData?.phoneNumber} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Numero di telefono" />
+                        <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "100%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, padding: 10 }} multiline placeholder="Descrivi il tuo Ristorante" />
 
                     </View>
                     <Text style={{ color: "#000", fontWeight: "600", fontSize: 20, padding: 12, marginBottom: 10 }}>L'apertura del tuo Ristorante</Text>
@@ -193,9 +246,10 @@ const RestaurantInfo = ({ SetActive }) => {
                                 </>
                             )
                         })}
-                        <TouchableOpacity style={{ width: 240, height: 40, backgroundColor: '#00B27A', borderRadius: 10, alignSelf: 'center', marginBottom: 40, justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
+                        {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
+                        <Pressable onPress={() => handleSubmit()} style={{ width: 240, height: 40, backgroundColor: '#00B27A', borderRadius: 10, alignSelf: 'center', marginBottom: 40, justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
                             <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>Salva</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </>
 

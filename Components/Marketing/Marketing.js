@@ -1,13 +1,17 @@
 import { View, Text, Pressable, ScrollView, Image } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../../Reuseable/Header'
 import { Ionicons, Entypo, Feather } from "react-native-vector-icons"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import InProgress from './InProgress'
 import Completed from './Completed'
+import axios from "axios"
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+import { MyContext } from '../../AppContext'
+
 const Marketing = ({ navigation }) => {
     const [isActive, SetActive] = React.useState(0)
-
+    const { Token } = useContext(MyContext)
     const Buttons =
         [
             {
@@ -19,6 +23,26 @@ const Marketing = ({ navigation }) => {
                 name: "Campagne completate",
             },
         ]
+
+    const getAuthConfig = () => ({
+        headers: { authorization: `Bearer ${Token}` },
+    });
+
+
+    const baseEndpoint = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}`;
+    async function getCampaigns() {
+        try {
+            const url = `${baseEndpoint}/socials/fb/campaign?range=this_year&status=ACTIVE`;
+            const result = await axios.get(url, getAuthConfig());
+            console.log(result)
+            return result?.data;
+        } catch (error) {
+            console.log(error)
+        }
+
+    };
+
+    React.useEffect(() => { getCampaigns() }, [])
     return (
         <Header navigation={navigation} title="Marketing" icon={require("../../assets/MarketingIcon.png")}>
             <ScrollView style={{ marginBottom: 100 }}>

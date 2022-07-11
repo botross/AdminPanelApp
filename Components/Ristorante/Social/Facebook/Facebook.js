@@ -4,6 +4,8 @@ import { MyContext } from '../../../../AppContext';
 import * as Facebook from 'expo-facebook';
 import axios from "axios"
 import PagesBottomSheet from "./PagesBottomSheet"
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 const FacebookButton = () => {
     const { Token, userData } = useContext(MyContext)
 
@@ -79,7 +81,7 @@ const FacebookButton = () => {
         try {
             const idd = parseInt(id);
             const result3 = await axios.get(
-                `https://admin.develop.unifarco.aigotsrl-dev.com/api/socials/facebook/pageAccessToken?pageId=${idd}&token=${fbTokenn}`,
+                `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/pageAccessToken?pageId=${idd}&token=${fbTokenn}`,
                 config
             );
             // const result4 = await axios.get(
@@ -136,7 +138,7 @@ const FacebookButton = () => {
             };
 
             const result = await axios.patch(
-                `https://admin.develop.unifarco.aigotsrl-dev.com/api/user`,
+                `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/user`,
                 body,
                 config
             );

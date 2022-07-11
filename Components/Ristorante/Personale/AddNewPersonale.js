@@ -4,6 +4,8 @@ import { Modal, Portal, Provider } from 'react-native-paper';
 import { Feather } from "react-native-vector-icons"
 import RNPickerSelect from 'react-native-picker-select';
 import axios from "axios"
+import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+
 import { MyContext } from '../../../AppContext';
 const AddNewPersonale = ({ visible, hideModal }) => {
   const containerStyle = { backgroundColor: 'white', padding: 20, width: "90%", alignSelf: "center", borderRadius: 15, zIndex: 100, marginBottom: 150 };
@@ -37,7 +39,7 @@ const AddNewPersonale = ({ visible, hideModal }) => {
       SetError("Please fill all the Fields")
     } else {
       try {
-        const res = await axios.post("https://admin.develop.unifarco.aigotsrl-dev.com/api/aliases",
+        const res = await axios.post(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/aliases`,
           obj,
           config
         )

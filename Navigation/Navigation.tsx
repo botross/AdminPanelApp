@@ -27,6 +27,7 @@ import { Ionicons, Entypo, MaterialIcons, FontAwesome, Feather, AntDesign } from
 import Login from '../Components/Login/Login';
 import Register from '../Components/Register/Register';
 import { MyContext } from '../AppContext';
+import Toast from 'react-native-toast-message';
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -195,7 +196,9 @@ export default function Navigation() {
     const { Token } = useContext(MyContext)
     return (
         <NavigationContainer>
-            {Token ? <MyDrawer /> : <SignUpStack />}
+            {!Token ? <SignUpStack /> : <MyDrawer />}
+
+            <Toast />
         </NavigationContainer >
     );
 }

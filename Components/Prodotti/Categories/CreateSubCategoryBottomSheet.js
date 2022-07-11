@@ -7,7 +7,7 @@ import { MyContext } from "../../../AppContext";
 const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
-    const { userData } = useContext(MyContext)
+    const { userData ,SuccessToast } = useContext(MyContext)
     const createCategory = async (name, catalogId) => {
         try {
             const body = { name, catalog: catalogId };
@@ -18,6 +18,7 @@ const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
             refRBSheet.current.close()
             SetName("")
             SetReload("WEWEWE")
+            SuccessToast()
         } catch (error) {
             console.log(error.response)
         }
