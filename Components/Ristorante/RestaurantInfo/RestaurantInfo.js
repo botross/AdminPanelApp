@@ -1,10 +1,10 @@
 import { View, ScrollView, TextInput, Text, ActivityIndicator, Pressable } from 'react-native'
-
+import uuid from 'react-native-uuid';
 import React, { useContext } from 'react'
 import DropDownCheckBox from './DropDownCheckBox';
 import { MyContext } from '../../../AppContext';
 import axios from "axios"
-import { TouchableOpacity } from 'react-native-gesture-handler'
+
 import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
 
 const RestaurantInfo = ({ SetActive }) => {
@@ -241,9 +241,9 @@ const RestaurantInfo = ({ SetActive }) => {
                         <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, padding: 12 }}>Imposta Orari di Consegna</Text>
                         {localWorkingHoursData?.map((item, index) => {
                             return (
-                                <>
-                                    <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={index} />
-                                </>
+                            
+                                    <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={uuid.v4()} />
+                           
                             )
                         })}
                         {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}

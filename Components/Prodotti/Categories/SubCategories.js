@@ -5,11 +5,11 @@ import { AntDesign, MaterialIcons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
 import CreateSubCategoryBottomSheet from './CreateSubCategoryBottomSheet'
 import ReNameSubCategoryBottomSheet from './ReNameSubCategoryBottomSheet'
-import { REACT_APP_THEMES_PREFIX,REACT_APP_THEMES_API_PATH,  REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
-
+import { REACT_APP_THEMES_PREFIX, REACT_APP_THEMES_API_PATH, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+import uuid from "react-native-uuid"
 import { MyContext } from '../../../AppContext'
 const SubCategories = ({ route, navigation }) => {
-    const { userData ,SuccessToast} = useContext(MyContext)
+    const { userData, SuccessToast } = useContext(MyContext)
     const { catalogId } = route.params;
     const [Categories, SetCategories] = React.useState({ categories: [{ catalog: 123 }] })
     const [reload, SetReload] = React.useState("Mo")
@@ -42,7 +42,10 @@ const SubCategories = ({ route, navigation }) => {
         SetLoading(false)
     };
 
-    React.useEffect(() => { getCategories(catalogId) }, [])
+    React.useEffect(() => {
+        getCategories(catalogId)
+        SetReload("ASDSAD")
+    }, [])
     React.useEffect(() => { getCategories(catalogId) }, [reload])
 
 
@@ -78,36 +81,36 @@ const SubCategories = ({ route, navigation }) => {
                 {!Loading && Categories?.categories?.length > 0 && Categories?.categories?.map((item, index) => {
 
                     return (
-                        <>
-                            <ImageBackground key={index} source={require("../../../assets/FolderBG.png")} style={{
-                                width: 250, height: 250, shadowColor: "#000000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 6,
-                                },
-                                shadowOpacity: 0.41,
-                                shadowRadius: 7.68,
-                                elevation: 10,
-                                borderRadius: 10,
-                                alignItems: "center", justifyContent: "center", alignSelf: "center",
-                                marginVertical: 10
-                            }} resizeMode="contain" >
-                                <Text style={{ fontSize: 30, fontWeight: "700", color: "#00B27A", marginTop: 20 }}>{item.name}</Text>
-                                <Text style={{ fontSize: 16, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.products?.length} unità disponibili</Text>
-                                <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
-                                    <Pressable onPress={() => navigation.navigate("AllProducts", { categoryId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
-                                        <AntDesign name="arrowright" color="white" size={25} />
-                                    </Pressable>
+                        <ImageBackground key={uuid.v4()} source={require("../../../assets/FolderBG.png")} style={{
+                            width: 250, height: 250, shadowColor: "#000000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 6,
+                            },
+                            shadowOpacity: 0.41,
+                            shadowRadius: 7.68,
+                            elevation: 10,
+                            borderRadius: 10,
+                            alignItems: "center", justifyContent: "center", alignSelf: "center",
+                            marginVertical: 10
+                        }} resizeMode="contain" >
+                            <Text style={{ fontSize: 22, fontWeight: "700", color: "#00B27A", marginTop: 20 }}>{item.name}</Text>
+                            <Text style={{ fontSize: 14, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.products?.length} unità disponibili</Text>
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+
+                                <Pressable onPress={() => navigation.navigate("AllProducts", { categoryId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
+                                    <AntDesign name="arrowright" color="white" size={25} />
+                                </Pressable>
 
 
-                                    <ReNameSubCategoryBottomSheet name={item.name} id={item._id} catalogId={item.catalog} SetReload={SetReload} />
-                                    <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
-                                        <MaterialIcons name="delete" color="white" size={25} />
-                                    </Pressable>
-                                </View>
-                            </ImageBackground>
-                        </>
+                                <ReNameSubCategoryBottomSheet name={item.name} id={item._id} catalogId={item.catalog} SetReload={SetReload} />
+                                <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
+                                    <MaterialIcons name="delete" color="white" size={25} />
+                                </Pressable>
+                            </View>
+                        </ImageBackground>
+
                     )
                 })}
 

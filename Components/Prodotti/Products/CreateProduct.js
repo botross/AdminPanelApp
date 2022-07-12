@@ -1,14 +1,14 @@
-import { View, Text, ScrollView, TextInput, Pressable } from 'react-native'
+import { View, Text, ScrollView, TextInput, Pressable, Image } from 'react-native'
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
 import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
-import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH} from "@env"
-
+import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
+import * as ImagePicker from 'expo-image-picker';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios"
 import { MyContext } from '../../../AppContext';
 const CreateProduct = ({ route, navigation }) => {
-    const { userData } = useContext(MyContext)
+    const { userData , SuccessToast, FailedToast} = useContext(MyContext)
     const { CatalogCategorieID } = route.params
     const [ProductData, SetProductData] = React.useState()
 
@@ -18,7 +18,26 @@ const CreateProduct = ({ route, navigation }) => {
     function handleChangeArrays(name, text) {
         SetProductData({ ...ProductData, [name]: [].concat(text) })
     }
+    let openImagePickerAsync = async () => {
+        SetProductData({ ...ProductData, image: null })
 
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Permission to access camera roll is required!");
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        console.log(pickerResult);
+        SetProductData({ ...ProductData, image: pickerResult.uri })
+
+    }
     const createProduct = async (data, catalogId, categoryId) => {
 
         try {
@@ -33,10 +52,11 @@ const CreateProduct = ({ route, navigation }) => {
             });
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
-
+                SuccessToast()
             return console.log(result.data)
         } catch (error) {
             console.log(error.response)
+            FailedToast()
         }
     };
     console.log(ProductData)
@@ -48,38 +68,54 @@ const CreateProduct = ({ route, navigation }) => {
                 </Pressable>
                 <View style={{ width: "100%", alignSelf: 'center', paddingVertical: 10, paddingHorizontal: 15 }}>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", alignSelf: "center" }}>
-                        <View style={{
-                            width: 160, height: 140, shadowColor: "#000000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 6,
-                            },
-                            shadowOpacity: 0.21,
-                            shadowRadius: 7.68,
-                            elevation: 10,
-                            borderRadius: 10,
-                            alignItems: "center", justifyContent: "center",
-                            backgroundColor: "white"
-                        }}>
-                            <Ionicons name="add-circle" color="#00B27A" size={50} />
-                            <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 14 }}>Carica immagine</Text>
+                        {!ProductData?.image &&
+                            <Pressable onPress={() => openImagePickerAsync()} style={{
+                                width: 160, height: 140, shadowColor: "#000000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 6,
+                                },
+                                shadowOpacity: 0.21,
+                                shadowRadius: 7.68,
+                                elevation: 10,
+                                borderRadius: 10,
+                                alignItems: "center", justifyContent: "center",
+                                backgroundColor: "white"
+                            }}>
+                                <Ionicons name="add-circle" color="#00B27A" size={50} />
+                                <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 14 }}>Carica immagine</Text>
 
-                        </View>
+                            </Pressable>
+                        }
+                        {ProductData?.image &&
+                            <Pressable onPress={() => openImagePickerAsync()}>
+
+                                <Image source={{ uri: ProductData.image }} style={{ width: 160, height: 140, borderRadius: 15 }} />
+                            </Pressable>
+
+                        }
                         <Text style={{ color: "#00B27A", fontWeight: "700", fontSize: 26, width: "50%", alignSelf: "center", textAlign: "center" }}>Crea un nuovo elemento</Text>
 
                     </View>
-
                     <View style={{ marginTop: 20 }}>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Nome prodotto</Text>
                         <TextInput onChangeText={(text) => handleChange("title", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Brand</Text>
+                        <TextInput onChangeText={(text) => handleChange("brand", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Price</Text>
                         <TextInput onChangeText={(text) => handleChange("price", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Format</Text>
+                        <TextInput onChangeText={(text) => handleChange("format", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Formulation</Text>
+                        <TextInput onChangeText={(text) => handleChange("formulation", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>GTIN</Text>
+                        <TextInput onChangeText={(text) => handleChange("gtin", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>inventory</Text>
                         <TextInput onChangeText={(text) => handleChange("inventory", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
-                        <TextInput onChangeText={(text) => handleChangeArrays("ingredients", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci qui gli ingredienti..." />
+                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
+                        <TextInput onChangeText={(text) => handleChangeArrays("ingredients", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center', paddingVertical: 15 }} placeholder="Inserisci qui gli ingredienti..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Allergeni</Text>
-                        <TextInput onChangeText={(text) => handleChangeArrays("allergens", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci qui gli allergeni..." />
+                        <TextInput onChangeText={(text) => handleChangeArrays("allergens", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center', paddingVertical: 15 }} placeholder="Inserisci qui gli allergeni..." /> */}
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Informazioni Aggiuntive:</Text>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
                             <BouncyCheckbox size={25} fillColor="#00B27A" unfillColor="#FFFFFF" iconStyle={{ borderColor: "#00B27A", borderRadius: 5 }} onPress={(isChecked) => { }} />
