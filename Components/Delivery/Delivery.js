@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Pressable } from 'react-native'
 import React from 'react'
 import Header from '../../Reuseable/Header'
 import { Octicons } from "react-native-vector-icons"
-import UserModal from '../Reservation/UserModal';
+import UserModal from '../Reservation/ReserveManuallyModal';
 import { Table, Row, Rows } from 'react-native-table-component';
 const Delivery = ({ navigation }) => {
     const [visible, setVisible] = React.useState(false);

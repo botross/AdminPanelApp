@@ -239,11 +239,11 @@ const RestaurantInfo = ({ SetActive }) => {
 
                     }}>
                         <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, padding: 12 }}>Imposta Orari di Consegna</Text>
-                        {localWorkingHoursData?.map((item, index) => {
+                        {localWorkingHoursData?.map((item) => {
                             return (
-                            
-                                    <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={uuid.v4()} />
-                           
+
+                                <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={uuid.v4()} />
+
                             )
                         })}
                         {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}

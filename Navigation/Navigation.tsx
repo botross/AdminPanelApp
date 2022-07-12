@@ -17,6 +17,7 @@ import AllProducts from "../Components/Prodotti/Products/AllProducts"
 import EditProduct from "../Components/Prodotti/Products/EditProduct"
 import CreateProduct from "../Components/Prodotti/Products/CreateProduct"
 import Reservation from "../Components/Reservation/Reservation"
+import ReservationSettings from "../Components/Reservation/ReservationSettings"
 import Ristorante from "../Components/Ristorante/Ristorante"
 import SocialMedia from "../Components/Social media/SocialMedia"
 import Support from "../Components/Support/Support"
@@ -71,7 +72,14 @@ function DeliveryStack() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="DeliveryMain" component={Delivery} />
             <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
-
+        </Stack.Navigator>
+    )
+}
+function ReservationStack() {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="ReservationCalendar" component={Reservation} />
+            <Stack.Screen name="ReservationSettings" component={ReservationSettings} />
         </Stack.Navigator>
     )
 }
@@ -128,7 +136,7 @@ function MyDrawer() {
                         color={focused ? '#00B27A' : '#ccc'}
                     />
                 ),
-            }} name="Reservation" component={Reservation} />
+            }} name="Reservation" component={ReservationStack} />
             <Drawer.Screen options={{
                 headerShown: false, drawerActiveTintColor: "#00B27A"
                 , drawerIcon: ({ focused, size }) => (
