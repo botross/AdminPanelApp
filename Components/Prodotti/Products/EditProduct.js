@@ -62,7 +62,7 @@ const EditProduct = ({ route, navigation }) => {
         }
     };
 
-    console.log(NewData)
+
     return (
         <Header navigation={navigation} title="Edit Product" icon={require("../../../assets/ProdottiIcon.png")} >
 
@@ -94,7 +94,7 @@ const EditProduct = ({ route, navigation }) => {
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Formulation</Text>
                         <TextInput onChangeText={(e) => handleChange("formulation", e)} value={NewData.formulation} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>GTIN</Text>
-                        <TextInput onChangeText={(e) => handleChange("gtin", e)} value={NewData.gtin.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
+                        <TextInput onChangeText={(e) => handleChange("gtin", e)} value={NewData?.gtin?.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
                         {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
                         <TextInput onChangeText={(e) => handleChange("ingredients", e)} value={NewData.ingredients[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli ingredienti..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Allergeni</Text>

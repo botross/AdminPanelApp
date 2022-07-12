@@ -4,8 +4,10 @@ import React, { useContext } from 'react'
 import DropDownCheckBox from './DropDownCheckBox';
 import { MyContext } from '../../../AppContext';
 import axios from "axios"
-
+import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from "react-native-vector-icons"
 import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+import ChangePasswordModal from './ChangePasswordModal';
 
 const RestaurantInfo = ({ SetActive }) => {
     const { userData, Token, SuccessToast, FailedToast } = useContext(MyContext)
@@ -14,6 +16,14 @@ const RestaurantInfo = ({ SetActive }) => {
     const [patchData, setPatchData] = React.useState();
     const [localWorkingHoursData, setLocalWorkingHoursData] = React.useState();
     const [loading, Setloading] = React.useState(false)
+
+    const [visible, setVisible] = React.useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+
+
     const days = [
         "MONDAY",
         "TUESDAY",
@@ -205,56 +215,109 @@ const RestaurantInfo = ({ SetActive }) => {
     function handleChangeArrays(name, text) {
         setPatchData({ ...patchData, [name]: [].concat(text) })
     }
+
+
+    let openImagePickerAsync = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Permission to access camera roll is required!");
+            return;
+        }
+
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        console.log(pickerResult);
+        SetImage(pickerResult.uri)
+    }
+
     return (
 
 
+        <>
+            <ScrollView style={{ marginBottom: 100 }}>
+                {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
+                {!loading &&
+                    <>
+                        <Pressable onPress={() => openImagePickerAsync()} style={{ width: 70, height: 70, borderRadius: 100, alignSelf: "center", alignItems: "center", justifyContent: "center", backgroundColor: "#F6F6F6" }}>
 
-        <ScrollView style={{ marginBottom: 100 }}>
-            {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
-            {!loading &&
-                <>
-                    <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", paddingHorizontal: 15, justifyContent: "space-between", marginBottom: 10 }}>
-
-                        <TextInput onChangeText={(text) => handleChange("title", text)} value={patchData?.title} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Nome Ristorante" />
-                        <TextInput onChangeText={(text) => handleChange("primaryCategory", text)} value={patchData?.primaryCategory?.primaryCategoryDisplayName} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie primarie" />
-                        <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie secondarie" />
-                        <TextInput onChangeText={(text) => handleChangeArrays("address", text)} value={patchData?.address[0]} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Indirizzo" />
-                        <TextInput onChangeText={(text) => handleChange("serviceArea", text)} value={patchData?.serviceArea} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Area di servizio" />
-                        <TextInput onChangeText={(text) => handleChange("phoneNumber", text)} value={patchData?.phoneNumber} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Numero di telefono" />
-                        <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "100%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, padding: 10 }} multiline placeholder="Descrivi il tuo Ristorante" />
-
-                    </View>
-                    <Text style={{ color: "#000", fontWeight: "600", fontSize: 20, padding: 12, marginBottom: 10 }}>L'apertura del tuo Ristorante</Text>
-                    <View style={{
-                        width: "95%", alignSelf: "center", backgroundColor: "white", shadowColor: "#000000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 6,
-                        },
-                        shadowOpacity: 0.21,
-                        shadowRadius: 7.68,
-                        elevation: 10,
-                        borderRadius: 10, marginBottom: 20,
-                        paddingVertical: 10,
-
-                    }}>
-                        <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, padding: 12 }}>Imposta Orari di Consegna</Text>
-                        {localWorkingHoursData?.map((item) => {
-                            return (
-
-                                <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={uuid.v4()} />
-
-                            )
-                        })}
-                        {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
-                        <Pressable onPress={() => handleSubmit()} style={{ width: 240, height: 40, backgroundColor: '#00B27A', borderRadius: 10, alignSelf: 'center', marginBottom: 40, justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
-                            <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>Salva</Text>
+                            <Ionicons name="fast-food-outline" color="#00B27A" size={40} />
                         </Pressable>
-                    </View>
-                </>
+                        <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", paddingHorizontal: 15, justifyContent: "space-between", marginBottom: 10 }}>
 
-            }
-        </ScrollView>
+                            <TextInput value={"daginoristorante@gmail.com"} style={{
+                                width: "100%", height: 50, backgroundColor: "white", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10,
+                                shadowColor: "#000000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 6,
+                                },
+                                shadowOpacity: 0.51,
+                                shadowRadius: 7.68,
+                                elevation: 10,
+                            }} placeholder="Email" />
+                            <View style={{ widht: "100%", display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 20, position: "relative" }} >
+
+                                <TextInput value={patchData?.title}
+                                    secureTextEntry
+                                    style={{
+                                        width: "100%", height: 50, backgroundColor: "white", borderRadius: 10, paddingHorizontal: 10,
+                                        shadowColor: "#000000",
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 6,
+                                        },
+                                        shadowOpacity: 0.51,
+                                        shadowRadius: 7.68,
+                                        elevation: 10,
+                                    }} placeholder="Password" />
+                                <Pressable onPress={() => showModal()} style={{ backgroundColor: "#00B27A", paddingVertical: 5, width: 90, borderRadius: 5, alignItems: "center", justifyContent: "center", position: "absolute", right: 0, marginRight: 15 }}>
+                                    <Text style={{ color: "white", fontSize: 12 }}>Change</Text>
+                                </Pressable>
+                            </View>
+
+                            <TextInput onChangeText={(text) => handleChange("title", text)} value={patchData?.title} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Nome Ristorante" />
+                            <TextInput onChangeText={(text) => handleChange("primaryCategory", text)} value={patchData?.primaryCategory?.primaryCategoryDisplayName} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie primarie" />
+                            <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Categorie secondarie" />
+                            <TextInput onChangeText={(text) => handleChangeArrays("address", text)} value={patchData?.address[0]} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Indirizzo" />
+                            <TextInput onChangeText={(text) => handleChange("serviceArea", text)} value={patchData?.serviceArea} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Area di servizio" />
+                            <TextInput onChangeText={(text) => handleChange("phoneNumber", text)} value={patchData?.phoneNumber} style={{ width: "48%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10 }} placeholder="Numero di telefono" />
+                            <TextInput onChangeText={(text) => handleChange("description", text)} value={patchData?.description} style={{ width: "100%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, padding: 10 }} multiline placeholder="Descrivi il tuo Ristorante" />
+
+                        </View>
+                        <Text style={{ color: "#000", fontWeight: "600", fontSize: 20, padding: 12, marginBottom: 10 }}>L'apertura del tuo Ristorante</Text>
+                        <View style={{
+                            width: "95%", alignSelf: "center", backgroundColor: "white", shadowColor: "#000000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 6,
+                            },
+                            shadowOpacity: 0.21,
+                            shadowRadius: 7.68,
+                            elevation: 10,
+                            borderRadius: 10, marginBottom: 20,
+                            paddingVertical: 10,
+
+                        }}>
+                            <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, padding: 12 }}>Imposta Orari di Consegna</Text>
+                            {localWorkingHoursData?.map((item) => {
+                                return (
+
+                                    <DropDownCheckBox opening={item.opening} isWorkDay={item.isWorkDay} title={item.dayName} key={uuid.v4()} />
+
+                                )
+                            })}
+                            {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, }} />}
+                            <Pressable onPress={() => handleSubmit()} style={{ width: 240, height: 40, backgroundColor: '#00B27A', borderRadius: 10, alignSelf: 'center', marginBottom: 40, justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
+                                <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>Salva</Text>
+                            </Pressable>
+                        </View>
+                    </>
+
+                }
+            </ScrollView>
+            <ChangePasswordModal visible={visible} hideModal={hideModal} />
+        </>
+
 
     )
 }

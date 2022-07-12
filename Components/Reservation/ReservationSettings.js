@@ -25,7 +25,8 @@ const ReservationSettings = ({ navigation }) => {
                     <Text style={{ fontWeight: "700", fontSize: 22, color: "#00B27A", marginLeft: 10 }}>Sezione Attivata</Text>
                 </View>
                 <View style={{
-                    width: "95%", alignSelf: "center", backgroundColor: "white", shadowColor: "#000000",
+                    width: "95%", alignSelf: "center", backgroundColor: "white", 
+                    shadowColor: "#000000",
                     shadowOffset: {
                         width: 0,
                         height: 6,

@@ -85,7 +85,7 @@ function ReservationStack() {
 }
 function MyDrawer() {
     return (
-        <Drawer.Navigator >
+        <Drawer.Navigator  >
 
             <Drawer.Screen options={{
                 headerShown: false, drawerActiveTintColor: "#00B27A"
@@ -108,7 +108,7 @@ function MyDrawer() {
                 ),
             }} name="Ristorante" component={Ristorante} />
             <Drawer.Screen options={{
-                headerShown: false, drawerActiveTintColor: "#00B27A"
+                headerShown: false, drawerActiveTintColor: "#00B27A", unmountOnBlur: true
                 , drawerIcon: ({ focused, size }) => (
                     <Entypo
                         name="archive"
@@ -117,16 +117,18 @@ function MyDrawer() {
                     />
                 ),
             }} name="Prodotti" component={ProdottiStackk} />
-            <Drawer.Screen options={{
-                headerShown: false, drawerActiveTintColor: "#00B27A"
-                , drawerIcon: ({ focused, size }) => (
-                    <MaterialIcons
-                        name="delivery-dining"
-                        size={size}
-                        color={focused ? '#00B27A' : '#ccc'}
-                    />
-                ),
-            }} name="Delivery" component={DeliveryStack} />
+            <Drawer.Screen
+               
+                options={{
+                    headerShown: false, drawerActiveTintColor: "#00B27A", unmountOnBlur: true
+                    , drawerIcon: ({ focused, size }) => (
+                        <MaterialIcons
+                            name="delivery-dining"
+                            size={size}
+                            color={focused ? '#00B27A' : '#ccc'}
+                        />
+                    ),
+                }} name="Delivery" component={DeliveryStack} />
             <Drawer.Screen options={{
                 headerShown: false, drawerActiveTintColor: "#00B27A"
                 , drawerIcon: ({ focused, size }) => (
