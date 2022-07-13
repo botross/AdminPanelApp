@@ -49,18 +49,19 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload }) => {
                 height={670}
                 customStyles={{
                     draggableIcon: {
-                        backgroundColor: "#000"
+                        backgroundColor: "#00B27A"
+                        ,width:"100%", height:15, marginTop:0, borderRadius:0
                     },
-                    container: { height: 520 }
+                    container: { height: 600 , borderTopRightRadius:10 , borderTopLeftRadius:10}
                 }}
             >
-                <View style={{ width: "100%", paddingHorizontal: 10, height: 500, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
+                <View style={{ width: "100%", paddingHorizontal: 10, height: 570, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
 
 
                 <Text style={{ color: "#00B27A", fontSize: 22, fontWeight: "600", alignSelf: "center" }}>Modifica Sotto Menu</Text>
 
 
-                    <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Edit categorie name</Text>
+                    <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Nome Attuale</Text>
                     <TextInput  value={name} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
                     <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Edit categorie name</Text>
                     <TextInput onChangeText={(text) => SetName(text)} value={CategorieName} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
@@ -69,7 +70,7 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload }) => {
 
                         <Ionicons name="fast-food-outline" color="#00B27A" size={35} />
                     </Pressable>
-                    <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Quando è disponibile il Menu</Text>
+                    <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Quando è disponibile il Sotto Menu</Text>
                     <Pressable style={{ width: "70%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#00B27A", marginBottom:20 }}>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "white" }}>Pranzo</Text>
                     </Pressable>

@@ -41,9 +41,9 @@ const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
                 customStyles={{
                     draggableIcon: {
                         backgroundColor: "#00B27A"
-                        ,width:"100%", height:15, marginTop:0
+                        ,width:"100%", height:15, marginTop:0, borderRadius:0
                     },
-                    container: { height: 500 }
+                    container: { height: 500, borderTopRightRadius:10 , borderTopLeftRadius:10 }
                 }}
             >
                 <View style={{ width: "100%", padding: 10, height: 480, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>

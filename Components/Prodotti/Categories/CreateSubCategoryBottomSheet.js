@@ -53,9 +53,10 @@ const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
                     //     backgroundColor: "#7d7d7dBF"
                     // },
                     draggableIcon: {
-                        backgroundColor: "#000"
+                        backgroundColor: "#00B27A"
+                        ,width:"100%", height:15, marginTop:0, borderRadius:0
                     },
-                    container: { height: 550 }
+                    container: { height: 550 , borderTopRightRadius:10 , borderTopLeftRadius:10}
                 }}
             >
                 <View style={{ width: "100%", paddingHorizontal: 10, height: 500, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>

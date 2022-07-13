@@ -66,14 +66,14 @@ const CreateCategoryBottomSheet = ({ SetReload ,SuccessToast }) => {
                     // },
                     draggableIcon: {
                         backgroundColor: "#00B27A"
-                        ,width:"100%", height:15, marginTop:0
+                        ,width:"100%", height:15, marginTop:0, borderRadius:0
                     },
-                    container: { height: 600 }
+                    container: { height: 600, borderTopRightRadius:10 , borderTopLeftRadius:10}
                 }}
             >
                 <View style={{ width: "100%", padding: 10, height: 550, display: "flex", flexDirection: "column", justifyContent: "space-evenly"}}>
 
-                    <Text style={{ color: "#00B27A", fontSize: 22, fontWeight: "600", alignSelf: "center" }}>Aggiungi un nuovo Sotto Menu</Text>
+                    <Text style={{ color: "#00B27A", fontSize: 22, fontWeight: "600", alignSelf: "center" }}>Aggiungi un nuovo Menu</Text>
                     {/* <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Scegli Icona del Sotto Menu</Text> */}
                     {/* <Pressable onPress={() => openImagePickerAsync()} style={{ width: 60, height: 60, borderRadius: 100, alignSelf: "center", alignItems: "center", justifyContent: "center", backgroundColor: "#F6F6F6" }}>
 

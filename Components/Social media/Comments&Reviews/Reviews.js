@@ -15,15 +15,15 @@ const Reviews = () => {
     let [replyError, setReplyError] = useState("");
     let [replyingIndex, setReplyingIndex] = useState(null);
     const [posts, setPosts] = useState(null);
-
+console.log(REACT_APP_PROJECT)
     const getReviews = async (nextPageToken) => {
         setIsLoading(true);
         try {
-            let url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/reviews`;
+            let url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.Unifarco.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/reviews`;
             if (nextPageToken) url += `?nextPageToken=${nextPageToken}`;
 
             const config = {
-                headers: { authorization: `Bearer ${Token}` },
+                headers: { Authorization: `Bearer ${Token}` },
             };
             const result = await axios.get(url, config);
 
@@ -37,8 +37,8 @@ const Reviews = () => {
 
             setReviewsData(result.data.reviews);
         } catch (error) {
-            console.log(error);
-            console.error("Failed to retrieve reviews." + error.message);
+            console.log(error.response);
+            // console.error("Failed to retrieve reviews." + error.message);
         }
         setIsLoading(false);
     };

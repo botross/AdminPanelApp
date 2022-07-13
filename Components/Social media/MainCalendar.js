@@ -22,13 +22,13 @@ const MainCalendar = () => {
     async function getSchedules() {
         SetLoading(true)
         try {
-            const res = await axios.get(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules`, config)
+            const res = await axios.get(`https://dashboard.develop.Unifarco.aigotsrl-dev.com/api/socials/fb/schedules`, config)
 
             if (res.data) {
                 res.data.map((post) => {
                     SetAllPosts(old => old.concat(
                         {
-                            id: item._id,
+                            id: post?._id,
                             title: "Facebook post",
                             start: new Date(post.scheduledFor),
                             end: new Date(post.scheduledFor).setHours(new Date(post.scheduledFor).getHours() + 2),
@@ -39,7 +39,7 @@ const MainCalendar = () => {
                 })
             }
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
         }
         SetLoading(false)
     }
@@ -58,7 +58,7 @@ const MainCalendar = () => {
     }
 
     async function DeleteSchedule(id) {
-        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const config = { headers: { Authorization: `Bearer ${Token}` } };
         try {
             const res = await axios.delete(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules/${id}`, config)
             if (res.status === 200) {

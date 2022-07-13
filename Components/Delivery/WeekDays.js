@@ -1,6 +1,6 @@
 import { View, Text, Switch, TextInput, Pressable } from 'react-native'
 import React from 'react'
-import { FontAwesome } from "react-native-vector-icons"
+import { Feather } from "react-native-vector-icons"
 
 const WeekDays = ({ title }) => {
     const [isEnabled, setIsEnabled] = React.useState(false);
@@ -19,14 +19,14 @@ const WeekDays = ({ title }) => {
                     <TextInput style={{ width: 70, height: 30, borderBottomWidth: 2, borderBottomColor: "black", backgroundColor: "#F6F6F6", padding: 5, marginHorizontal: 10 }} value="09:00" />
                     <TextInput style={{ width: 70, height: 30, borderBottomWidth: 2, borderBottomColor: "black", backgroundColor: "#F6F6F6", padding: 5, marginHorizontal: 10 }} value="09:00" />
                     <Pressable>
-                        <FontAwesome name="remove" size={20} color="black" />
+                        <Feather name="x" size={20} color="black" />
                     </Pressable>
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", }} >
                     <TextInput style={{ width: 70, height: 30, borderBottomWidth: 2, borderBottomColor: "black", backgroundColor: "#F6F6F6", padding: 5, marginHorizontal: 10 }} value="09:00" />
                     <TextInput style={{ width: 70, height: 30, borderBottomWidth: 2, borderBottomColor: "black", backgroundColor: "#F6F6F6", padding: 5, marginHorizontal: 10 }} value="09:00" />
                     <Pressable>
-                        <FontAwesome name="remove" size={20} color="black" />
+                        <Feather name="x" size={20} color="black" />
                     </Pressable>
                 </View>
             </View>

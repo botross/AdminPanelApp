@@ -55,7 +55,7 @@ const AdvancedSettings = ({ navigation }) => {
                     elevation: 10,
                     borderRadius: 10, marginVertical: 20,
                     padding: 10,
-
+marginBottom:40
                 }}>
                     <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 16, padding: 12 }}>Imposta Zone di Consegna</Text>
 
