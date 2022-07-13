@@ -19,10 +19,11 @@ const NewTicket = ({ hideModal, visible }) => {
     async function postNewTicket() {
         setLoading(true)
         try {
-            const res = await axios.post("URL", { headers: { "Authorization": `Bearer ${Token}` } }, data)
+            const res = await axios.post("https://dashboard.develop.unifarco.aigotsrl-dev.com/api/tickets", { headers: { "Authorization": `Bearer ${Token}` } }, data)
             if (res.status === 200) hideModal()
         } catch (error) {
             SetError(error.data)
+            console.log(error)
         }
         setLoading(false)
     }
@@ -31,7 +32,7 @@ const NewTicket = ({ hideModal, visible }) => {
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <View style={{ display: "flex", flexDirection: "column" }}>
-                        <Pressable onPress={() => hideModal()} style={{ position: "absolute", top: 0, right: 0 }}>
+                        <Pressable onPress={() => hideModal()} style={{ position: "absolute", top: 0, right: 0 , zIndex:10 }}>
                             <Feather name="x" size={30} color="black" />
                         </Pressable>
                         <Text style={{ fontWeight: "600", fontSize: 18, marginBottom: 10 }}>Crea un Ticket di richiesta</Text>

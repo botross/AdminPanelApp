@@ -23,11 +23,12 @@ const Support = ({ navigation }) => {
     async function getAllTickets() {
         Setloading(true)
         try {
-            const res = await axios.get("https://admin.develop.unifarco.aigotsrl-dev.com/api/tickets", { headers: { "Authorization": `Bearer ${Token}` } })
+            const config = { headers: { authorization: `Bearer ${Token}` } };
+            const res = await axios.get("https://dashboard.develop.unifarco.aigotsrl-dev.com/api/tickets", config)
             console.log(res.data)
             SetAllTickets(res.data)
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
             SetAllTickets(null)
         }
         Setloading(false)
@@ -70,11 +71,12 @@ const Support = ({ navigation }) => {
                                 AllTickets?.length > 0 &&
                                 AllTickets?.map((item) => {
                                     const CreatedAT = new Date(item.createdAt).toLocaleString()
+
                                     return (
-                                        <DataTable.Row onPress={() => navigation.navigate("SingleTicket")} style={{ height: 80, borderBottomColor: "#C4C4C4", borderBottomWidth: 1 }}>
-                                            <DataTable.Cell >Lorem Ipsum</DataTable.Cell>
-                                            <DataTable.Cell textStyle={{ paddingVertical: 8, borderRadius: 20, backgroundColor: "#EEFFCA", paddingHorizontal: 20, color: "#80B116", fontSize: 12 }}>Risolto</DataTable.Cell>
-                                            <DataTable.Cell >17/05/2022</DataTable.Cell>
+                                        <DataTable.Row onPress={() => navigation.navigate("SingleTicket", { ticket: item })} style={{ height: 80, borderBottomColor: "#C4C4C4", borderBottomWidth: 1 }}>
+                                            <DataTable.Cell >{item.subject}</DataTable.Cell>
+                                            <DataTable.Cell textStyle={{ paddingVertical: 8, borderRadius: 20, backgroundColor: item.resolved ? "#EEFFCA" : "#FFEACA", paddingHorizontal: 10, color: item.resolved ? "#80B116" : "#FF814B", fontSize: 12 }}>{item.resolved ? "Risolto" : "In lavorazione"}</DataTable.Cell>
+                                            <DataTable.Cell >{CreatedAT}</DataTable.Cell>
                                         </DataTable.Row>
                                     )
                                 })}
