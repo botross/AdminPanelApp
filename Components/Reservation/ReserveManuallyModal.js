@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, ScrollView, TextInput } from 'react-native'
+import { View, Text, Platform, Pressable, ScrollView, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
 import { Modal, Portal, Provider } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
@@ -36,7 +36,11 @@ const ReserveManuallyModal = ({ visible, hideModal }) => {
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#323232", marginVertical: 10, alignSelf: "center" }}>Seleziona un tavolo</Text>
                         <RNPickerSelect
                             onValueChange={(value) => console.log(value)}
-
+                            style={
+                                Platform.OS === 'ios'
+                                    ? pickerSelectStyles.inputIOS
+                                    : pickerSelectStyles.inputAndroid
+                            }
                             items={[
                                 { label: '1', value: '1' },
                                 { label: '2', value: '2' },
@@ -57,7 +61,7 @@ const ReserveManuallyModal = ({ visible, hideModal }) => {
 
                             ]}
                         />
-                        <Pressable style={{ width: "60%", height: 45, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginVertical:30}}>
+                        <Pressable style={{ width: "60%", height: 45, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginVertical: 30 }}>
                             <Text style={{ color: "white", fontSize: 12, fontWeight: "600" }}>Salva Prenotazione</Text>
                         </Pressable>
                     </ScrollView>
@@ -67,5 +71,29 @@ const ReserveManuallyModal = ({ visible, hideModal }) => {
         </Provider>
     )
 }
+
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderWidth: 0.5,
+        borderColor: 'purple',
+        borderRadius: 8,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+});
 
 export default ReserveManuallyModal

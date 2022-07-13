@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image , Pressable} from 'react-native'
 import React from 'react'
 import Header from '../../Reuseable/Header'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -27,20 +27,20 @@ const Home = ({ navigation }) => {
 
 
                 <View style={{ width: "90%", alignItems: 'center', height: 180, justifyContent: 'space-between', alignSelf: 'center', borderRadius: 14, marginBottom: 15, display: 'flex', flexDirection: "row", }}>
-                    <View style={{
+                    <Pressable onPress={()=>navigation.navigate("Delivery")} style={{
                         width:
                             "47%", alignItems: 'center', height: 180, justifyContent: 'center', alignSelf: 'center', backgroundColor: "#F8F8F8", borderRadius: 14, display: 'flex', flexDirection: "column",
                     }}>
                         <Image source={require("../../assets/HomeIcon2.png")} style={{ width: 70, height: 70, marginBottom: 8 }} />
                         <Text style={{ fontSize: 16, fontWeight: "700", color: "#00B27A" }}>Nuovi ordini</Text>
 
-                    </View>
-                    <View style={{ width: "47%", alignItems: 'center', height: 180, justifyContent: 'center', alignSelf: 'center', backgroundColor: "#F8F8F8", borderRadius: 14, display: 'flex', flexDirection: "column", }}>
+                    </Pressable>
+                    <Pressable onPress={()=>navigation.navigate("Reservation")} style={{ width: "47%", alignItems: 'center', height: 180, justifyContent: 'center', alignSelf: 'center', backgroundColor: "#F8F8F8", borderRadius: 14, display: 'flex', flexDirection: "column", }}>
                         <Image source={require("../../assets/HomeIcon1.png")} style={{ width: 70, height: 70, marginBottom: 8 }} resizeMode="contain" />
 
                         <Text style={{ fontSize: 16, fontWeight: "700", color: "#00B27A" }}>Prenotazioni</Text>
 
-                    </View>
+                    </Pressable>
                 </View>
 
 

@@ -69,7 +69,7 @@ const Delivery = ({ navigation }) => {
                     <View style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: 'row', backgroundColor: "#F7F7F7", alignSelf: "flex-start", borderRadius: 15 }}>
                         <Pressable onPress={() => SetActive(0)} style={{ width: 140, height: 40, backgroundColor: isActive === 0 ? "#00B27A" : "#F7F7F7", borderRadius: 15, alignItems: "center", justifyContent: "center" }}>
                             <Text style={{ color: isActive !== 0 ? "#A1A1A1" : "white", fontWeight: "600" }}>
-                                Cronologia
+                            Ordini in attesa
                             </Text>
                         </Pressable>
                         <Pressable onPress={() => SetActive(1)} style={{ width: 140, height: 40, backgroundColor: isActive === 1 ? "#00B27A" : "#F7F7F7", borderRadius: 15, alignItems: "center", justifyContent: "center" }}>

@@ -56,7 +56,7 @@ const PersonalizeCamp = ({ navigation }) => {
                 </Pressable>
                 <Text style={{ fontWeight: "600", fontSize: 18, color: "black", marginTop: 10, paddingLeft: 10 }}>Descrizione</Text>
                 <TextInput value='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque elit laoreet condimentum imperdiet. ' style={{ width: "80%", height: 100, borderRadius: 10, backgroundColor: "#f8f8f8", marginLeft: 20, marginTop: 15, padding: 15, textAlignVertical: "top" }} multiline={true} />
-                <Pressable style={{ width: "90%", alignSelf: "center", height: 40, display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 15, backgroundColor: "#00B27A", justifyContent: "center", borderRadius: 10 }}>
+                <Pressable style={{ width: "90%", alignSelf: "center", height: 40, display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 15, backgroundColor: "#00B27A", justifyContent: "center", borderRadius: 10 , marginBottom:50}}>
                     <Text style={{ color: "white", fontWeight: "600", fontSize: 18 }}>Avviva Campagna</Text>
                 </Pressable>
             </ScrollView>

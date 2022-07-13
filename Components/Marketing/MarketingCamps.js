@@ -28,7 +28,7 @@ const MarketingCamps = ({ navigation }) => {
                     elevation: 10,
                     paddingVertical: 15,
                     paddingHorizontal: 10,
-                    backgroundColor: "white", borderRadius: 10, marginTop: 10
+                    backgroundColor: "white", borderRadius: 10, marginTop: 10, marginBottom:20
                 }}>
                     <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 16 }}>Descrizione</Text>
                     <Text style={{ color: "#8A8A8A", fontWeight: "400", fontSize: 13, marginVertical: 10, paddingHorizontal: 10 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque elit laoreet condimentum.</Text>

@@ -7,14 +7,14 @@ const Payments = () => {
         <ScrollView>
 
 
-            <ImageBackground source={require("../../../assets/PaypalBackground.png")} style={{ width: 300, height: 250, alignSelf: "center", borderRadius: 100, position: 'relative' }} resizeMode="contain">
+            {/* <ImageBackground source={require("../../../assets/PaypalBackground.png")} style={{ width: 300, height: 250, alignSelf: "center", borderRadius: 100, position: 'relative' }} resizeMode="contain">
                 <View style={{ position: "absolute", bottom: 0, right: 0, margin: 20, alignItems: "center" }}>
                     <Text style={{ fontSize: 20, fontWeight: "700", color: "white", marginBottom: 10 }}>Facebook</Text>
                     <Pressable style={{ borderRadius: 10, justifyContent: "center", alignItems: 'center', backgroundColor: 'transparent', width: 160, height: 40 }}>
                         <Image source={require("../../../assets/PaypalButton.png")} style={{width:"100%" , height:"100%"}} resizeMode="contain" />
                     </Pressable>
                 </View>
-            </ImageBackground>
+            </ImageBackground> */}
 
             <ImageBackground source={require("../../../assets/StripeBackground.png")} style={{ width: 300, height: 250, alignSelf: "center", borderRadius: 100, position: 'relative', marginTop: 20, marginBottom: 100 }} resizeMode="contain">
                 <View style={{ position: "absolute", bottom: 0, right: 0, margin: 20, alignItems: "center" }}>

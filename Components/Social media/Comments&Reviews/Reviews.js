@@ -172,9 +172,9 @@ const Reviews = () => {
                 reviewsData?.reviews?.length > 0 &&
                 reviewsOrComments.includes("Reviews".toLowerCase()) &&
                 reviewsData.reviews.map((review, index) => (
-                    <>
+                    <View  key={review.reviewId}>
                         <ReviewCard
-                            key={review.reviewId}
+                           
                             review={review}
                             onReplyClick={() => handleReplyAt(review, index)}
                             replyDisabled={isLoading}
@@ -213,7 +213,7 @@ const Reviews = () => {
                                 </View>
                             )}
                         </View>
-                    </>
+                    </View>
                 ))}
         </ScrollView>
 

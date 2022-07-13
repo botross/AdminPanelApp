@@ -164,8 +164,8 @@ const FacebookButton = () => {
             <View style={{ position: "absolute", bottom: 0, right: 0, margin: 20, alignItems: "center" }}>
 
                 <Text style={{ fontSize: 20, fontWeight: "700", color: "white", marginBottom: 10 }}>Facebook</Text>
-                <Pressable onPress={() => userData.socialAccounts.facebookPageAuthToken ? LogOutAlert() : logIn()} style={{ borderRadius: 10, justifyContent: "center", alignItems: 'center', backgroundColor: 'white', width: 160, height: 40 }}>
-                    <Text style={{ fontSize: 14, color: "#4267B2", fontWeight: "600" }}>{userData.socialAccounts.facebookPageAuthToken ? "Dissconnect" : "Connesso"}</Text>
+                <Pressable onPress={() => userData.socialAccounts.facebookPageAuthToken ? LogOutAlert() : logIn()} style={{ borderRadius: 10, justifyContent: "center", alignItems: 'center', backgroundColor: userData.socialAccounts.facebookPageAuthToken ? "#rgb(230,48,48)" : 'white', width: 160, height: 40 }}>
+                    <Text style={{ fontSize: 14, color: userData.socialAccounts.facebookPageAuthToken ? "white" : "#4267B2", fontWeight: "600" }}>{userData.socialAccounts.facebookPageAuthToken ? "Disconnect" : "Connesso"}</Text>
                 </Pressable>
             </View>
             <PagesBottomSheet refRBSheet={refRBSheet} Pages={Pages} handlePageChoose={handlePageChoose} />

@@ -18,7 +18,7 @@ const Login = ({ navigation }) => {
     const onBlurHandler = (field) => SetTouched((prevFields) => ({ ...prevFields, [field]: true }));
     const data =
     {
-        "email": email,
+        "email": email.toLocaleLowerCase(),
         "password": password,
     }
     const getUser = s => s.includes('=') && s.substr(s.lastIndexOf('=') + 1).split(' ')[0]
@@ -76,7 +76,7 @@ const Login = ({ navigation }) => {
                         value={email}
                         onChangeText={(e) => SetEmail(e)}
                         onBlur={() => onBlurHandler("email")}
-                        style={{ height: 50, width: "85%", backgroundColor: "#F9F9F9", borderRadius: 25, alignSelf: "center", padding: 20 }} />
+                        style={{ height: 50, width: "85%", backgroundColor: "#F9F9F9", borderRadius: 25, alignSelf: "center", paddingHorizontal: 20 }} />
                     {isTouched.email
                         &&
                         !email.includes("@")
@@ -91,7 +91,7 @@ const Login = ({ navigation }) => {
                         value={password}
                         onChangeText={(e) => SetPassword(e)}
                         onBlur={() => onBlurHandler("password")}
-                        secureTextEntry style={{ height: 50, width: "85%", backgroundColor: "#F9F9F9", borderRadius: 25, alignSelf: "center", padding: 20, marginVertical: 10 }} />
+                        secureTextEntry style={{ height: 50, width: "85%", backgroundColor: "#F9F9F9", borderRadius: 25, alignSelf: "center", paddingHorizontal: 20, marginVertical: 10 }} />
                     {isTouched.password
                         &&
                         password.length < 3
