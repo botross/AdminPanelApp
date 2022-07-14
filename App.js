@@ -9,13 +9,13 @@ import axios from "axios"
 import Toast from 'react-native-toast-message';
 
 export default function App() {
-  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTc2OTU1NzUsImV4cCI6MTY1NzczODc3NX0.oYUtvVvmUopP1Bm-uCrFqQ5RwfiWTOvkznAYQ8o19d4")
+  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTc3ODMzMjAsImV4cCI6MTY1NzgyNjUyMH0.yElds5x5LE3VoHRWcoA-Jo0_oxiYLpAASIsF2t1nMG4")
   const [userData, SetUserData] = useState()
   const [loading, SetLoading] = useState(false)
   async function getUser() {
     SetLoading(true)
     try {
-      const res = await axios.get(`https://auth.develop.unifarco.aigotsrl-dev.com/api/user`, { headers: { "Authorization": `Bearer ${Token}` } })
+      const res = await axios.get(`https://auth.develop.rc.aigotsrl-dev.com/api/user`, { headers: { "Authorization": `Bearer ${Token}` } })
       SetUserData(res.data)
     } catch (error) {
       console.log(error.response?.data)

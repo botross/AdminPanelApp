@@ -9,16 +9,16 @@ import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
 import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
 import uuid from 'react-native-uuid';
 const Prodotti = ({ navigation }) => {
-    const { Token, userData } = useContext(MyContext)
+    const { Token, userData ,SuccessToast} = useContext(MyContext)
     const [Catalogs, SetCatalogs] = React.useState([])
     const [Reload, SetReload] = React.useState("asd")
     const [Loading, SetLoading] = React.useState(false)
+    
     const getCatalogs = async () => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs`;
+            const url = `https://deployment.restaurants.club/catalogs`;
             const result = await axios.get(url, { headers: { "Authorization": `Bearer ${Token}` } });
-            console.log(result)
             SetCatalogs(result.data)
         } catch (error) {
             console.log(error.message)
@@ -31,14 +31,12 @@ const Prodotti = ({ navigation }) => {
     const deleteCataloge = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs/${id}`;
+            const url = `https://deployment.restaurants.club/catalogs/${id}`;
             const result = await axios.delete(url);
-
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
             SetReload("HMAOD")
             SuccessToast()
-            return console.log(result.data)
         } catch (error) {
             console.log(error.response)
         }

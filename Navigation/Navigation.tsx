@@ -43,7 +43,7 @@ function ProdottiStackk() {
             <Stack.Screen name="CreateMainCategorie" component={CreateMainCategorie} />
             <Stack.Screen name="SubCategories" component={SubCategories} />
 
-            <Stack.Screen name="AllProducts" component={AllProducts} />
+            <Stack.Screen name="AllProducts" component={AllProducts}  />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="CreateProduct" component={CreateProduct} />
         </Stack.Navigator>
@@ -118,7 +118,7 @@ function MyDrawer() {
                 ),
             }} name="Prodotti" component={ProdottiStackk} />
             <Drawer.Screen
-               
+
                 options={{
                     headerShown: false, drawerActiveTintColor: "#00B27A", unmountOnBlur: true
                     , drawerIcon: ({ focused, size }) => (

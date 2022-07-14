@@ -1,31 +1,56 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, ActivityIndicator } from "react-native";
 import React, { useContext } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialIcons } from "react-native-vector-icons"
 import axios from "axios"
 import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
+import RNPickerSelect from 'react-native-picker-select';
 
 import { MyContext } from "../../AppContext";
 const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
-    const { userData, SuccessToast } = useContext(MyContext)
-    const renameCatalog = async (id, name) => {
-        try {
-            const body = { name };
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/catalogs/${id}`;
-            const result = await axios.patch(url, body);
-            refRBSheet.current.close()
-            SetName("")
+    const [Availability, SetAvailability] = React.useState()
+    const [Loading, SetLoading] = React.useState(false)
 
+    const { SuccessToast, FailedToast } = useContext(MyContext)
 
-            SetReload("WEWE")
-            SuccessToast()
-        } catch (error) {
-            console.log(error.response)
+    const renameCatalog = async (id) => {
+        if (!CategorieName || !Availability) {
+            FailedToast("Please fill all the Fields")
+        } else {
+            SetLoading(true)
+            const menuData = { name: CategorieName, availability: Availability };
+            try {
+                const url = `https://deployment.restaurants.club/catalogs/${id}`;
+                const result = await axios.patch(url, menuData);
+                refRBSheet.current.close()
+                SetName("")
+                SetReload("WEWE")
+                SuccessToast()
+            } catch (error) {
+                console.log(error.response)
+            }
+            SetLoading(false)
         }
     };
-
+    const selectBoxStyle = {
+        inputIOS: {
+            color: "white",
+            fontWeight: "600", fontSize: 18,
+            paddingHorizontal: 10
+        },
+        iconContainer: {},
+        placeholder: {
+            color: 'white',
+            fontSize: 14
+        },
+        inputAndroid: {
+            color: "white",
+            fontWeight: "600", fontSize: 18,
+            paddingHorizontal: 10
+        }
+    }
     return (
         <View>
 
@@ -41,9 +66,9 @@ const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
                 customStyles={{
                     draggableIcon: {
                         backgroundColor: "#00B27A"
-                        ,width:"100%", height:15, marginTop:0, borderRadius:0
+                        , width: "100%", height: 15, marginTop: 0, borderRadius: 0
                     },
-                    container: { height: 500, borderTopRightRadius:10 , borderTopLeftRadius:10 }
+                    container: { height: 500, borderTopRightRadius: 10, borderTopLeftRadius: 10 }
                 }}
             >
                 <View style={{ width: "100%", padding: 10, height: 480, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
@@ -51,17 +76,27 @@ const ReNameSubCategoryBottomSheet = ({ name, id, SetReload }) => {
 
 
                     <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Nome Attuale</Text>
-                    <TextInput  value={name} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
+                    <TextInput value={name} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
                     <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Inserisci il Nome del Menu</Text>
-                    <TextInput onChangeText={(text) => SetName(text)}  placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
+                    <TextInput onChangeText={(text) => SetName(text)} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10 }} />
                     <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Quando è disponibile il Menu</Text>
-                    <Pressable style={{ width: "70%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#00B27A" }}>
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "white" }}>Pranzo</Text>
+                    <Pressable style={{ width: "70%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#00B27A", color: "white" }}>
+                        <RNPickerSelect
+                            onValueChange={(value) => SetAvailability(value)}
+                            style={selectBoxStyle}
+                            items={[
+                                { label: 'Tutto il giorno', value: 'TUTTO IL GIORNO' },
+                                { label: 'Pranzo', value: 'PRANZO' },
+                                { label: 'Cena', value: 'CENA' },
+                            ]}
+                        />
                     </Pressable>
                     <View style={{ width: "100%", justifyContent: "space-evenly", display: "flex", flexDirection: "column" }} >
-                        <Pressable onPress={() => renameCatalog(id, CategorieName)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A", marginBottom: 20 }}>
-                            <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi</Text>
-                        </Pressable>
+                        {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 15, alignSelf: 'center' }} />}
+                        {!Loading &&
+                            <Pressable onPress={() => renameCatalog(id)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A", marginBottom: 20 }}>
+                                <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi</Text>
+                            </Pressable>}
                         <Pressable onPress={() => {
                             refRBSheet.current.close()
                             SetName("")

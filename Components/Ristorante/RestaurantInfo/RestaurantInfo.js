@@ -22,7 +22,7 @@ const RestaurantInfo = ({ SetActive }) => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
-
+    console.log(REACT_APP_PROJECT)
 
     const days = [
         "MONDAY",

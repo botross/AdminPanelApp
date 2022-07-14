@@ -10,9 +10,9 @@ import { MyContext } from '../../../AppContext';
 
 const EditProduct = ({ route, navigation }) => {
     const { productData } = route.params
-    const { userData } = useContext(MyContext)
+    const { userData, SuccessToast, FailedToast } = useContext(MyContext)
     const [NewData, SetNewData] = React.useState(productData)
-
+    console.log(NewData)
     function handleChange(name, text) {
         SetNewData({ ...NewData, [name]: text })
     }
@@ -36,17 +36,43 @@ const EditProduct = ({ route, navigation }) => {
         SetNewData({ ...NewData, image: pickerResult.uri })
 
     }
+    const appendArrayToFormData = (formData, fieldName, array) => {
+        if (!array) return;
+
+        array.forEach((value, i) => {
+            formData.append(`${fieldName}[${i}]`, value);
+        });
+    };
+    const appendObjectToFormData = (formData, fieldName, data) => {
+        if (!data) return;
+
+        if (data && typeof data === "object")
+            Object.keys(data).forEach(key => {
+                appendObjectToFormData(
+                    formData,
+                    fieldName ? `${fieldName}[${key}]` : key,
+                    data[key]
+                );
+            });
+        else formData.append(fieldName, data == null ? "" : data);
+    };
 
     const updateProduct = async (id, data) => {
         try {
             const formData = new FormData();
-            if (data.image) {
-                formData.append("image", data.image);
-                delete data.image;
-            }
-            Object.keys(data).forEach(key => formData.append(key, data[key]));
+            formData.append("catalog", data?.catalog);
+            formData.append("category", data?.category_Id);
 
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/products/${id}`;
+            formData.append("inventory", data?.inventory || 1);
+            formData.append("price", data?.price);
+            formData.append("title", data?.title);
+            formData.append("description", data?.description);
+            formData.append("image", data?.image);
+
+            appendArrayToFormData(formData, "ingredients", data?.ingredients);
+            appendArrayToFormData(formData, "allergens", data?.allergens);
+
+            const url = `https://deployment.restaurants.club/products/${id}`;
             const result = await axios.patch(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -56,9 +82,11 @@ const EditProduct = ({ route, navigation }) => {
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
 
-            return result.data;
+            SuccessToast()
+            navigation.goBack()
         } catch (error) {
-            console.log(error.response)
+            console.log(error)
+            FailedToast()
         }
     };
 
@@ -85,20 +113,20 @@ const EditProduct = ({ route, navigation }) => {
                     <View style={{ marginTop: 20 }}>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Nome prodotto</Text>
                         <TextInput onChangeText={(e) => handleChange("title", e)} value={NewData.title} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Brand</Text>
-                        <TextInput onChangeText={(e) => handleChange("brand", e)} value={NewData.brand} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>description</Text>
+                        <TextInput onChangeText={(e) => handleChange("description", e)} value={NewData.description} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Price</Text>
                         <TextInput onChangeText={(e) => handleChange("price", e)} value={NewData.price.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Format</Text>
-                        <TextInput onChangeText={(e) => handleChange("format", e)} value={NewData.format} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Format</Text> */}
+                        {/* <TextInput onChangeText={(e) => handleChange("format", e)} value={NewData.format} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Formulation</Text>
-                        <TextInput onChangeText={(e) => handleChange("formulation", e)} value={NewData.formulation} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>GTIN</Text>
-                        <TextInput onChangeText={(e) => handleChange("gtin", e)} value={NewData?.gtin?.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
-                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
+                        <TextInput onChangeText={(e) => handleChange("formulation", e)} value={NewData.formulation} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />*/}
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>inventory</Text>
+                        <TextInput onChangeText={(e) => handleChange("inventory", e)} value={NewData?.inventory?.toString()} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
                         <TextInput onChangeText={(e) => handleChange("ingredients", e)} value={NewData.ingredients[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli ingredienti..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Allergeni</Text>
-                        <TextInput onChangeText={(e) => handleChange("allergens", e)} value={NewData.allergens[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli allergeni..." /> */}
+                        <TextInput onChangeText={(e) => handleChange("allergens", e)} value={NewData.allergens[0]} multiline={true} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, padding: 10, marginBottom: 10, alignSelf: 'center', textAlignVertical: "top" }} placeholder="Inserisci qui gli allergeni..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Informazioni Aggiuntive:</Text>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
                             <BouncyCheckbox size={25} fillColor="#00B27A" unfillColor="#FFFFFF" iconStyle={{ borderColor: "#00B27A", borderRadius: 5 }} onPress={(isChecked) => { }} />

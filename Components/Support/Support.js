@@ -24,7 +24,7 @@ const Support = ({ navigation }) => {
         Setloading(true)
         try {
             const config = { headers: { authorization: `Bearer ${Token}` } };
-            const res = await axios.get("https://dashboard.develop.unifarco.aigotsrl-dev.com/api/tickets", config)
+            const res = await axios.get("https://dashboard.develop.rc.aigotsrl-dev.com/api/tickets", config)
             console.log(res.data)
             SetAllTickets(res.data)
         } catch (error) {

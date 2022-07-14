@@ -8,7 +8,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios"
 import { MyContext } from '../../../AppContext';
 const CreateProduct = ({ route, navigation }) => {
-    const { userData , SuccessToast, FailedToast} = useContext(MyContext)
+    const { userData, SuccessToast, FailedToast } = useContext(MyContext)
     const { CatalogCategorieID } = route.params
     const [ProductData, SetProductData] = React.useState()
 
@@ -16,8 +16,30 @@ const CreateProduct = ({ route, navigation }) => {
         SetProductData({ ...ProductData, [name]: text })
     }
     function handleChangeArrays(name, text) {
-        SetProductData({ ...ProductData, [name]: [].concat(text) })
+        SetProductData({ ...ProductData, [name]: [text] })
     }
+
+    const appendArrayToFormData = (formData, fieldName, array) => {
+        if (!array) return;
+
+        array.forEach((value, i) => {
+            formData.append(`${fieldName}[${i}]`, value);
+        });
+    };
+    const appendObjectToFormData = (formData, fieldName, data) => {
+        if (!data) return;
+
+        if (data && typeof data === "object")
+            Object.keys(data).forEach(key => {
+                appendObjectToFormData(
+                    formData,
+                    fieldName ? `${fieldName}[${key}]` : key,
+                    data[key]
+                );
+            });
+        else formData.append(fieldName, data == null ? "" : data);
+    };
+
     let openImagePickerAsync = async () => {
         SetProductData({ ...ProductData, image: null })
 
@@ -38,22 +60,37 @@ const CreateProduct = ({ route, navigation }) => {
         SetProductData({ ...ProductData, image: pickerResult.uri })
 
     }
+
+    console.log(CatalogCategorieID ,"CatalogCategorieIDASDADASDASD")
     const createProduct = async (data, catalogId, categoryId) => {
 
         try {
             const formData = new FormData();
             formData.append("catalog", catalogId);
             formData.append("category", categoryId);
-            Object.keys(data).forEach(key => formData.append(key, data[key]));
-            const result = await axios.post(`https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/products`, formData, {
+
+            formData.append("inventory", data?.inventory || 1);
+            formData.append("price", data?.price);
+            formData.append("title", data?.title);
+            formData.append("description", data?.description);
+            formData.append("image", data?.image);
+
+            appendArrayToFormData(formData, "ingredients", data?.ingredients);
+            appendArrayToFormData(formData, "allergens", data?.allergens);
+            // appendArrayToFormData(formData, "indications", data?.indications);
+
+            // appendObjectToFormData(formData, "variations", data?.variations);
+            // appendObjectToFormData(formData, "options", data?.options);
+   
+            const result = await axios.post(`https://deployment.restaurants.club/products`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             });
             if (!result.data || result.data?.Error || result.data?.error)
                 throw new Error(result.data?.Error || result.data?.error);
-                SuccessToast()
-            return console.log(result.data)
+            SuccessToast()
+            navigation.goBack()
         } catch (error) {
             console.log(error.response)
             FailedToast()
@@ -100,22 +137,22 @@ const CreateProduct = ({ route, navigation }) => {
                     <View style={{ marginTop: 20 }}>
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Nome prodotto</Text>
                         <TextInput onChangeText={(text) => handleChange("title", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Brand</Text>
-                        <TextInput onChangeText={(text) => handleChange("brand", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>description</Text>
+                        <TextInput onChangeText={(text) => handleChange("description", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Price</Text>
                         <TextInput onChangeText={(text) => handleChange("price", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Format</Text>
+                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Format</Text>
                         <TextInput onChangeText={(text) => handleChange("format", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Formulation</Text>
-                        <TextInput onChangeText={(text) => handleChange("formulation", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" />
-                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>GTIN</Text>
-                        <TextInput onChangeText={(text) => handleChange("gtin", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
+                        <TextInput onChangeText={(text) => handleChange("formulation", text)} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" /> */}
+                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>GTIN</Text>
+                        <TextInput onChangeText={(text) => handleChange("gtin", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' /> */}
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>inventory</Text>
                         <TextInput onChangeText={(text) => handleChange("inventory", parseInt(text))} style={{ width: "95%", height: 50, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center' }} placeholder="Inserisci nome del prodotto" keyboardType='numeric' />
-                        {/* <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
+                        <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Ingredienti</Text>
                         <TextInput onChangeText={(text) => handleChangeArrays("ingredients", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center', paddingVertical: 15 }} placeholder="Inserisci qui gli ingredienti..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Allergeni</Text>
-                        <TextInput onChangeText={(text) => handleChangeArrays("allergens", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center', paddingVertical: 15 }} placeholder="Inserisci qui gli allergeni..." /> */}
+                        <TextInput onChangeText={(text) => handleChangeArrays("allergens", text)} style={{ width: "95%", height: 100, backgroundColor: "#F6F6F6", borderRadius: 10, paddingHorizontal: 10, marginBottom: 10, alignSelf: 'center', paddingVertical: 15 }} placeholder="Inserisci qui gli allergeni..." />
                         <Text style={{ fontWeight: "600", fontSize: 18, color: "#00B27A", marginVertical: 10 }}>Informazioni Aggiuntive:</Text>
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
                             <BouncyCheckbox size={25} fillColor="#00B27A" unfillColor="#FFFFFF" iconStyle={{ borderColor: "#00B27A", borderRadius: 5 }} onPress={(isChecked) => { }} />

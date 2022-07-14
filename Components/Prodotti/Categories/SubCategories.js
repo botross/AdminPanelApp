@@ -17,7 +17,7 @@ const SubCategories = ({ route, navigation }) => {
     const getCategories = async catalogId => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/categories/catalog/${catalogId}`;
+            const url = `https://deployment.restaurants.club/categories/catalog/${catalogId}`;
             const result = await axios.get(url);
             SetCategories(result.data)
         } catch (error) {
@@ -29,7 +29,7 @@ const SubCategories = ({ route, navigation }) => {
     const deleteCategorie = async (id) => {
         SetLoading(true)
         try {
-            const url = `https://${userData._id}.${REACT_APP_THEMES_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_THEMES_API_PATH}/categories/${id}`;
+            const url = `https://deployment.restaurants.club//categories/${id}`;
             const result = await axios.delete(url);
 
             if (!result.data || result.data?.Error || result.data?.error)
@@ -63,7 +63,7 @@ const SubCategories = ({ route, navigation }) => {
                 { text: "OK", onPress: () => deleteCategorie(id) }
             ]
         );
-
+    console.log(catalogId, "catalogId")
     return (
 
         <Header navigation={navigation} title="Sub Menu" icon={require("../../../assets/ProdottiIcon.png")} >
@@ -79,7 +79,7 @@ const SubCategories = ({ route, navigation }) => {
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
                 {!Loading && Categories?.categories?.length === 0 && <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, alignSelf: "center", marginVertical: 15 }}>this Catalog has no categories yet</Text>}
                 {!Loading && Categories?.categories?.length > 0 && Categories?.categories?.map((item, index) => {
-
+                    console.log(item)
                     return (
 
                         <ImageBackground key={uuid.v4()} source={require("../../../assets/FolderBG.png")} style={{
@@ -99,12 +99,12 @@ const SubCategories = ({ route, navigation }) => {
                             <Text style={{ fontSize: 14, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.products?.length} unità disponibili</Text>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
-                                <Pressable onPress={() => navigation.navigate("AllProducts", { categoryId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
+                                <Pressable onPress={() => navigation.navigate("AllProducts", { categoryId: item._id, catalogId: catalogId })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                     <AntDesign name="arrowright" color="white" size={25} />
                                 </Pressable>
 
 
-                                <ReNameSubCategoryBottomSheet name={item.name} id={item._id} catalogId={item.catalog} SetReload={SetReload} />
+                                <ReNameSubCategoryBottomSheet name={item.name} theImage={item.image} id={item._id} catalogId={item.catalog} SetReload={SetReload} />
                                 <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                     <MaterialIcons name="delete" color="white" size={25} />
                                 </Pressable>
