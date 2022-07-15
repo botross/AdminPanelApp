@@ -19,7 +19,7 @@ console.log(REACT_APP_PROJECT)
     const getReviews = async (nextPageToken) => {
         setIsLoading(true);
         try {
-            let url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.Unifarco.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/reviews`;
+            let url = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.rc.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/gmb/reviews`;
             if (nextPageToken) url += `?nextPageToken=${nextPageToken}`;
 
             const config = {

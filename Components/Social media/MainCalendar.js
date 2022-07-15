@@ -22,7 +22,7 @@ const MainCalendar = () => {
     async function getSchedules() {
         SetLoading(true)
         try {
-            const res = await axios.get(`https://dashboard.develop.Unifarco.aigotsrl-dev.com/api/socials/fb/schedules`, config)
+            const res = await axios.get(`https://dashboard.develop.rc.aigotsrl-dev.com/api/socials/fb/schedules`, config)
 
             if (res.data) {
                 res.data.map((post) => {
@@ -60,7 +60,7 @@ const MainCalendar = () => {
     async function DeleteSchedule(id) {
         const config = { headers: { Authorization: `Bearer ${Token}` } };
         try {
-            const res = await axios.delete(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules/${id}`, config)
+            const res = await axios.delete(`https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.rc.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}/socials/facebook/schedules/${id}`, config)
             if (res.status === 200) {
                 SetAllPosts([])
                 getSchedules()
