@@ -4,7 +4,7 @@ import uuid from "react-native-uuid"
 import shortenText from "../../../Reuseable/shortenText"
 import { MaterialCommunityIcons } from "react-native-vector-icons"
 
-const ProductCard = ({ item ,navigation }) => {
+const ProductCard = ({ item ,navigation,DeleteAlert }) => {
     const [isMore, SetMore] = React.useState(false)
     const defaultImage = require("../../../assets/defaultImageProduc.png")
     const ItemImage = { uri: item.image }

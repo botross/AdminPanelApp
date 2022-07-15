@@ -9,7 +9,7 @@ import axios from "axios"
 import Toast from 'react-native-toast-message';
 
 export default function App() {
-  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTc3ODMzMjAsImV4cCI6MTY1NzgyNjUyMH0.yElds5x5LE3VoHRWcoA-Jo0_oxiYLpAASIsF2t1nMG4")
+  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJ0ZXN0QGFpZ290LmNvbSIsInNjb3BlIjoiUEhBUk1BQ0lTVCIsImlkIjoiNjJhMzExN2ExMWMxY2I3ZDg1NGEwMzY3IiwiaXNBbGlhcyI6ZmFsc2UsImFsaWFzSWQiOm51bGwsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE2NTc4NjkzNzAsImV4cCI6MTY1NzkxMjU3MH0.t3BGYKUSdUlPfc-9cshgCZt2buHOlax6H-kktRKf-MU")
   const [userData, SetUserData] = useState()
   const [loading, SetLoading] = useState(false)
   async function getUser() {

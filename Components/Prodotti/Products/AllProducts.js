@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView,  ActivityIndicator, Alert } from 'react-native'
+import { View, Text, Pressable, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import { Ionicons, Octicons } from "react-native-vector-icons"
 import React, { useContext } from 'react'
 import axios from "axios"
@@ -8,7 +8,7 @@ import { REACT_APP_THEMES_PREFIX, REACT_APP_THEMES_API_PATH, REACT_APP_NODE_ENV,
 
 import ProductCard from './ProductCard'
 const AllProducts = ({ route, navigation }) => {
-    const { categoryId ,catalogId } = route.params;
+    const { categoryId, catalogId } = route.params;
     const { userData, SuccessToast, FailedToast } = useContext(MyContext)
     const [Products, SetProducts] = React.useState([])
     const [Loading, SetLoading] = React.useState(false)
@@ -24,21 +24,17 @@ const AllProducts = ({ route, navigation }) => {
             const url = `https://deployment.restaurants.club/products/category/${categoryId}`;
             const result = await axios.get(url);
             SetProducts(result.data)
-            console.log(result.data, "CatalogCategorieIDDDDDDDDDDDDD")
-
         } catch (error) {
             console.log(error.message)
         }
         SetLoading(false)
     };
-    console.log(CatalogCategorieID, "CatalogCategorieIDDDDDDDDDDDDD")
 
     const DeleteAlert = (id) =>
         Alert.alert(
             "Alert",
             "are you sure you will delete the product ?",
             [
-
                 {
                     text: "Cancel",
                     onPress: () => console.log("Cancel Pressed"),
@@ -61,7 +57,14 @@ const AllProducts = ({ route, navigation }) => {
         }
     };
 
-    React.useEffect(() => { getProducts(categoryId) }, [])
+    React.useEffect(() => {
+        getProducts(categoryId)
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            getProducts(categoryId)
+        });
+
+        return willFocusSubscription;
+    }, [])
     React.useEffect(() => { getProducts(categoryId) }, [reLoad])
     return (
         <Header navigation={navigation} title="Products" icon={require("../../../assets/ProdottiIcon.png")} >
@@ -81,9 +84,9 @@ const AllProducts = ({ route, navigation }) => {
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
                 {!Loading && Products?.products?.length === 0 && <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, alignSelf: "center", marginVertical: 15 }}>this categorie has no products yet</Text>}
                 {!Loading && Products?.products?.length > 0 && Products?.products?.map((item) => {
-              
+
                     return (
-                        <ProductCard item={item} navigation={navigation} />
+                        <ProductCard item={item} navigation={navigation} DeleteAlert={DeleteAlert} />
 
                     )
                 })}

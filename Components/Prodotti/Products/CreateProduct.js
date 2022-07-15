@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, Pressable, Image } from 'react-native'
+import { View, Text, ScrollView, TextInput, Pressable, Image, ActivityIndicator } from 'react-native'
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
 import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
@@ -11,6 +11,7 @@ const CreateProduct = ({ route, navigation }) => {
     const { userData, SuccessToast, FailedToast } = useContext(MyContext)
     const { CatalogCategorieID } = route.params
     const [ProductData, SetProductData] = React.useState()
+    const [Loading, SetLoading] = React.useState(false)
 
     function handleChange(name, text) {
         SetProductData({ ...ProductData, [name]: text })
@@ -61,42 +62,48 @@ const CreateProduct = ({ route, navigation }) => {
 
     }
 
-    console.log(CatalogCategorieID ,"CatalogCategorieIDASDADASDASD")
     const createProduct = async (data, catalogId, categoryId) => {
+        if (!data?.description || !data?.inventory || !data?.price || !data?.title || !data?.image) {
+            FailedToast("Please fill all the Fields")
+        } else {
+            SetLoading(true)
 
-        try {
-            const formData = new FormData();
-            formData.append("catalog", catalogId);
-            formData.append("category", categoryId);
+            try {
+                const formData = new FormData();
+                formData.append("catalog", catalogId);
+                formData.append("category", categoryId);
 
-            formData.append("inventory", data?.inventory || 1);
-            formData.append("price", data?.price);
-            formData.append("title", data?.title);
-            formData.append("description", data?.description);
-            formData.append("image", data?.image);
+                formData.append("inventory", data?.inventory || 1);
+                formData.append("price", data?.price);
+                formData.append("title", data?.title);
+                formData.append("description", data?.description);
+                formData.append("image", data?.image);
 
-            appendArrayToFormData(formData, "ingredients", data?.ingredients);
-            appendArrayToFormData(formData, "allergens", data?.allergens);
-            // appendArrayToFormData(formData, "indications", data?.indications);
+                appendArrayToFormData(formData, "ingredients", data?.ingredients);
+                appendArrayToFormData(formData, "allergens", data?.allergens);
+                // appendArrayToFormData(formData, "indications", data?.indications);
 
-            // appendObjectToFormData(formData, "variations", data?.variations);
-            // appendObjectToFormData(formData, "options", data?.options);
-   
-            const result = await axios.post(`https://deployment.restaurants.club/products`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-            if (!result.data || result.data?.Error || result.data?.error)
-                throw new Error(result.data?.Error || result.data?.error);
-            SuccessToast()
-            navigation.goBack()
-        } catch (error) {
-            console.log(error.response)
-            FailedToast()
+                // appendObjectToFormData(formData, "variations", data?.variations);
+                // appendObjectToFormData(formData, "options", data?.options);
+
+                const result = await axios.post(`https://deployment.restaurants.club/products`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                });
+                if (!result.data || result.data?.Error || result.data?.error)
+                    throw new Error(result.data?.Error || result.data?.error);
+                SuccessToast()
+                navigation.goBack()
+            } catch (error) {
+                console.log(error.response)
+                FailedToast()
+            }
+            SetLoading(false)
         }
+
     };
-    console.log(ProductData)
+
     return (
         <Header navigation={navigation} title="Create Product" icon={require("../../../assets/ProdottiIcon.png")} >
             <ScrollView style={{ marginBottom: 90 }}>
@@ -187,6 +194,7 @@ const CreateProduct = ({ route, navigation }) => {
                         <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginRight: 10 }}>Aggiungi Opzione Extra</Text>
                         <Octicons name="diff-added" color="#00B27A" size={25} />
                     </Pressable>
+                    {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 15, alignSelf: 'center' }} />}
 
                     <Pressable onPress={() => createProduct(ProductData, CatalogCategorieID.catalogId, CatalogCategorieID.CategorieId)} style={{ width: "80%", height: 50, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginTop: 30 }}>
                         <Text style={{ color: "white", fontSize: 20, fontWeight: "600" }}>Aggiungi</Text>

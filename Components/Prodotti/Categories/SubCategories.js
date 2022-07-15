@@ -45,6 +45,11 @@ const SubCategories = ({ route, navigation }) => {
     React.useEffect(() => {
         getCategories(catalogId)
         SetReload("ASDSAD")
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            getCategories(catalogId)
+        });
+
+        return willFocusSubscription;
     }, [])
     React.useEffect(() => { getCategories(catalogId) }, [reload])
 
@@ -63,7 +68,7 @@ const SubCategories = ({ route, navigation }) => {
                 { text: "OK", onPress: () => deleteCategorie(id) }
             ]
         );
-    console.log(catalogId, "catalogId")
+
     return (
 
         <Header navigation={navigation} title="Sub Menu" icon={require("../../../assets/ProdottiIcon.png")} >
@@ -79,7 +84,7 @@ const SubCategories = ({ route, navigation }) => {
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
                 {!Loading && Categories?.categories?.length === 0 && <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, alignSelf: "center", marginVertical: 15 }}>this Catalog has no categories yet</Text>}
                 {!Loading && Categories?.categories?.length > 0 && Categories?.categories?.map((item, index) => {
-                    console.log(item)
+   
                     return (
 
                         <ImageBackground key={uuid.v4()} source={require("../../../assets/FolderBG.png")} style={{

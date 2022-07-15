@@ -34,11 +34,8 @@ const CreateCategoryBottomSheet = ({ SetReload }) => {
 
                 if (!result.data || result.data?.Error || result.data?.error)
                     throw new Error(result.data?.Error || result.data?.error);
-
                 refRBSheet.current.close()
                 SetName("")
-
-
                 SetReload("WEWE")
                 SuccessToast("Created successfully")
             } catch (error) {

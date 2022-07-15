@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, ScrollView, Image } from "react-native";
+import { View, Text, Pressable, TextInput, ScrollView, Image, ActivityIndicator } from "react-native";
 import React, { useContext } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialIcons, Ionicons } from "react-native-vector-icons"
@@ -6,33 +6,44 @@ import axios from "axios"
 import { MyContext } from "../../../AppContext";
 import { icons } from "./ImagesImport"
 import RNPickerSelect from 'react-native-picker-select';
+import uuid from "react-native-uuid"
 
 const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload, theImage }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
-    const { userData, SuccessToast } = useContext(MyContext)
-    const [TheIcon, SetIcon] = React.useState(icons[0])
+    const { userData, SuccessToast, FailedToast } = useContext(MyContext)
+    const [TheIcon, SetIcon] = React.useState(theImage)
     const [isMenuShowed, SetMenuShow] = React.useState(false)
     const [Availability, SetAvailability] = React.useState()
+    const [Loading, SetLoading] = React.useState(false)
+
     const renameCatalog = async (id, name, catalogId) => {
-        try {
-            const data = {
-                name: name,
-                image: Image.resolveAssetSource(TheIcon.image).uri,
-                availability: Availability,
-                catalog: catalogId,
-            };
-            const url = `https://deployment.restaurants.club/categories/${id}`;
-            const result = await axios.patch(url, data);
-            refRBSheet.current.close()
-            SetName("")
+        if (!name, !TheIcon, !Availability) {
+            FailedToast("Please fill all the data")
+        } else {
+            SetLoading(true)
+            try {
+                const data = {
+                    name: name,
+                    image: TheIcon,
+                    availability: Availability,
+                    catalog: catalogId,
+                };
+                const url = `https://deployment.restaurants.club/categories/${id}`;
+                const result = await axios.patch(url, data);
+                refRBSheet.current.close()
+                SetName("")
 
 
-            SetReload("WEWE")
-            SuccessToast()
-        } catch (error) {
-            console.log(error)
+                SetReload("WEWE")
+                SuccessToast()
+            } catch (error) {
+                console.log(error)
+            }
+            SetLoading(false)
+
         }
+
     };
 
     const selectBoxStyle = {
@@ -84,13 +95,13 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload, theImage
                     <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Scegli Icona del Sotto Menu</Text>
                     <Pressable onPress={() => SetMenuShow(true)} style={{ width: 60, height: 60, borderRadius: 100, alignSelf: "center", alignItems: "center", justifyContent: "center", backgroundColor: "#F6F6F6" }}>
 
-                        <Image source={{ uri: theImage }} resizeMode="contain" style={{ width: 50, height: 50 }} />
+                        <Image source={{ uri: TheIcon }} resizeMode="contain" style={{ width: 50, height: 50 }} />
 
                     </Pressable>
                     <Text style={{ color: "#323232", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Quando è disponibile il Sotto Menu</Text>
                     <Pressable style={{ width: "70%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "#00B27A", color: "white" }}>
                         <RNPickerSelect
-              
+
                             onValueChange={(value) => SetAvailability(value)}
                             style={selectBoxStyle}
                             items={[
@@ -113,24 +124,30 @@ const ReNameSubCategoryBottomSheet = ({ name, id, catalogId, SetReload, theImage
                         }}>
                             {icons.map((item) => {
 
+                                const ImageUri = Image.resolveAssetSource(item.image).uri
 
                                 return (
-                                    <>
-                                        <Pressable onPress={() => {
-                                            SetIcon(item)
+
+                                    <Pressable
+                                        key={uuid.v4()}
+                                        onPress={() => {
+                                            SetIcon(ImageUri)
                                             SetMenuShow(false)
                                         }} style={{ width: "95%", height: 80, borderWidth: 1, borderColor: "black", alignItems: 'center', justifyContent: "center", alignSelf: "center", marginVertical: 4, zIndex: 10 }} >
 
-                                            <Image source={item.image} resizeMode="contain" style={{ width: 70, height: 70 }} />
-                                        </Pressable>
+                                        <Image source={item.image} resizeMode="contain" style={{ width: 70, height: 70 }} />
+                                    </Pressable>
 
-                                    </>
+
                                 )
                             })}
 
                         </ScrollView>}
+                    {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 15, alignSelf: 'center' }} />}
+
                     <View style={{ width: "100%", justifyContent: "space-evenly", display: "flex", flexDirection: "row", marginBottom: 20 }} >
-                        <Pressable onPress={() => renameCatalog(id, CategorieName, catalogId)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A" }}>
+
+                        <Pressable disabled={Loading} onPress={() => renameCatalog(id, CategorieName, catalogId)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A" }}>
                             <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi </Text>
                         </Pressable>
 

@@ -1,42 +1,50 @@
 import React, { useContext } from "react";
-import { View, Text, Pressable, TextInput, Image, ScrollView } from "react-native";
+import { View, Text, Pressable, TextInput, Image, ScrollView, ActivityIndicator } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { Octicons, Ionicons } from "react-native-vector-icons"
 import axios from "axios"
 import { MyContext } from "../../../AppContext";
-import { Menu } from 'react-native-paper';
+import uuid from "react-native-uuid"
 import { icons } from "./ImagesImport"
 import RNPickerSelect from 'react-native-picker-select';
 
 const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
     const refRBSheet = React.useRef();
     const [CategorieName, SetName] = React.useState()
-    const { SuccessToast } = useContext(MyContext)
+    const { SuccessToast, FailedToast } = useContext(MyContext)
     const [TheIcon, SetIcon] = React.useState(icons[0])
     const [isMenuShowed, SetMenuShow] = React.useState(false)
     const [Availability, SetAvailability] = React.useState()
-    const mslan = Image.resolveAssetSource(TheIcon.image)
-    console.log(mslan, "HNA")
-    const createCategory = async (name, catalogId) => {
-        try {
-            const data = {
-                name: name,
-                image: Image.resolveAssetSource(TheIcon.image).uri,
-                availability: Availability,
-                catalog: catalogId,
-            };
+    const [Loading, SetLoading] = React.useState(false)
 
-            const url = `https://deployment.restaurants.club/categories`;
-            const result = await axios.post(url, data);
-            if (!result.data || result.data?.Error || result.data?.error)
-                throw new Error(result.data?.Error || result.data?.error);
-            refRBSheet.current.close()
-            SetName("")
-            SetReload("WEWEWE")
-            SuccessToast()
-        } catch (error) {
-            console.log(error.response)
+
+    const createCategory = async (name, catalogId) => {
+        if (!name, !TheIcon, !Availability) {
+            FailedToast("Please fill all the Fields")
+        } else {
+            SetLoading(true)
+            try {
+                const data = {
+                    name: name,
+                    image: Image.resolveAssetSource(TheIcon.image).uri,
+                    availability: Availability,
+                    catalog: catalogId,
+                };
+
+                const url = `https://deployment.restaurants.club/categories`;
+                const result = await axios.post(url, data);
+                if (!result.data || result.data?.Error || result.data?.error)
+                    throw new Error(result.data?.Error || result.data?.error);
+                refRBSheet.current.close()
+                SetName("")
+                SetReload("WEWEWE")
+                SuccessToast()
+            } catch (error) {
+                console.log(error.response)
+            }
+            SetLoading(false)
         }
+
     };
 
     const selectBoxStyle = {
@@ -67,7 +75,7 @@ const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
                 closeOnDragDown={true}
                 animationType="slide"
                 closeOnPressMask={true}
-                height={670}
+                height={700}
                 customStyles={{
                     // wrapper: {
                     //     backgroundColor: "#7d7d7dBF"
@@ -76,10 +84,10 @@ const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
                         backgroundColor: "#00B27A"
                         , width: "100%", height: 15, marginTop: 0, borderRadius: 0
                     },
-                    container: { height: 550, borderTopRightRadius: 10, borderTopLeftRadius: 10 }
+                    container: { height: 650, borderTopRightRadius: 10, borderTopLeftRadius: 10 }
                 }}
             >
-                <View style={{ width: "100%", paddingHorizontal: 10, height: 500, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
+                <View style={{ width: "100%", paddingHorizontal: 10, height: 600, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
 
                     <Text style={{ color: "#00B27A", fontSize: 22, fontWeight: "600", alignSelf: "center" }}>Aggiungi un nuovo Menu</Text>
                     <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Scegli Icona del Sotto Menu</Text>
@@ -116,26 +124,32 @@ const CreateSubCategoryBottomSheet = ({ catalogId, SetReload }) => {
 
 
                                 return (
-                                    <>
-                                        <Pressable onPress={() => {
+
+                                    <Pressable
+                                        key={uuid.v4()}
+                                        onPress={() => {
                                             SetIcon(item)
                                             SetMenuShow(false)
                                         }} style={{ width: "95%", height: 80, borderWidth: 1, borderColor: "black", alignItems: 'center', justifyContent: "center", alignSelf: "center", marginVertical: 4, zIndex: 10 }} >
 
-                                            <Image source={item.image} resizeMode="contain" style={{ width: 70, height: 70 }} />
-                                        </Pressable>
+                                        <Image source={item.image} resizeMode="contain" style={{ width: 70, height: 70 }} />
+                                    </Pressable>
 
-                                    </>
+
                                 )
                             })}
 
                         </ScrollView>}
                     <Text style={{ color: "#000", fontSize: 20, fontWeight: "600", alignSelf: "center" }}>Inserisci il Nome del Menu</Text>
                     <TextInput onChangeText={(text) => SetName(text)} value={CategorieName} placeholderTextColor="#989898" placeholder="Scrivi nome qui..." style={{ width: "70%", alignSelf: "center", height: 40, backgroundColor: "#F6F6F6", borderRadius: 8, paddingHorizontal: 10, marginBottom: 20 }} />
-                    <View style={{ width: "100%", justifyContent: "space-evenly", display: "flex", flexDirection: "row", paddingBottom: 10 }} >
-                        <Pressable onPress={() => createCategory(CategorieName, catalogId)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A" }}>
-                            <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi </Text>
-                        </Pressable>
+                    <View style={{ width: "100%", justifyContent: "space-evenly", display: "flex", flexDirection: "column", paddingBottom: 10 }} >
+                        {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 15, alignSelf: 'center' }} />}
+
+                        {!Loading &&
+                            <Pressable onPress={() => createCategory(CategorieName, catalogId)} style={{ width: "40%", height: 50, alignSelf: "center", alignItems: "center", justifyContent: "center", borderRadius: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#00B27A", marginBottom: 15 }}>
+                                <Text style={{ fontWeight: "600", fontSize: 14, color: "#00B27A" }}>Aggiungi </Text>
+                            </Pressable>
+                        }
                         <Pressable
                             onPress={() => {
                                 refRBSheet.current.close()

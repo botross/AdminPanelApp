@@ -50,7 +50,6 @@ const Prodotti = ({ navigation }) => {
             "Alert",
             "are you sure you will delete the categorie ?",
             [
-
                 {
                     text: "Cancel",
                     onPress: () => console.log("Cancel Pressed"),
@@ -68,9 +67,7 @@ const Prodotti = ({ navigation }) => {
                 <CreateCatalogBottomSheet SetReload={SetReload} />
                 {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
                 {!Loading && Catalogs?.catalogs?.map((item) => {
-
                     return (
-
                         <ImageBackground key={uuid.v4()} source={require("../../assets/FolderBG.png")} style={{
                             width: 250, height: 250, shadowColor: "#000000",
                             shadowOffset: {
@@ -87,28 +84,18 @@ const Prodotti = ({ navigation }) => {
                             <Text style={{ fontSize: 22, fontWeight: "700", color: "#00B27A", marginTop: 20 }}>{item.name}</Text>
                             <Text style={{ fontSize: 14, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.categories?.length} unità disponibili</Text>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-
                                 <Pressable onPress={() => navigation.navigate("SubCategories", { catalogId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                     <AntDesign name="arrowright" color="white" size={25} />
                                 </Pressable>
-
-
                                 <ReNameCatalogBottomSheet SetReload={SetReload} id={item._id} name={item.name} />
-
-
                                 <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
                                     <MaterialIcons name="delete" color="white" size={25} />
                                 </Pressable>
                             </View>
                         </ImageBackground>
-
                     )
                 })}
-
-
-
             </ScrollView>
-
         </Header>
     )
 }
