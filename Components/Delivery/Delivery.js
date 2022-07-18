@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from 'react-native'
+import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import Header from '../../Reuseable/Header'
 import { Octicons } from "react-native-vector-icons"
@@ -8,7 +8,7 @@ import { getPendingDeliveries } from "./DeliveryServices"
 import { MyContext } from '../../AppContext';
 import CalendarStrip from 'react-native-calendar-strip';
 import axios from "axios"
-import { Calendar } from 'react-native-big-calendar'
+import uuid from "react-native-uuid"
 import DeliveryCard from './DeliveryCard';
 const Delivery = ({ navigation }) => {
     const [visible, setVisible] = React.useState(false);
@@ -19,26 +19,29 @@ const Delivery = ({ navigation }) => {
     const [Container, SetContainer] = React.useState([])
     const [DeliveriesList, SetDeliveries] = React.useState([])
     const [SingleOrder, SetSingleOrder] = React.useState([])
+    const [Loading, SetLoading] = React.useState(false)
 
     const [CurrentDate, SetCurrentDate] = React.useState(new Date())
-
+    const [orderType, SetOrderType] = React.useState(false)
 
 
 
     const [isActive, SetActive] = React.useState(0)
 
     function HandleOrderTypeChange(deliveryStatus) {
-        const filterd = Container.filter((item) => item.isCompleted === deliveryStatus)
+        const filterd = Container.filter((item) =>  (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted == deliveryStatus)
+        SetOrderType(deliveryStatus)
         SetDeliveries(filterd)
     }
 
 
     async function GetDeliveries() {
+        SetLoading(true)
         const Deliveries = await getPendingDeliveries(Token)
-        // console.log(Deliveries)
-        const today = Deliveries.data.filter((item) => item.deliveryTime === ("Il prima possibile" || new Date()))
+        const today = Deliveries.data.filter((item) => (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted == orderType)
         SetDeliveries(today)
         SetContainer(Deliveries.data)
+        SetLoading(false)
     }
 
     React.useEffect(() => {
@@ -46,7 +49,7 @@ const Delivery = ({ navigation }) => {
     }, [])
 
     function filterDeliveries(date) {
-        const test = Container.filter((item) => (new Date(item.deliveryTime).getDate() + "/" + new Date(item.deliveryTime).getMonth() === new Date(date).getDate() + "/" + new Date(date).getMonth()) || item.deliveryTime === "Il prima possibile")
+        const test = Container.filter((item) => (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(date).getDate() + "/" + new Date(date).getMonth()) && item.isCompleted == orderType)
         SetDeliveries(test)
     }
     function handleSingleItem(id) {
@@ -56,10 +59,6 @@ const Delivery = ({ navigation }) => {
     }
     return (
         <Header navigation={navigation} title="Delivery" icon={require("../../assets/DeliveryIcon.png")} >
-
-
-
-
             <Pressable onPress={() => navigation.navigate("AdvancedSettings")} style={{ paddingHorizontal: 22, height: 50, marginBottom: 30, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#F6F6F6", display: "flex", flexDirection: "row", marginHorizontal: 10 }}>
                 <Octicons name="diff-added" color="#00B27A" size={25} />
                 <Text style={{ fontWeight: "500", fontSize: 18, color: "#00B27A", marginLeft: 10 }}>Seleziona categorie</Text>
@@ -86,8 +85,6 @@ const Delivery = ({ navigation }) => {
                     </Pressable>
                 </View>
             </View>
-
-            {/* {DeliveriesList?.NumOrders && DeliveriesList?.NumOrders.length !== 0 && <Text style={{ marginLeft: 10, fontWeight: "500", fontSize: 18 }}>Number of Orders: {DeliveriesList?.NumOrders}</Text>} */}
 
             <View>
                 <View style={{
@@ -126,14 +123,20 @@ const Delivery = ({ navigation }) => {
 
 
             </View>
-            <ScrollView style={{ width: "95%", alignSelf: "center", marginTop: 20, paddingBottom: 100 }} contentContainerStyle={{ paddingBottom: 90 }}>
-                {DeliveriesList.map((item) => {
-                    return (
-                        <DeliveryCard handleSingleItem={handleSingleItem} item={item} />
-                    )
-                })}
-            </ScrollView>
-            <UserModal visible={visible} hideModal={hideModal} SingleOrder={SingleOrder[0]} />
+            {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 30, alignSelf: 'center' }} />}
+            {!Loading && DeliveriesList && DeliveriesList.length === 0 && <Text style={{ alignSelf: "center", marginVertical: 30, fontSize: 20, fontWeight: "500", color: "#A1A1A1" }}>You have no orders </Text>}
+            {!Loading && DeliveriesList && DeliveriesList.length > 0 && <Text style={{ textAlign: "left", marginTop: 10, fontSize: 14, fontWeight: "500", color: "#A1A1A1", marginLeft: 10 }}>You have {DeliveriesList.length} order </Text>}
+            {!Loading &&
+
+                <ScrollView style={{ width: "95%", alignSelf: "center", marginTop: 20, paddingBottom: 100 }} contentContainerStyle={{ paddingBottom: 90 }}>
+                    {DeliveriesList && DeliveriesList.length > 0 && DeliveriesList.map((item) => {
+                        return (
+                            <DeliveryCard key={uuid.v4()} handleSingleItem={handleSingleItem} item={item} />
+                        )
+                    })}
+                </ScrollView>
+            }
+            {SingleOrder && <UserModal visible={visible} hideModal={hideModal} SingleOrder={SingleOrder[0]} />}
 
         </Header>
     )

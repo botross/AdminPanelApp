@@ -3,6 +3,7 @@ import React from 'react'
 import Header from '../../Reuseable/Header'
 import { TextInput } from 'react-native-gesture-handler'
 import { AntDesign } from "react-native-vector-icons"
+import uuid from "react-native-uuid"
 const SingleTicket = ({ route, navigation }) => {
     const { ticket } = route.params
 
@@ -41,17 +42,18 @@ const SingleTicket = ({ route, navigation }) => {
                         {!conversation || conversation.length < 1 && <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>This ticket has no messages yet Start by sending one</Text>}
 
                         {conversation && conversation?.map((message) => (
-                            <View>
+                            <View key={uuid.v4()}>
                                 <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>Contenuto ticket:</Text>
 
-                                {message?.createdBy === createdBy ? <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 15 }}>
-                                    <View style={{ width: 45, height: 45, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center" }}>
-                                        <Text style={{ fontSize: 24, fontWeight: "600", color: "white" }}>A</Text>
+                                {message?.createdBy === createdBy ?
+                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 15 }}>
+                                        <View style={{ width: 45, height: 45, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center" }}>
+                                            <Text style={{ fontSize: 24, fontWeight: "600", color: "white" }}>A</Text>
+                                        </View>
+                                        <View style={{ width: "80%", backgroundColor: "white", height: 55, borderRadius: 10, paddingHorizontal: 15, justifyContent: "center" }}>
+                                            <Text style={{ fontWeight: "400", fontSize: 14, color: "#AEAEAE" }}>Buonasera</Text>
+                                        </View>
                                     </View>
-                                    <View style={{ width: "80%", backgroundColor: "white", height: 55, borderRadius: 10, paddingHorizontal: 15, justifyContent: "center" }}>
-                                        <Text style={{ fontWeight: "400", fontSize: 14, color: "#AEAEAE" }}>Buonasera</Text>
-                                    </View>
-                                </View>
                                     :
                                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 15 }}>
                                         <View style={{ width: "80%", backgroundColor: "white", height: 55, borderRadius: 10, paddingHorizontal: 15, justifyContent: "center" }}>

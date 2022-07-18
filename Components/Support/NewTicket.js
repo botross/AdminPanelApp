@@ -19,7 +19,7 @@ const NewTicket = ({ hideModal, visible }) => {
     async function postNewTicket() {
         setLoading(true)
         try {
-            const res = await axios.post("https://dashboard.develop.unifarco.aigotsrl-dev.com/api/tickets", { headers: { "Authorization": `Bearer ${Token}` } }, data)
+            const res = await axios.post("https://dashboard.develop.rc.aigotsrl-dev.com/api/tickets", { headers: { "Authorization": `Bearer ${Token}` } }, data)
             if (res.status === 200) hideModal()
         } catch (error) {
             SetError(error.data)

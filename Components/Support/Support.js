@@ -6,6 +6,7 @@ import { DataTable } from 'react-native-paper';
 import { MyContext } from '../../AppContext';
 import axios from "axios"
 import NewTicket from './NewTicket';
+import uuid from "react-native-uuid"
 const Support = ({ navigation }) => {
     const { Token } = useContext(MyContext)
     const optionsPerPage = [2, 3, 4];
@@ -73,7 +74,7 @@ const Support = ({ navigation }) => {
                                     const CreatedAT = new Date(item.createdAt).toLocaleString()
 
                                     return (
-                                        <DataTable.Row onPress={() => navigation.navigate("SingleTicket", { ticket: item })} style={{ height: 80, borderBottomColor: "#C4C4C4", borderBottomWidth: 1 }}>
+                                        <DataTable.Row key={uuid.v4()} onPress={() => navigation.navigate("SingleTicket", { ticket: item })} style={{ height: 80, borderBottomColor: "#C4C4C4", borderBottomWidth: 1 }}>
                                             <DataTable.Cell >{item.subject}</DataTable.Cell>
                                             <DataTable.Cell textStyle={{ paddingVertical: 8, borderRadius: 20, backgroundColor: item.resolved ? "#EEFFCA" : "#FFEACA", paddingHorizontal: 10, color: item.resolved ? "#80B116" : "#FF814B", fontSize: 12 }}>{item.resolved ? "Risolto" : "In lavorazione"}</DataTable.Cell>
                                             <DataTable.Cell >{CreatedAT}</DataTable.Cell>

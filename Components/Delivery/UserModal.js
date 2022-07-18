@@ -4,7 +4,7 @@ import { Modal, Portal, Provider } from 'react-native-paper';
 import { Feather } from "react-native-vector-icons"
 const UserModal = ({ visible, hideModal, SingleOrder }) => {
     const containerStyle = { backgroundColor: 'white', padding: 20, width: "90%", alignSelf: "center", borderRadius: 15, zIndex: 100, marginBottom: 150 };
-    console.log(SingleOrder)
+
     return (
         <Provider>
             <Portal>
