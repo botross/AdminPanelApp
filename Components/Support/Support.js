@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView, ActivityIndicator } from 'react-native'
+import { RefreshControl, View, Text, Pressable, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import Header from '../../Reuseable/Header'
 import { Octicons } from "react-native-vector-icons"
@@ -20,6 +20,13 @@ const Support = ({ navigation }) => {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(() => {
+        Setloading(true);
+        wait(2000).then(() => getAllTickets());
+    }, []);
 
     async function getAllTickets() {
         Setloading(true)
@@ -42,7 +49,16 @@ const Support = ({ navigation }) => {
     return (
         <>
             <Header navigation={navigation} title="Support" icon={require("../../assets/SupportIcon.png")} >
-                <ScrollView style={{ marginBottom: 90 }}>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={loading}
+                            tintColor="#00B27A"
+                            colors={["#00B27A"]}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                    style={{ marginBottom: 90 }}>
 
                     <Text style={{ color: "#00B27A", fontSize: 26, fontWeight: "700", alignSelf: "center", marginTop: 10 }}>Avete domande?</Text>
                     <View style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
@@ -82,7 +98,7 @@ const Support = ({ navigation }) => {
                                     )
                                 })}
 
-                            {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 10 }} />}
+                            {/* {loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 10 }} />} */}
                             {!loading && AllTickets && AllTickets?.length === 0 && <Text style={{ marginVertical: 10, fontWeight: "600", fontSize: 18, textAlign: "center" }} >you have no tickets</Text>}
                             {!loading && !AllTickets && < Text style={{ marginVertical: 10, fontWeight: "600", fontSize: 18, textAlign: "center" }} >Error while fetching your tickets</Text>}
 

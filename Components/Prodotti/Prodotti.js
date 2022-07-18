@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { RefreshControl, View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import { MyContext } from '../../AppContext'
 import Header from '../../Reuseable/Header'
@@ -9,11 +9,11 @@ import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
 import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
 import uuid from 'react-native-uuid';
 const Prodotti = ({ navigation }) => {
-    const { Token, userData ,SuccessToast} = useContext(MyContext)
+    const { Token, userData, SuccessToast } = useContext(MyContext)
     const [Catalogs, SetCatalogs] = React.useState([])
     const [Reload, SetReload] = React.useState("asd")
     const [Loading, SetLoading] = React.useState(false)
-    
+  
     const getCatalogs = async () => {
         SetLoading(true)
         try {
@@ -26,7 +26,13 @@ const Prodotti = ({ navigation }) => {
         SetLoading(false)
     };
 
-
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(() => {
+        SetLoading(true);
+        wait(2000).then(() => getCatalogs());
+    }, []);
 
     const deleteCataloge = async (id) => {
         SetLoading(true)
@@ -63,9 +69,18 @@ const Prodotti = ({ navigation }) => {
     React.useEffect(() => { getCatalogs() }, [Reload])
     return (
         <Header navigation={navigation} title="Prodotti" icon={require("../../assets/ProdottiIcon.png")} >
-            <ScrollView style={{ widht: "100%", marginBottom: 100 }}>
-                <CreateCatalogBottomSheet SetReload={SetReload} />
-                {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
+            <CreateCatalogBottomSheet SetReload={SetReload} />
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={Loading}
+                        tintColor="#00B27A"
+                        colors ={["#00B27A"]}
+                        onRefresh={onRefresh}
+                    />
+                }
+                style={{ widht: "100%", marginBottom: 100, marginTop: 20 }}>
+                {/* {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />} */}
                 {!Loading && Catalogs?.catalogs?.map((item) => {
                     return (
                         <ImageBackground key={uuid.v4()} source={require("../../assets/FolderBG.png")} style={{

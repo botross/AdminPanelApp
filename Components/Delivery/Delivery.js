@@ -1,10 +1,9 @@
-import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native'
+import { RefreshControl, View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import Header from '../../Reuseable/Header'
 import { Octicons } from "react-native-vector-icons"
 import UserModal from './UserModal';
-import { Table, Row, Rows } from 'react-native-table-component';
-import { getPendingDeliveries } from "./DeliveryServices"
+
 import { MyContext } from '../../AppContext';
 import CalendarStrip from 'react-native-calendar-strip';
 import axios from "axios"
@@ -12,7 +11,6 @@ import uuid from "react-native-uuid"
 import DeliveryCard from './DeliveryCard';
 const Delivery = ({ navigation }) => {
     const [visible, setVisible] = React.useState(false);
-
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
     const { Token } = useContext(MyContext)
@@ -20,27 +18,42 @@ const Delivery = ({ navigation }) => {
     const [DeliveriesList, SetDeliveries] = React.useState([])
     const [SingleOrder, SetSingleOrder] = React.useState([])
     const [Loading, SetLoading] = React.useState(false)
-
     const [CurrentDate, SetCurrentDate] = React.useState(new Date())
     const [orderType, SetOrderType] = React.useState(false)
-
-
-
     const [isActive, SetActive] = React.useState(0)
 
+
+
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(() => {
+        SetLoading(true);
+        wait(2000).then(() => GetDeliveries());
+    }, []);
+
+
     function HandleOrderTypeChange(deliveryStatus) {
-        const filterd = Container.filter((item) =>  (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted == deliveryStatus)
         SetOrderType(deliveryStatus)
+        console.log(deliveryStatus, orderType)
+        const filterd = Container.filter((item) => (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted == deliveryStatus)
         SetDeliveries(filterd)
     }
 
+    const baseOrdersUrl = `https://deployment.restaurants.club/orders`;
 
     async function GetDeliveries() {
         SetLoading(true)
-        const Deliveries = await getPendingDeliveries(Token)
-        const today = Deliveries.data.filter((item) => (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted == orderType)
-        SetDeliveries(today)
-        SetContainer(Deliveries.data)
+        try {
+            let url = `${baseOrdersUrl}/?status=pending`;
+            const result = await axios.get(url, { headers: { authorization: `Bearer ${Token}` } });
+            const today = result.data.filter((item) => (new Date(item.createdAt).getDate() + "/" + new Date(item.createdAt).getMonth() === new Date(CurrentDate).getDate() + "/" + new Date(CurrentDate).getMonth()) && item.isCompleted === (orderType))
+            SetDeliveries(today)
+            SetContainer(result.data)
+        } catch (error) {
+            console.log(error)
+        }
         SetLoading(false)
     }
 
@@ -66,16 +79,19 @@ const Delivery = ({ navigation }) => {
 
 
             <View style={{ alignSelf: "center", marginBottom: 30 }} >
-                <View style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: 'row', backgroundColor: "#F7F7F7", alignSelf: "flex-start", borderRadius: 15 }}>
+                <View style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: 'row', backgroundColor: "#F7F7F7", borderRadius: 15 }}>
                     <Pressable onPress={() => {
+                        SetOrderType(false)
                         SetActive(0)
                         HandleOrderTypeChange(false)
+
                     }} style={{ width: 140, height: 40, backgroundColor: isActive === 0 ? "#00B27A" : "#F7F7F7", borderRadius: 15, alignItems: "center", justifyContent: "center" }}>
                         <Text style={{ color: isActive !== 0 ? "#A1A1A1" : "white", fontWeight: "600" }}>
                             Ordini in attesa
                         </Text>
                     </Pressable>
                     <Pressable onPress={() => {
+                        SetOrderType(true)
                         SetActive(1)
                         HandleOrderTypeChange(true)
                     }} style={{ width: 140, height: 40, backgroundColor: isActive === 1 ? "#00B27A" : "#F7F7F7", borderRadius: 15, alignItems: "center", justifyContent: "center" }}>
@@ -123,19 +139,27 @@ const Delivery = ({ navigation }) => {
 
 
             </View>
-            {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 30, alignSelf: 'center' }} />}
-            {!Loading && DeliveriesList && DeliveriesList.length === 0 && <Text style={{ alignSelf: "center", marginVertical: 30, fontSize: 20, fontWeight: "500", color: "#A1A1A1" }}>You have no orders </Text>}
+            {/* {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 30, alignSelf: 'center' }} />} */}
             {!Loading && DeliveriesList && DeliveriesList.length > 0 && <Text style={{ textAlign: "left", marginTop: 10, fontSize: 14, fontWeight: "500", color: "#A1A1A1", marginLeft: 10 }}>You have {DeliveriesList.length} order </Text>}
-            {!Loading &&
 
-                <ScrollView style={{ width: "95%", alignSelf: "center", marginTop: 20, paddingBottom: 100 }} contentContainerStyle={{ paddingBottom: 90 }}>
-                    {DeliveriesList && DeliveriesList.length > 0 && DeliveriesList.map((item) => {
-                        return (
-                            <DeliveryCard key={uuid.v4()} handleSingleItem={handleSingleItem} item={item} />
-                        )
-                    })}
-                </ScrollView>
-            }
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={Loading}
+                        tintColor="#00B27A"
+                        colors={["#00B27A"]}
+                        onRefresh={onRefresh}
+                    />
+                }
+                style={{ width: "95%", alignSelf: "center", marginTop: 20, paddingBottom: 100 }} contentContainerStyle={{ paddingBottom: 90 }}>
+                {!Loading && DeliveriesList && DeliveriesList.length === 0 && <Text style={{ alignSelf: "center", marginVertical: 30, fontSize: 20, fontWeight: "500", color: "#A1A1A1" }}>You have no orders </Text>}
+                {!Loading && DeliveriesList && DeliveriesList.length > 0 && DeliveriesList.map((item) => {
+                    return (
+                        <DeliveryCard key={uuid.v4()} handleSingleItem={handleSingleItem} item={item} />
+                    )
+                })}
+            </ScrollView>
+
             {SingleOrder && <UserModal visible={visible} hideModal={hideModal} SingleOrder={SingleOrder[0]} />}
 
         </Header>

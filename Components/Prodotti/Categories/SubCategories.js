@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { RefreshControl, View, Text, ImageBackground, Pressable, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useContext } from 'react'
 import Header from '../../../Reuseable/Header'
 import { AntDesign, MaterialIcons, Ionicons } from "react-native-vector-icons"
@@ -25,6 +25,13 @@ const SubCategories = ({ route, navigation }) => {
         }
         SetLoading(false)
     };
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(() => {
+        SetLoading(true);
+        wait(2000).then(() => getCategories());
+    }, []);
 
     const deleteCategorie = async (id) => {
         SetLoading(true)
@@ -80,11 +87,20 @@ const SubCategories = ({ route, navigation }) => {
                 <CreateSubCategoryBottomSheet catalogId={catalogId} SetReload={SetReload} />
             </View>
 
-            <ScrollView style={{ widht: "100%", marginBottom: 100 }}>
-                {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />}
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={Loading}
+                        tintColor="#00B27A"
+                        colors={["#00B27A"]}
+                        onRefresh={onRefresh}
+                    />
+                }
+                style={{ widht: "100%", marginBottom: 100 }}>
+                {/* {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />} */}
                 {!Loading && Categories?.categories?.length === 0 && <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 20, alignSelf: "center", marginVertical: 15 }}>this Catalog has no categories yet</Text>}
                 {!Loading && Categories?.categories?.length > 0 && Categories?.categories?.map((item, index) => {
-   
+
                     return (
 
                         <ImageBackground key={uuid.v4()} source={require("../../../assets/FolderBG.png")} style={{

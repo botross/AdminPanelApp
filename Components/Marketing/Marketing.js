@@ -29,17 +29,15 @@ const Marketing = ({ navigation }) => {
     });
 
 
-    const baseEndpoint = `https://${REACT_APP_DASHBOARD_PREFIX}${REACT_APP_NODE_ENV}.${REACT_APP_PROJECT}.${REACT_APP_BASE_URL}${REACT_APP_DASHBOARD_API_PATH}`;
+    const baseEndpoint = `https://dashboard.develop.rc.aigotsrl-dev.com`;
     async function getCampaigns() {
         try {
-            const url = `${baseEndpoint}/socials/fb/campaign?range=this_year&status=ACTIVE`;
+            const url = `${baseEndpoint}/socials/fb/campaign?status=['ACTIVE']`;
             const result = await axios.get(url, getAuthConfig());
-            console.log(result)
-            return result?.data;
+            console.log(result.data)
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
         }
-
     };
 
     React.useEffect(() => { getCampaigns() }, [])
@@ -83,3 +81,6 @@ const Marketing = ({ navigation }) => {
 }
 
 export default Marketing
+
+
+
