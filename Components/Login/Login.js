@@ -23,6 +23,7 @@ const Login = ({ navigation }) => {
     }
     const getUser = s => s.includes('=') && s.substr(s.lastIndexOf('=') + 1).split(' ')[0]
     async function handleLogin() {
+
         if (password.length >= 3 && email.includes("@") && email.includes(".")) {
             setLoading(true)
             SetError(true)
@@ -30,7 +31,8 @@ const Login = ({ navigation }) => {
             SetPassword("")
             SetTouched({ name: false, surname: false, email: false, password: false, phone: false })
             try {
-                const res = await axios.post("https://auth.develop.unifarco.aigotsrl-dev.com/api/user/login", data)
+                const ac = new AbortController();
+                const res = await axios.post("https://auth.develop.rc.aigotsrl-dev.com/api/user/login", data)
                 // SetToken(getUser(res.data.link))
 
                 var regex = /[?&]([^=#]+)=([^&#]*)/g,
@@ -42,7 +44,7 @@ const Login = ({ navigation }) => {
                 if (params.token)
                     SetToken(params.token)
 
-                    console.log(res)
+                return () => ac.abort();
             } catch (error) {
                 console.log(error.response.data)
                 SetError(JSON.stringify(error.response.data.Error))

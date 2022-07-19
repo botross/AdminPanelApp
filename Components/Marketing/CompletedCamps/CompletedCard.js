@@ -1,9 +1,8 @@
 import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import * as Progress from 'react-native-progress';
-import { Feather } from "react-native-vector-icons"
 
-const InProgressCard = () => {
+const CompletedCard = ({Camp}) => {
     return (
         <View style={{
             width: "95%", alignSelf: "center", shadowColor: "#000000",
@@ -16,11 +15,11 @@ const InProgressCard = () => {
             elevation: 10,
             paddingVertical: 15,
             paddingHorizontal: 10,
-            backgroundColor: "white", borderRadius: 10, marginTop:10
+            backgroundColor: "white", borderRadius: 10, marginTop: 10
         }}>
-            <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 16 }}>Descrizione</Text>
-            <Text style={{ color: "#8A8A8A", fontWeight: "400", fontSize: 13, marginVertical: 10, paddingHorizontal: 10 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi scelerisque elit laoreet condimentum.</Text>
-            <Image source={require("../../assets/marketingCamp.png")} style={{ width: "100%", height: 130 }} />
+            <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 16 }}>{Camp.name}</Text>
+            <Text style={{ color: "#8A8A8A", fontWeight: "400", fontSize: 13, marginVertical: 10, paddingHorizontal: 10 }}>{Camp.objective}</Text>
+            <Image source={require("../../../assets/marketingCamp.png")} style={{ width: "100%", height: 130 }} />
 
             <Text style={{ color: "#00B27A", fontWeight: "600", fontSize: 16, marginTop: 10 }}>Risultati</Text>
             <View style={{ marginVertical: 10 }}>
@@ -44,20 +43,14 @@ const InProgressCard = () => {
                 </View>
                 <Progress.Bar progress={0.63} width={null} color="#F98011" unfilledColor='#C4C4C4' borderWidth={0} />
             </View>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-                <Pressable style={{ width: "60%", height: 35, justifyContent: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#00B27A", marginHorizontal: 10 }}>
-                    <Text style={{ fontWeight: "500", fontSize: 16, color: "white", marginRight: 10 }}>Scopri di più</Text>
-                </Pressable>
-                <Pressable style={{ marginHorizontal: 10 }}>
-                    <Feather name="pause-circle" size={40} color="#FFA563" />
-                </Pressable>
-                <Pressable style={{ marginHorizontal: 10 }}>
-                    <Feather name="stop-circle" size={40} color="#BE4E4E" />
+
+                <Pressable style={{ width: "80%", height: 35, justifyContent: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#00B27A", marginHorizontal: 10, alignSelf: "center" , marginTop:15}}>
+                    <Text style={{ fontWeight: "500", fontSize: 16, color: "white", marginRight: 10 }}>Riattiva</Text>
                 </Pressable>
 
-            </View>
+        
         </View>
     )
 }
 
-export default InProgressCard
+export default CompletedCard

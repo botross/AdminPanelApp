@@ -4,7 +4,7 @@ import { Modal, Portal, Provider } from 'react-native-paper';
 import axios from "axios"
 import { MyContext } from '../../AppContext';
 import { Feather } from "react-native-vector-icons"
-const NewTicket = ({ hideModal, visible }) => {
+const NewTicket = ({ hideModal, visible ,SetReload}) => {
     const { Token } = useContext(MyContext)
     const [loading, setLoading] = React.useState(false)
     const [subject, SetSubject] = React.useState()
@@ -16,11 +16,16 @@ const NewTicket = ({ hideModal, visible }) => {
         "subject": subject,
         "message": Messaggio
     }
+
+    const getAuthConfig = () => ({
+        headers: { authorization: `Bearer ${Token}` },
+    });
     async function postNewTicket() {
         setLoading(true)
         try {
-            const res = await axios.post("https://dashboard.develop.rc.aigotsrl-dev.com/api/tickets", { headers: { "Authorization": `Bearer ${Token}` } }, data)
-            if (res.status === 200) hideModal()
+            await axios.post("https://dashboard.develop.rc.aigotsrl-dev.com/api/tickets", data, getAuthConfig(),)
+            hideModal()
+            SetReload("MAOSDMOASDMOASD")
         } catch (error) {
             SetError(error.data)
             console.log(error)
@@ -32,7 +37,7 @@ const NewTicket = ({ hideModal, visible }) => {
             <Portal>
                 <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                     <View style={{ display: "flex", flexDirection: "column" }}>
-                        <Pressable onPress={() => hideModal()} style={{ position: "absolute", top: 0, right: 0 , zIndex:10 }}>
+                        <Pressable onPress={() => hideModal()} style={{ position: "absolute", top: 0, right: 0, zIndex: 10 }}>
                             <Feather name="x" size={30} color="black" />
                         </Pressable>
                         <Text style={{ fontWeight: "600", fontSize: 18, marginBottom: 10 }}>Crea un Ticket di richiesta</Text>

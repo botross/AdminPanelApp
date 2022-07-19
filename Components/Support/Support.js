@@ -14,7 +14,7 @@ const Support = ({ navigation }) => {
     const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
     const [AllTickets, SetAllTickets] = React.useState(null)
     const [loading, Setloading] = React.useState(false)
-
+    const [Reload, SetReload] = React.useState("ASD")
 
     const [visible, setVisible] = React.useState(false);
 
@@ -33,7 +33,6 @@ const Support = ({ navigation }) => {
         try {
             const config = { headers: { authorization: `Bearer ${Token}` } };
             const res = await axios.get("https://dashboard.develop.rc.aigotsrl-dev.com/api/tickets", config)
-            console.log(res.data)
             SetAllTickets(res.data)
         } catch (error) {
             console.log(error.response)
@@ -42,10 +41,9 @@ const Support = ({ navigation }) => {
         Setloading(false)
     }
 
-    React.useEffect(() => {
-        setPage(0);
-    }, [itemsPerPage]);
+    React.useEffect(() => { setPage(0); }, [itemsPerPage]);
     React.useEffect(() => { getAllTickets() }, [])
+    React.useEffect(() => { getAllTickets() }, [Reload])
     return (
         <>
             <Header navigation={navigation} title="Support" icon={require("../../assets/SupportIcon.png")} >
@@ -118,7 +116,7 @@ const Support = ({ navigation }) => {
                 </ScrollView>
 
             </Header >
-            <NewTicket hideModal={hideModal} visible={visible} />
+            <NewTicket hideModal={hideModal} visible={visible} SetReload={SetReload} />
         </>
 
     )

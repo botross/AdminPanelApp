@@ -36,7 +36,9 @@ const PersonaleMain = () => {
     }
 
     React.useEffect(() => {
+        const ac = new AbortController()
         getPersonale()
+        return () => ac.abort()
     }, [])
 
     function handleFilteration(theStatus) {

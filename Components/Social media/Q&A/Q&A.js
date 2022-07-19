@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import axios from "axios"
 import { MyContext } from '../../../AppContext';
 import { TextInput } from 'react-native-gesture-handler';
+import uuid from "react-native-uuid"
 import { REACT_APP_DASHBOARD_PREFIX ,REACT_APP_NODE_ENV ,REACT_APP_PROJECT ,REACT_APP_BASE_URL ,REACT_APP_DASHBOARD_API_PATH} from "@env"
 const getLocationFromName = name => {
     try {
@@ -21,8 +22,6 @@ const QA = () => {
     let [answeringIndex, setAnsweringIndex] = useState(null);
     const { Token, userData } = useContext(MyContext)
 
- 
-
 
     const getQuestions = async () => {
         setIsLoading(true);
@@ -36,7 +35,6 @@ const QA = () => {
             if (!result.data || result.data?.Error || result.data?.error || result.status !== 200)
                 throw new Error(result.data?.Error || result.data?.message);
 
-            // setQuestions(result.data.questions);
             setQuestions(result.data?.data?.questions);
             console.log("resule", result.data.data.questions)
         } catch (error) {
@@ -111,12 +109,10 @@ const QA = () => {
 
     React.useEffect(() => {
         const abortController = new AbortController();
-
         if (!userData?.socialAccounts?.gmbLocationResourceIdentifier)
             return
         else
             getQuestions();
-
         return () => abortController.abort();
     }, []);
     return (
@@ -135,7 +131,7 @@ const QA = () => {
             {!isLoading && questions && questions.length > 0 && questions.map((question, index) => {
 
                 return (
-                    <>
+                    <View key={uuid.v4()}>
                         <View style={{ display: "flex", flexDirection: "row", width: "90%", alignSelf: "center", alignItems: "center", backgroundColor: "#F8F8F8", borderRadius: 8, paddingVertical: 20, paddingHorizontal: 12 }}>
                             <Image
                                 onLoad={() => console.log(true)}
@@ -185,7 +181,7 @@ const QA = () => {
                                 </View>
                             )
                         }
-                    </>
+                      </View>
 
                 )
             })}

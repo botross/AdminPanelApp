@@ -21,20 +21,35 @@ const FacebookButton = () => {
 
     async function logIn() {
         try {
-            await Facebook.initializeAsync({
-                appId: '537603187490942',
+            const me9a = await Facebook.initializeAsync({
+                appId: '994240607886440',
+
+                appName: "Restaurants Club",
+                permissions: ['public_profile', 'pages_show_list'],
             });
-            const { type, token, expirationDate, permissions, declinedPermissions } =
+            console.log(me9a, "me9aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+            const moza =
                 await Facebook.logInWithReadPermissionsAsync({
-                    permissions: ['public_profile'],
+                    appId: '994240607886440',
+                    appName: "Restaurants Club",
+                    permissions: ['public_profile', 'pages_show_list'],
                 });
-            if (type === 'success') {
-                // Get the user's name using Facebook's Graph API
-                const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-                handleLoginAsync((await response.json()).id, token)
-            } else {
-                // type === 'cancel'
-            }
+            console.log(moza, "mozaaaaaaaaaaaaaaaaaaaaa")
+
+            // if (type === 'success') {
+            //     // Get the user's name using Facebook's Graph API
+            //     const response = await axios.get(`https://graph.facebook.com/me?access_token=${token}`);
+
+            //     const result2 = await axios.get(`https://graph.facebook.com/${response.data.id}/accounts?access_token=${token}`);
+
+            //     console.log(result2.data)
+            //     // Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+            //     // handleLoginAsync((await response.json()).id, token)
+            // } 
+            // else {
+            //     // type === 'cancel'
+            // }
         } catch ({ message }) {
             Alert.alert(`Facebook Login Error: ${message}`);
         }
@@ -45,7 +60,7 @@ const FacebookButton = () => {
         setIsLoading(true);
         try {
             // const result1 = await axios.get(
-            //     `https://admin.develop.unifarco.aigotsrl-dev.com/api/socials/facebook/exchangeToken?token=${FacebookToken}`,
+            //     `https://auth.develop.rc.aigotsrl-dev.com/api/socials/facebook/exchangeToken?token=${FacebookToken}`,
             //     config
             // );
             // const fbToken = result1?.data?.token
@@ -58,6 +73,8 @@ const FacebookButton = () => {
                 config
             );
             if (!result2.data || result2.Error) throw new Error(result2.Error);
+
+            console.log(result2.data?.data)
             if (result2.data?.data?.length < 1)
                 throw new Error("You do not have a page to connect.");
 
@@ -67,7 +84,7 @@ const FacebookButton = () => {
                 refRBSheet.current.open()
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.response);
 
         }
         setIsLoading(false);

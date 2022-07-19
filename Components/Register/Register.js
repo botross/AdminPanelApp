@@ -25,7 +25,7 @@ const Register = ({ navigation }) => {
         if (name.length > 3 && surname && phone.length > 8 && password.length > 4 && email.includes("@") && email.includes(".")) {
             setLoading(true)
             try {
-                const res = await axios.post("https://auth.develop.unifarco.aigotsrl-dev.com/api/user/register", data)
+                const res = await axios.post("https://auth.develop.rc.aigotsrl-dev.com/api/user/register", data)
                 console.log(res)
                 SetError("")
                 if (res.status === 200) navigate("login")
