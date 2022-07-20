@@ -40,9 +40,9 @@ const SingleTicket = ({ route, navigation }) => {
                     </View>
                     <View style={{ width: "95%", alignSelf: "center", justifyContent: "center", paddingHorizontal: 20, backgroundColor: "#F6F6F6", paddingVertical: 30 }}>
 
-                        {!conversation || conversation.length < 1 && <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>This ticket has no messages yet Start by sending one</Text>}
+                        {!conversation || conversation?.length < 1 && <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>This ticket has no messages yet Start by sending one</Text>}
 
-                        {conversation || conversation.length === 0 && <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>Contenuto ticket:</Text>}
+                        {(conversation || conversation?.length > 0) && <Text style={{ color: "#AEAEAE", fontSize: 16, fontWeight: "600" }}>Contenuto ticket:</Text>}
                         {conversation && conversation?.map((message) => (
                             <View key={uuid.v4()}>
 

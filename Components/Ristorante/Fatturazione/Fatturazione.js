@@ -11,7 +11,7 @@ const Fatturazione = () => {
     }
 
     return (
-        <ScrollView >
+        <ScrollView contentContainerStyle={{paddingBottom:40}} >
             <View style={{ padding: 10, backgroundColor: "#F8F8F8", borderRadius: 10, width: "93%", alignSelf: 'center', marginBottom: 20 }}>
                 <View style={{ padding: 10, backgroundColor: "white", borderRadius: 10, width: "100%", alignSelf: 'center' }}>
                     <Text style={{ fontSize: 14, fontWeight: "500" }}>Indirizzo di Fatturazione</Text>

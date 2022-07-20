@@ -39,11 +39,11 @@ const FidelityCard = ({ navigation }) => {
     return (
         <Header navigation={navigation} title="Fidelity Card" icon={require("../../assets/FidelityIcon.png")} >
             <View style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-evenly", marginVertical: 20 }}>
-                <Pressable style={{ width: "40%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
-                    <Text style={{ color: "white", fontSize: 12, fontWeight: "600" }}>Associa QR Code Cliente</Text>
+                <Pressable style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
+                    <Text style={{ color: "white", fontSize: 10, fontWeight: "600" }}>Associa QR Code Cliente</Text>
                 </Pressable>
-                <Pressable style={{ width: "40%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
-                    <Text style={{ color: "white", fontSize: 12, fontWeight: "600" }}>Aggiungi Punti al Cliente</Text>
+                <Pressable style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
+                    <Text style={{ color: "white", fontSize: 10, fontWeight: "600" }}>Aggiungi Punti al Cliente</Text>
                 </Pressable>
             </View>
 

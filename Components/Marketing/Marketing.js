@@ -44,10 +44,10 @@ const Marketing = ({ navigation }) => {
         <Header navigation={navigation} title="Marketing" icon={require("../../assets/MarketingIcon.png")}>
 
 
-            <View style={{ paddingVertical: 6, backgroundColor: "#F8F8F8", alignSelf: "center", width: "70%", borderRadius: 10 }}>
-                <Pressable onPress={() => navigation.navigate("MarketingCamps")} style={{ width: "90%", height: 40, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#00B27A", display: "flex", flexDirection: "row", marginVertical: 10 }}>
-                    <Text style={{ fontWeight: "500", fontSize: 16, color: "white", marginRight: 10 }}>Crea nuova Campagna</Text>
-                    <Ionicons name="add-outline" color="white" size={25} />
+            <View style={{ paddingVertical: 2, backgroundColor: "#F8F8F8", alignSelf: "center", width: "70%", borderRadius: 20 }}>
+                <Pressable onPress={() => navigation.navigate("MarketingCamps")} style={{ width: "90%", height: 40, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 15, backgroundColor: "#00B27A", display: "flex", flexDirection: "row", marginVertical: 10 }}>
+                    <Text style={{ fontWeight: "500", fontSize: 12, color: "white", marginRight: 10 }}>Crea nuova Campagna</Text>
+                    <Ionicons name="add-outline" color="white" size={23} />
                 </Pressable>
             </View>
 
@@ -62,9 +62,9 @@ const Marketing = ({ navigation }) => {
                 })}
             </View>
             {Balance &&
-                <Pressable style={{ width: "80%", height: 40, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#00B27A", display: "flex", flexDirection: "row", marginVertical: 15 }}>
+                <Pressable style={{ width: "75%", height: 35, justifyContent: "center", alignSelf: "center", alignItems: "center", borderRadius: 10, backgroundColor: "#00B27A", display: "flex", flexDirection: "row", marginVertical: 15 }}>
                     <Entypo name="wallet" color="white" size={25} />
-                    <Text style={{ fontWeight: "500", fontSize: 16, color: "white", marginLeft: 10 }}>Credito disponibile: {Balance} €</Text>
+                    <Text style={{ fontWeight: "500", fontSize: 14, color: "white", marginLeft: 10 }}>Credito disponibile: {Balance} €</Text>
                 </Pressable>
             }
 

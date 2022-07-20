@@ -4,6 +4,7 @@ import axios from "axios"
 import { MyContext } from '../../../AppContext';
 import { TextInput } from 'react-native-gesture-handler';
 import uuid from "react-native-uuid"
+
 import { REACT_APP_DASHBOARD_PREFIX ,REACT_APP_NODE_ENV ,REACT_APP_PROJECT ,REACT_APP_BASE_URL ,REACT_APP_DASHBOARD_API_PATH} from "@env"
 const getLocationFromName = name => {
     try {
@@ -135,17 +136,17 @@ const QA = () => {
                         <View style={{ display: "flex", flexDirection: "row", width: "90%", alignSelf: "center", alignItems: "center", backgroundColor: "#F8F8F8", borderRadius: 8, paddingVertical: 20, paddingHorizontal: 12 }}>
                             <Image
                                 onLoad={() => console.log(true)}
-                                source={{ uri: `https:${question.author.profilePhotoUri}`, width: 28, height: 28, }} style={{ width: 70, height: 70, borderRadius: 100, marginRight: 10 }} />
+                                source={{ uri: `https:${question.author.profilePhotoUri}`, width: 24, height: 24, }} style={{ width: 70, height: 70, borderRadius: 100, marginRight: 10 }} />
                             <View>
-                                <Text style={{ fontSize: 16, fontWeight: "600", color: "#00B27A", marginBottom: 3 }}>{question.author.displayName}</Text>
-                                <Text style={{ fontSize: 16, fontWeight: "700", color: "black", marginBottom: 3 }}>{question.text}</Text>
-                                <Text style={{ fontSize: 12, fontWeight: "300", color: "black", marginBottom: 3 }}>upvotes: {question.upVoteCount || "0"}</Text>
-                                <Text style={{ fontSize: 12, fontWeight: "300", color: "black", marginBottom: 3 }}>Created:  {new Date(question.createTime).toDateString()}</Text>
-                                <Text style={{ fontSize: 12, fontWeight: "300", color: "black", marginBottom: 3 }}>Update: {new Date(question.updateTime).toDateString()}</Text>
-                                <Text style={{ fontSize: 12, fontWeight: "300", color: "black", marginBottom: 3 }}>total answers: {question.totalAnswerCount}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: "600", color: "#00B27A", marginBottom: 3 }}>{question.author.displayName}</Text>
+                                <Text style={{ fontSize: 14, fontWeight: "700", color: "black", marginBottom: 3 }}>{question.text}</Text>
+                                <Text style={{ fontSize: 10, fontWeight: "300", color: "black", marginBottom: 3 }}>upvotes: {question.upVoteCount || "0"}</Text>
+                                <Text style={{ fontSize: 10, fontWeight: "300", color: "black", marginBottom: 3 }}>Created:  {new Date(question.createTime).toDateString()}</Text>
+                                <Text style={{ fontSize: 10, fontWeight: "300", color: "black", marginBottom: 3 }}>Update: {new Date(question.updateTime).toDateString()}</Text>
+                                <Text style={{ fontSize: 10, fontWeight: "300", color: "black", marginBottom: 3 }}>total answers: {question.totalAnswerCount}</Text>
                             </View>
-                            <Pressable onPress={() => answerQuestionAt(index)} style={{ width: 60, height: 30, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginLeft: "auto", marginRight: 15 }}>
-                                <Text style={{ fontWeight: "600", fontSize: 12, color: "white" }}>
+                            <Pressable onPress={() => answerQuestionAt(index)} style={{ width: 60, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginLeft: "auto", marginRight: 15 }}>
+                                <Text style={{ fontWeight: "600", fontSize: 10, color: "white" }}>
                                     {btnText}
                                 </Text>
                             </Pressable>
@@ -159,8 +160,8 @@ const QA = () => {
 
                                             {answerError !== null && <Text style={{ color: "red" }} >{answerError}</Text>}
                                         </View>
-                                        <Pressable onPress={() => postAnswer(question)} style={{ width: 60, height: 30, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center" }}>
-                                            <Text style={{ fontWeight: "600", fontSize: 12, color: "white" }}>
+                                        <Pressable onPress={() => postAnswer(question)} style={{ width: 60, height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center" }}>
+                                            <Text style={{ fontWeight: "600", fontSize: 10, color: "white" }}>
                                                 Rispondi
                                             </Text>
                                         </Pressable>
@@ -170,7 +171,7 @@ const QA = () => {
                                         <View key={answer.name} style={{ display: "flex", alignItems: "center", marginVertical: 16, flexDirection: "row" }} className='flex gap-x-4 items-center mt-3'>
                                             <Image
                                                 onLoad={() => console.log(true)}
-                                                source={{ uri: `https:${answer?.author?.profilePhotoUri}`, width: 28, height: 28, }} style={{ width: 60, height: 60, borderRadius: 100, marginRight: 16 }} />
+                                                source={{ uri: `https:${answer?.author?.profilePhotoUri}`, width: 24, height: 24, }} style={{ width: 60, height: 60, borderRadius: 100, marginRight: 16 }} />
 
                                             <View style={{ display: "flex", flexDirection: "column" }}>
                                                 <Text style={{ color: "#3366BB" }}>{answer?.author?.displayName}</Text>

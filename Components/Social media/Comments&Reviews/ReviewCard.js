@@ -10,11 +10,11 @@ const ReviewCard = ({ review, replyDisabled, isReplying, onReplyClick }) => {
     const renderIcon = () => {
         switch (review?.type) {
             case "gmb":
-                return <AntDesign name="google" color="#4267B2" size={25} />
+                return <AntDesign name="google" color="#4267B2" size={20} />
             case "fb":
-                return <Entypo name="facebook" color="#4267B2" size={25} />
+                return <Entypo name="facebook" color="#4267B2" size={20} />
             default:
-                return <FontAwesome name="comment" color="#4267B2" size={25} />
+                return <FontAwesome name="comment" color="#4267B2" size={20} />
         }
     }
 
@@ -48,22 +48,22 @@ const ReviewCard = ({ review, replyDisabled, isReplying, onReplyClick }) => {
             <View style={{ padding: 20, backgroundColor: "white", borderRadius: 15, marginBottom: 10 }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     {renderIcon()}
-                    <Text style={{ fontWeight: "600", fontSize: 14, marginHorizontal: 10 }}>{reviewerName}</Text>
+                    <Text style={{ fontWeight: "600", fontSize: 12, marginHorizontal: 10 }}>{reviewerName}</Text>
                     <Rating
                         ratingCount={5}
                         startingValue={rating}
-                        imageSize={16}
+                        imageSize={14}
                         readonly
                         style={{ paddingVertical: 10 }}
                     />
                 </View>
                 {review.comment &&
-                    <Text style={{ color: '#AEAEAE', fontWeight: '300', fontSize: 12, marginTop: 10 }}>
+                    <Text style={{ color: '#AEAEAE', fontWeight: '300', fontSize: 10, marginTop: 10 }}>
                         {review.comment}
                     </Text>}
             </View>
-            <Pressable disabled={replyDisabled} onPress={() => onReplyClick(review)} style={{ width: 160, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginTop: 15 }}>
-                <Text style={{ fontWeight: "600", fontSize: 18, color: "white" }}>
+            <Pressable disabled={replyDisabled} onPress={() => onReplyClick(review)} style={{ width: 140, height: 35, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", marginTop: 15 }}>
+                <Text style={{ fontWeight: "600", fontSize: 14, color: "white" }}>
                     {isReplying ? 'Cancel' : 'Reply'}
                 </Text>
             </Pressable>

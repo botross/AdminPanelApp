@@ -185,13 +185,13 @@ console.log(REACT_APP_PROJECT)
                                 <View style={{ display: "flex", flexDirection: 'column', backgroundColor: "white", borderBottomEndRadius: 10, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 15 }}>
                                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
                                         <View style={{ display: "flex", flexDirection: "column", width: "75%" }} className="flex flex-col w-5/6 gap-y-2 ">
-                                            <TextInput style={{ width: "100%", backgroundColor: "#F6F6F6", borderRadius: 10, height: 80, padding: 10 }} disabled={isLoading} placeholder="Type your reply..." onChangeText={(text) => { setReplyText(text) }} value={replyText} />
+                                            <TextInput style={{ width: "100%", backgroundColor: "#F6F6F6", borderRadius: 15, height: 80, padding: 10 }} disabled={isLoading} placeholder="Type your reply..." onChangeText={(text) => { setReplyText(text) }} value={replyText} />
                                             {replyError !== null && (
                                                 <Text style={{ color: "red" }}>{replyError}</Text>
                                             )}
                                         </View>
-                                        <Pressable onPress={() => postReply(review)} style={{ width: 70, height: 40, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center" }}>
-                                            <Text style={{ fontWeight: "600", fontSize: 12, color: "white" }}>
+                                        <Pressable onPress={() => postReply(review)} style={{ width: 60, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center" }}>
+                                            <Text style={{ fontWeight: "600", fontSize: 10, color: "white" }}>
                                                 Rispondi
                                             </Text>
                                         </Pressable>

@@ -23,14 +23,14 @@ const SocialMedia = ({ navigation }) => {
                 name: "Q&A",
             },
         ]
-
+    console.log(new Date().setDate())
     return (
         <Header navigation={navigation} title="SocialMedia" icon={require("../../assets/SocialMediaIcon.png")}>
             <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginBottom: 10, maxHeight: 80, minHeight: 80 }} >
                 {Buttons.map((btn, index) => {
                     return (
-                        <TouchableOpacity onPress={() => SetActive(btn.id)} key={index} style={{ paddingVertical: 20, borderBottomWidth: 2, borderBottomColor: isActive === btn.id ? "#00B27A" : "#AEAEAE", width: 220, alignItems: 'center', marginBottom: 10 }}>
-                            <Text style={{ fontSize: 16, fontWeight: "700", color: isActive === btn.id ? "#00B27A" : "#AEAEAE" }}>{btn.name}</Text>
+                        <TouchableOpacity onPress={() => SetActive(btn.id)} key={index} style={{ paddingVertical: 15, borderBottomWidth: 2, borderBottomColor: isActive === btn.id ? "#00B27A" : "#AEAEAE", width: 200, alignItems: 'center', marginBottom: 10 }}>
+                            <Text style={{ fontSize: 12, fontWeight: "700", color: isActive === btn.id ? "#00B27A" : "#AEAEAE" }}>{btn.name}</Text>
                         </TouchableOpacity>
                     )
                 })}

@@ -47,8 +47,8 @@ const Ristorante = ({ navigation }) => {
             <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{ marginBottom: 10, maxHeight:80,  minHeight:80 }} >
                 {Buttons.map((btn, index) => {
                     return (
-                        <TouchableOpacity onPress={() => SetActive(btn.id)} key={index} style={{ padding: 20, borderBottomWidth: 2, borderBottomColor: isActive === btn.id ? "#00B27A" : "#AEAEAE", width: 220, alignItems: 'center', marginBottom: 10 }}>
-                            <Text style={{ fontSize: 16, fontWeight: "700", color: isActive === btn.id ? "#00B27A" : "#AEAEAE" }}>{btn.name}</Text>
+                        <TouchableOpacity onPress={() => SetActive(btn.id)} key={index} style={{ paddingVertical: 15, borderBottomWidth: 2, borderBottomColor: isActive === btn.id ? "#00B27A" : "#AEAEAE", width: 180, alignItems: 'center', marginBottom: 10 }}>
+                            <Text style={{ fontSize: 12, fontWeight: "700", color: isActive === btn.id ? "#00B27A" : "#AEAEAE" }}>{btn.name}</Text>
                         </TouchableOpacity>
                     )
                 })}
