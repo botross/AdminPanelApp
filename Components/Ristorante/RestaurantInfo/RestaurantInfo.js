@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from "react-native-vector-icons"
 import { REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_DASHBOARD_API_PATH } from "@env"
 import ChangePasswordModal from './ChangePasswordModal';
+import ChangeEmailModal from './ChangeEmailModal';
 
 const RestaurantInfo = ({ SetActive }) => {
     const { userData, Token, SuccessToast, FailedToast } = useContext(MyContext)
@@ -21,7 +22,11 @@ const RestaurantInfo = ({ SetActive }) => {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
+    
+    const [visible2, setVisible2] = React.useState(false);
 
+    const showModal2 = () => setVisible2(true);
+    const hideModal2 = () => setVisible2(false);
     console.log(REACT_APP_PROJECT)
 
     const days = [
@@ -242,19 +247,24 @@ const RestaurantInfo = ({ SetActive }) => {
 
                             <Ionicons name="fast-food-outline" color="#00B27A" size={40} />
                         </Pressable>
-                        <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", paddingHorizontal: 15, justifyContent: "space-between", marginBottom: 10 }}>
+                        <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: "100%", paddingHorizontal: 15, justifyContent: "space-between" }}>
+                            <View style={{ widht: "100%", display: "flex", flexDirection: "row", alignItems: "center",  position: "relative" , marginVertical: 10}} >
 
-                            <TextInput value={"daginoristorante@gmail.com"} style={{
-                                width: "100%", height: 50, backgroundColor: "white", borderRadius: 10, paddingHorizontal: 10, marginVertical: 10,
-                                shadowColor: "#000000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 6,
-                                },
-                                shadowOpacity: 0.51,
-                                shadowRadius: 7.68,
-                                elevation: 10,
-                            }} placeholder="Email" />
+                                <TextInput value={"daginoristorante@gmail.com"} style={{
+                                    width: "100%", height: 50, backgroundColor: "white", borderRadius: 10, paddingHorizontal: 10,
+                                    shadowColor: "#000000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 6,
+                                    },
+                                    shadowOpacity: 0.51,
+                                    shadowRadius: 7.68,
+                                    elevation: 10,
+                                }} placeholder="Email" />
+                                <Pressable onPress={() => showModal2()} style={{ backgroundColor: "#00B27A", paddingVertical: 5, width: 90, borderRadius: 5, alignItems: "center", justifyContent: "center", position: "absolute", right: 0, marginRight: 15 }}>
+                                    <Text style={{ color: "white", fontSize: 12 }}>Change</Text>
+                                </Pressable>
+                            </View>
                             <View style={{ widht: "100%", display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 20, position: "relative" }} >
 
                                 <TextInput value={patchData?.title}
@@ -316,6 +326,7 @@ const RestaurantInfo = ({ SetActive }) => {
                 }
             </ScrollView>
             <ChangePasswordModal visible={visible} hideModal={hideModal} />
+            <ChangeEmailModal visible={visible2} hideModal={hideModal2}/>
         </>
 
 
