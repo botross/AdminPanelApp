@@ -2,9 +2,10 @@ import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import uuid from "react-native-uuid"
 import shortenText from "../../../Reuseable/shortenText"
-import { MaterialCommunityIcons } from "react-native-vector-icons"
+import { Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from 'react-native-vector-icons'
 
-const ProductCard = ({ item ,navigation,DeleteAlert }) => {
+
+const ProductCard = ({ item, navigation, DeleteAlert }) => {
     const [isMore, SetMore] = React.useState(false)
     const defaultImage = require("../../../assets/defaultImageProduc.png")
     const ItemImage = { uri: item.image }
@@ -54,12 +55,35 @@ const ProductCard = ({ item ,navigation,DeleteAlert }) => {
                 <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14, marginVertical: 5 }}>This product has no Allergeni </Text>
 
             }
+            <View style={{ display: "flex", flexDirection: "row", alignItems: 'center' }}>
 
-
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <MaterialCommunityIcons name="fire" color="#C25039" size={35} />
-                <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 14 }}>Piccante</Text>
+                {item.indications?.length !== 0
+                    ? item.indications.map(x =>
+                        x === "SPICY" ? (
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginRight: 6 }}>
+                                <MaterialCommunityIcons name="fire" color="#C25039" size={25} />
+                                <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 10 }}>Piccante</Text>
+                            </View>
+                        ) : x === "VEGAN" ? (
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginRight: 6 }}>
+                                <MaterialCommunityIcons name="tree" color="#25BE35" size={25} />
+                                <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 10 }}>Vegano</Text>
+                            </View>
+                        ) : x === "GLUTEN FREE" ? (
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginRight: 6 }}>
+                                <MaterialCommunityIcons name="tree-outline" color="#00B27A" size={25} />
+                                <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 10 }}>Senza Glutine</Text>
+                            </View>
+                        ) : x === "VEGETARIAN" ? (
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginRight: 6 }}>
+                                <MaterialIcons name="do-not-disturb" color="#2B65BB" size={25} />
+                                <Text style={{ color: "#1E1C0F", fontWeight: "600", fontSize: 10 }}>Vegetariano</Text>
+                            </View>
+                        ) : null
+                    )
+                    : null}
             </View>
+
 
             <View style={{ display: "flex", flexDirection: "row", position: "absolute", top: 0, right: 0, margin: 15, alignItems: "center" }}>
 

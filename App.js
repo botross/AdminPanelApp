@@ -9,7 +9,7 @@ import axios from "axios"
 import Toast from 'react-native-toast-message';
 
 export default function App() {
-  const [Token, SetToken] = useState()
+  const [Token, SetToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6MCwiZW1haWwiOiJhbGVzc2lvLmZlcnJhcmlAYWlnb3QuY29tIiwic2NvcGUiOiJQSEFSTUFDSVNUIiwiaWQiOiI2MmQ3ZDFkOTZhZWQzYjFhMzkzZDE1MzYiLCJpc0FsaWFzIjpmYWxzZSwiYWxpYXNJZCI6bnVsbCwicGVybWlzc2lvbnMiOm51bGwsImlhdCI6MTY1ODQ3MzMyNywiZXhwIjoxNjU4NTE2NTI3fQ.jfkA2q8TC740lHK1vr6_Ti-VYfbiXRMgvyYTvaSUDHs")
   const [userData, SetUserData] = useState()
   const [loading, SetLoading] = useState(false)
   async function getUser() {

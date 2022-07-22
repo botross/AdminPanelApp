@@ -6,14 +6,17 @@ import { AntDesign, MaterialIcons } from "react-native-vector-icons"
 import CreateCatalogBottomSheet from './CreateCatalogBottomSheet'
 import axios from "axios"
 import ReNameCatalogBottomSheet from "./ReNameCatalogBottomSheet"
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+
 import { REACT_APP_THEMES_PREFIX, REACT_APP_DASHBOARD_PREFIX, REACT_APP_NODE_ENV, REACT_APP_PROJECT, REACT_APP_BASE_URL, REACT_APP_THEMES_API_PATH } from "@env"
 import uuid from 'react-native-uuid';
+import CatalogCard from './CatalogCard'
 const Prodotti = ({ navigation }) => {
     const { Token, userData, SuccessToast } = useContext(MyContext)
     const [Catalogs, SetCatalogs] = React.useState([])
     const [Reload, SetReload] = React.useState("asd")
     const [Loading, SetLoading] = React.useState(false)
-  
+
     const getCatalogs = async () => {
         SetLoading(true)
         try {
@@ -64,7 +67,18 @@ const Prodotti = ({ navigation }) => {
                 { text: "OK", onPress: () => deleteCataloge(id) }
             ]
         );
-
+    const setCatalogHiddenProp = async (catalog, isHidden) => {
+        try {
+            const body = { name: catalog.name, isHidden };
+            const url = `https://deployment.restaurants.club/catalogs/${catalog._id}`;
+            const result = await axios.patch(url, body);
+            if (!result.data || result.data?.Error || result.data?.error)
+                throw new Error(result.data?.Error || result.data?.error);
+            SuccessToast()
+        } catch (error) {
+            console.log(error)
+        }
+    };
     React.useEffect(() => { getCatalogs() }, [])
     React.useEffect(() => { getCatalogs() }, [Reload])
     return (
@@ -75,7 +89,7 @@ const Prodotti = ({ navigation }) => {
                     <RefreshControl
                         refreshing={Loading}
                         tintColor="#00B27A"
-                        colors ={["#00B27A"]}
+                        colors={["#00B27A"]}
                         onRefresh={onRefresh}
                     />
                 }
@@ -83,31 +97,7 @@ const Prodotti = ({ navigation }) => {
                 {/* {Loading && <ActivityIndicator size="large" color="#00B27A" style={{ marginVertical: 100, alignSelf: 'center' }} />} */}
                 {!Loading && Catalogs?.catalogs?.map((item) => {
                     return (
-                        <ImageBackground key={uuid.v4()} source={require("../../assets/FolderBG.png")} style={{
-                            width: 250, height: 250, shadowColor: "#000000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 6,
-                            },
-                            shadowOpacity: 0.41,
-                            shadowRadius: 7.68,
-                            elevation: 10,
-                            borderRadius: 10,
-                            alignItems: "center", justifyContent: "center", alignSelf: "center",
-                            marginVertical: 10
-                        }} resizeMode="contain" >
-                            <Text style={{ fontSize: 22, fontWeight: "700", color: "#00B27A", marginTop: 20 }}>{item.name}</Text>
-                            <Text style={{ fontSize: 14, fontWeight: "500", color: "#636363", marginVertical: 15 }}>{item.categories?.length} unità disponibili</Text>
-                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                <Pressable onPress={() => navigation.navigate("SubCategories", { catalogId: item._id })} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#00B27A", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
-                                    <AntDesign name="arrowright" color="white" size={25} />
-                                </Pressable>
-                                <ReNameCatalogBottomSheet SetReload={SetReload} id={item._id} name={item.name} />
-                                <Pressable onPress={() => DeleteAlert(item._id)} style={{ width: 40, height: 40, borderRadius: 100, backgroundColor: "#C25039", alignItems: "center", justifyContent: "center", marginRight: 15 }}>
-                                    <MaterialIcons name="delete" color="white" size={25} />
-                                </Pressable>
-                            </View>
-                        </ImageBackground>
+                        <CatalogCard setCatalogHiddenProp={setCatalogHiddenProp} item={item} key={uuid.v4()} navigation={navigation} SetReload={SetReload} DeleteAlert={DeleteAlert} />
                     )
                 })}
             </ScrollView>

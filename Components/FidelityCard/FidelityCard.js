@@ -1,10 +1,11 @@
 import { View, Text, TextInput, Pressable, ScrollView, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../Reuseable/Header'
 import { MaterialCommunityIcons } from "react-native-vector-icons"
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { AntDesign, Ionicons, EvilIcons } from "react-native-vector-icons"
+import { AntDesign, Ionicons, EvilIcons , Feather} from "react-native-vector-icons"
 import CardModal from './CardModal'
+import { BarCodeScanner } from 'expo-barcode-scanner';
 const FidelityCard = ({ navigation }) => {
     const [isActive, SetActive] = React.useState(0)
 
@@ -36,13 +37,62 @@ const FidelityCard = ({ navigation }) => {
                 name: "Gold",
             },
         ]
+
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+    const [isQrScannerOpned, SetOpen] = React.useState(false)
+    async function askForPermission() {
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === 'granted');
+        SetOpen(true)
+    }
+
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        SetOpen(false)
+    };
+
+    // if (hasPermission === null) {
+    //     return <Text>Requesting for camera permission</Text>;
+    // }
+    // if (hasPermission === false) {
+    //     return <Text>No access to camera</Text>;
+    // }
+
     return (
         <Header navigation={navigation} title="Fidelity Card" icon={require("../../assets/FidelityIcon.png")} >
+            {isQrScannerOpned &&
+                <View style={{width:"100%" , height:"100%" ,marginTop: "25%", position:"absolute", zIndex:500}}>
+
+                    <BarCodeScanner
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                        style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            position: "absolute",
+                            width: "95%",
+                            height: "70%",
+                            zIndex: 100,
+                            alignSelf: 'center',
+                            top: 0,
+                            bottom: 0,
+ 
+                        }}
+                    />
+                    <Pressable onPress={() => SetOpen(false)} style={{ position: "absolute", top: 10, right: 20, zIndex: 200 }}>
+                        <Feather name="x-circle" size={30} color="white" />
+                    </Pressable>
+                </View>
+
+            }
             <View style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-evenly", marginVertical: 20 }}>
-                <Pressable style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
+                <Pressable onPress={() => askForPermission()} style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
                     <Text style={{ color: "white", fontSize: 10, fontWeight: "600" }}>Associa QR Code Cliente</Text>
                 </Pressable>
-                <Pressable style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
+
+                <Pressable onPress={() => askForPermission()} style={{ width: "42%", height: 30, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: "#00B27A", alignSelf: "center", }}>
                     <Text style={{ color: "white", fontSize: 10, fontWeight: "600" }}>Aggiungi Punti al Cliente</Text>
                 </Pressable>
             </View>
@@ -120,7 +170,7 @@ const FidelityCard = ({ navigation }) => {
                 </Text>
             </Pressable> */}
             </ScrollView>
-                <CardModal visible={visible} hideModal={hideModal} />
+            <CardModal visible={visible} hideModal={hideModal} />
         </Header>
     )
 }
